@@ -153,8 +153,8 @@ def check(ctx):
     log.write('Running flake8 python linter...')
     ctx.run('flake8 src setup.py')
 
-    log.write('Checking python imports...')
-    ctx.run('isort --check-only --diff --recursive src tests setup.py')
+    #log.write('Checking python imports...')
+    #ctx.run('isort --check-only --diff --recursive src tests setup.py')
 
     log.write('Checking MANIFEST.in...')
     ctx.run('check-manifest')
@@ -162,12 +162,12 @@ def check(ctx):
 
 @task(help={
       'checks': 'True to run all checks before testing, otherwise False.'})
-def test(ctx, checks=True):
+def test(ctx, doctest=False):
     """Run all tests."""
-    if checks:
-        check(ctx)
-
-    ctx.run('pytest --doctest-module')
+    pytest_args = ['pytest']
+    if doctest:
+        pytest_args.append('--doctest-modules')
+    ctx.run(" ".join(pytest_args))
 
 @task(help={
       'release_type': 'Type of release follows semver rules. Must be one of: major, minor, patch.'})
