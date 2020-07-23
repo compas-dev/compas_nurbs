@@ -1,3 +1,8 @@
+"""
+Checkout
+https://github.com/johntfoster/bspline/blob/master/bspline/splinelab.py
+"""
+
 def knot_vector_uniform(degree, number_of_control_points, open=True, periodic=False):
     """
     """
