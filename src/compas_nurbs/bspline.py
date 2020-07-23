@@ -15,7 +15,7 @@ else:
 class BSpline(Primitive):
     """
     https://github.com/orbingol/NURBS-Python/tree/5.x/geomdl
-    
+
     or base on scipy's bspline?
     https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.BSpline.html
 

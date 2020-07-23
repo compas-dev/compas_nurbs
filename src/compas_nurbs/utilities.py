@@ -45,6 +45,7 @@ def linspace(start, stop, num, endpoint=True):
     else:
         return [start]
 
+
 def unflatten(array, n):
     if len(array) % n:
         raise ValueError("The length of the array must be a factor of n: %d %% %d == 0" % (len(array), n))
