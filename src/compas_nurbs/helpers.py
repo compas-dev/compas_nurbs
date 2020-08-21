@@ -1,5 +1,3 @@
-
-
 def find_span(knot_vector, number_of_control_points, t):
     """Finds the span of a single knot over the knot vector using linear search.
 

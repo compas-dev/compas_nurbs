@@ -1,6 +1,7 @@
+import numpy as np
 import rhino3dm
 from compas.geometry import allclose
-from compas_nurbs import BSpline
+from compas_nurbs import Curve
 from compas_nurbs import Surface
 from compas_nurbs.knot_vectors import knot_vector_uniform
 
@@ -8,27 +9,44 @@ from compas_nurbs.knot_vectors import knot_vector_uniform
 def test_compare_bspline_with_rhino_curve():
     """The default rhino curve evaluates the same way as BSpline.from_uniform_knot_style.
     """
+
     control_points = [[816.32, 139.74, 0.0], [860.41, 238.68, 0.0], [928.17, 199.96, 0.0], [1008.83, 136.51, 0.0],
                       [1062.6, 195.66, 0.0], [1130.35, 248.36, 0.0], [1176.6, 202.11, 0.0], [1240.39, 164.93, 0.0],
                       [1315.67, 242.37, 0.0], [1396.33, 307.97, 0.0], [1466.23, 223.01, 0.0], [1520.01, 156.33, 0.0]]
     degree = 9
+    #control_points = [(0.68, 0.44, 0.00), (0.27, 2.50, 0.00), (6.03, 2.18, 0.00), (4.77, 4.50, 0.00)]
+    #degree = 3
+
     n = 10
     params = [i / float(n) for i in range(n + 1)]
 
     # create BSpline
-    curve = BSpline.from_uniform_knot_style(control_points, degree)
+    curve = Curve.from_uniform_knot_style(control_points, degree)
 
     # create Rhino curve
     rhino_control_points = [rhino3dm.Point3d(*p) for p in control_points]
     rhino_curve = rhino3dm.Curve.CreateControlPointCurve(rhino_control_points, degree)
+    rhino_params = [t * rhino_curve.Domain.T1 for t in params]  # rhino curve domain is different
 
-    # evaluate them
-    points = curve.evaluate_at(params)
-    rhino_points = [rhino_curve.PointAt(t * rhino_curve.Domain.T1) for t in params]  # rhino curve domain is different
+    # evaluate points
+    points = curve.points_at(params)
+    rhino_points = [rhino_curve.PointAt(t) for t in rhino_params]
     rhino_points = [[p.X, p.Y, p.Z] for p in rhino_points]
+
+    # evaluate tangents
+    tangents = curve.tangents_at(params)
+    rhino_tangents = [rhino_curve.TangentAt(t) for t in rhino_params]
+    rhino_tangents = [[p.X, p.Y, p.Z] for p in rhino_tangents]
+
+    # evaluate curvature
+    curvature = curve.curvatures_at(params)
+    rhino_curvature = [rhino_curve.CurvatureAt(t) for t in rhino_params]
+    rhino_curvature = [np.linalg.norm([p.X, p.Y, p.Z]) for p in rhino_curvature]
 
     # compare
     assert(allclose(points, rhino_points))
+    assert(allclose(tangents, rhino_tangents))
+    assert(allclose(curvature, rhino_curvature))
 
 
 def test_compare_surface_with_geomdl_surface():
@@ -67,6 +85,7 @@ def test_compare_surface_with_geomdl_surface():
     geomdl_points = surf.evaluate_list(params_uv)
     assert(allclose(points, geomdl_points))
 
+
 def test_compare_interpolation_with_scipy_interpolation():
     """Scipy bspline interpolation only till degree 5
     """
@@ -74,8 +93,8 @@ def test_compare_interpolation_with_scipy_interpolation():
     import scipy.interpolate as interpolate
     import matplotlib.pyplot as plt
 
-    x = np.array([ 0. ,  1.2,  1.9,  3.2,  4. ,  6.5])
-    y = np.array([ 0. ,  2.3,  3. ,  4.3,  2.9,  3.1])
+    x = np.array([0.,  1.2,  1.9,  3.2,  4.,  6.5])
+    y = np.array([0.,  2.3,  3.,  4.3,  2.9,  3.1])
 
     t, c, k = interpolate.splrep(x, y, s=0, k=4)
     # t = vector of knots
@@ -86,7 +105,27 @@ def test_compare_interpolation_with_scipy_interpolation():
     xmin, xmax = x.min(), x.max()
     xx = np.linspace(xmin, xmax, N)
     spline = interpolate.BSpline(t, c, k, extrapolate=False)
-    #plt.plot(xx, spline(xx)
+    # plt.plot(xx, spline(xx)
     # TODO
 
 
+def test_compare_evaluators():
+    import os
+    import json
+    from compas_nurbs import DATA
+    from compas_nurbs.evaluators import evaluate_curve
+    from compas_nurbs.evaluators_numpy import evaluate_curve as evaluate_curve_numpy
+
+    with open(os.path.join(DATA, "bsplines_data.json"), 'r') as f:
+        data = json.load(f)
+
+    curve = Curve.from_data(data)
+    params = np.linspace(0, 1, 1000)
+    pts1 = evaluate_curve(curve.control_points, curve.degree, curve.knot_vector, params, rational=False)
+    pts2 = evaluate_curve_numpy(curve.control_points, curve.degree, curve.knot_vector, params, rational=False)
+    assert(allclose(pts1, pts2))
+
+
+if __name__ == "__main__":
+    test_compare_bspline_with_rhino_curve()
+    test_compare_evaluators()

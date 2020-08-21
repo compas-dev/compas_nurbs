@@ -1,8 +1,13 @@
 def evaluate_curve(control_points, degree, knot_vector, params, rational=False):
-    raise NotImplementedError
+    from geomdl.BSpline import Curve as GCurve
+    crv = GCurve()
+    crv.degree = degree
+    crv.ctrlpts = [list(pt) for pt in control_points]
+    crv.knotvector = knot_vector
+    return crv.evaluate_list(params)
 
 
-def evaluate_curve_derivatives(control_points, degree, knot_vector, params, order=1, normalize=True):
+def evaluate_curve_derivatives(control_points, degree, knot_vector, params, order=1):
     raise NotImplementedError
 
 

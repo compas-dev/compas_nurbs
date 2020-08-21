@@ -23,7 +23,7 @@ def evaluate_curve(control_points, degree, knot_vector, params, rational=False):
     return np.array(points)
 
 
-def evaluate_curve_derivatives(control_points, degree, knot_vector, params, order=1, normalize=True):
+def evaluate_curve_derivatives(control_points, degree, knot_vector, params, order=1):
     """Evaluates the n-th order derivatives at the input parametric position.
 
     Parameters
@@ -62,10 +62,7 @@ def evaluate_curve_derivatives(control_points, degree, knot_vector, params, orde
         b = control_points[span - degree:span + 1]
         derivatives.append(np.dot(a, b))
     derivatives = np.array(derivatives)
-    if normalize:
-        return (derivatives.T / np.linalg.norm(derivatives, axis=1)).T
-    else:
-        return derivatives
+    return derivatives
 
 
 def evaluate_surface(control_points, degree_u, degree_v, knot_vector_u, knot_vector_v, params_u, params_v, rational=False):

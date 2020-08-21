@@ -1,5 +1,6 @@
 # TODO: move those functions to compas
 
+
 def linspace(start, stop, num, endpoint=True):
     """ Returns a list of evenly spaced numbers over a specified interval.
 
