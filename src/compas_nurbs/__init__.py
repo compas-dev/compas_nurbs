@@ -14,7 +14,7 @@ Main concepts
 
 Describe typical classes found in project
 
-.. autoclass:: SampleClassName
+.. autoclass:: Curve
    :members:
 
 

@@ -49,31 +49,7 @@ class Curve(Primitive):
 
     Notes
     -----
-
     https://github.com/orbingol/NURBS-Python/tree/5.x/geomdl
-
-    or base on scipy's bspline?
-    https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.BSpline.html
-
-    BSline.basis_element(t[, extrapolate])activa
-    BSline.derivative(self[, nu])
-    BSline.integrate(self, a, b[, extrapolate])
-
-    Properties
-    ----------
-    - SpanCount
-    - SpanDomain
-    - Degree
-    - Dimension
-    - Domain
-
-    Queries
-    -------
-    - IsClosable
-    - IsClosed
-    - IsLinear
-    - IsPeriodic
-    - IsPlanar
     """
 
     def __init__(self, control_points, degree, knot_vector):
@@ -98,27 +74,34 @@ class Curve(Primitive):
     def domain(self):
         return [0., 1.]
 
+    # ==========================================================================
+    # constructors
+    # ==========================================================================
+
     @classmethod
-    def from_uniform_knot_style(cls, control_points, degree, periodic='False'):
+    def from_uniform_knot_style(cls, control_points, degree, periodic=False):
         """
         """
         number_of_control_points = len(control_points)
         knot_vector = knot_vector_uniform(degree, number_of_control_points, open=True, periodic=periodic)
         return cls(control_points, degree, knot_vector)
 
-    @property
-    def is_planar(self):
-        """Returns ``True`` if the curve is planar.
+    @classmethod
+    def from_chord_knot_style(cls, control_points, degree, periodic=False):
         """
-        # TODO: only checks if the curve is planar in xy-, xz-, yz-plane, oriented bounding box to check?
-        ranges = np.ptp(self.control_points, axis=0)
-        is_planar = not ranges.all()
-        ix, iy, iz = np.argsort(ranges)[::-1]
-        return is_planar, np.take(self.control_points, [ix, iy], axis=1)
+        """
+        raise NotImplementedError
+
+    @classmethod
+    def from_chord_sqrt_knot_style(cls, control_points, degree, periodic=False):
+        """
+        """
+        raise NotImplementedError
 
     # ==========================================================================
     # evaluate
     # ==========================================================================
+
     def points_at(self, params):
         """Evaluates the curve's points at the given parametric positions.
 
@@ -135,7 +118,7 @@ class Curve(Primitive):
         Examples
         --------
         >>> curve.points_at([0.0, 0.5, 1.0])
-        [Point(1.350, 3.560, 0.000), Point(5.466, 6.771, 0.000), Point(11.170, 6.770, 0.000)]
+        [Point(0.000, 0.000, 0.000), Point(-0.750, 3.000, 0.000), Point(-4.000, -3.000, 0.000)]
         """
         points = evaluate_curve(self.control_points, self.degree, self.knot_vector, params, self.rational)
         return [Point(*p) for p in points]
@@ -155,7 +138,7 @@ class Curve(Primitive):
         Examples
         --------
         >>> curve.tangents_at([0.0, 0.5, 1.0])
-        [Vector(-0.434, 0.901, 0.000), Vector(0.923, -0.385, 0.000), Vector(0.578, 0.816, 0.000)]
+        [Vector(0.600, 0.800, 0.000), Vector(-0.868, -0.496, 0.000), Vector(0.000, -1.000, 0.000)]
         """
         st = evaluate_curve_derivatives(self.control_points, self.degree, self.knot_vector, params, order=1)
         return [Vector(*v) for v in normalize(st)]
@@ -175,7 +158,7 @@ class Curve(Primitive):
         Examples
         --------
         >>> curvature = curve.curvatures_at([0.0, 0.5])
-        >>> allclose(curvature, [1.79446, 0.19671, 0.12502])
+        >>> allclose(curvature, [0.042667, 0.162835])
         True
         """
         st = evaluate_curve_derivatives(self.control_points, self.degree, self.knot_vector, params, order=1)
@@ -197,7 +180,7 @@ class Curve(Primitive):
         Examples
         --------
         >>> curve.frames_at([0.5])
-        [Frame(Point(5.466, 6.771, 0.000), Vector(0.923, -0.385, 0.000), Vector(-0.385, -0.923, 0.000))]
+        [Frame(Point(-0.750, 3.000, 0.000), Vector(-0.868, -0.496, 0.000), Vector(0.496, -0.868, 0.000))]
         """
         points = self.points_at(params)
         st = evaluate_curve_derivatives(self.control_points, self.degree, self.knot_vector, params, order=1)
@@ -207,30 +190,50 @@ class Curve(Primitive):
         normals = np.cross(binormal, tangents, axis=1)
         return [Frame(pt, xaxis, yaxis) for pt, xaxis, yaxis in zip(points, tangents, normals)]
 
+    def derivatives_at(self, params):
+        return evaluate_curve_derivatives(self.control_points, self.degree, self.knot_vector, params, order=1)
+
     # ==========================================================================
     # operations
     # ==========================================================================
+
     def reverse(self):
-        pass
+        raise NotImplementedError
 
     def split(self):
-        pass
+        raise NotImplementedError
 
     def trim(self):
-        pass
+        raise NotImplementedError
 
     def to_nurbs_curve(self):  # from bspline
-        pass
+        raise NotImplementedError
 
     def get_bounding_box(self):
-        pass
+        raise NotImplementedError
 
     def point_at_length(self):
-        pass
+        raise NotImplementedError
 
     # ==========================================================================
     # queries
     # ==========================================================================
+
+    def is_linear(self):
+        raise NotImplementedError
+
+    def is_periodic(self):
+        raise NotImplementedError
+
+    @property
+    def is_planar(self):
+        """Returns ``True`` if the curve is planar.
+        """
+        # TODO: only checks if the curve is planar in xy-, xz-, yz-plane, oriented bounding box to check?
+        ranges = np.ptp(self.control_points, axis=0)
+        is_planar = not ranges.all()
+        ix, iy, iz = np.argsort(ranges)[::-1]
+        return is_planar, np.take(self.control_points, [ix, iy], axis=1)
 
     # ==========================================================================
     # serialisation
@@ -253,10 +256,7 @@ if __name__ == '__main__':
     import doctest
     from compas.geometry import allclose  # noqa: F401
 
-    control_points = [(1.35, 3.56, 0.00), (0.94, 4.41, 0.00), (3.35, 8.61, 0.00), (5.44, 7.62, 0.00), (7.66, 4.72, 0.00), (9.83, 4.88, 0.00), (11.17, 6.77, 0.00)]
-    curve = Curve.from_uniform_knot_style(control_points, degree=5)
-
-    control_points = [(0.68, 0.44, 0.00), (0.27, 2.50, 0.00), (6.03, 2.18, 0.00), (4.77, 4.50, 0.00)]
-    print(Curve.from_uniform_knot_style(control_points, degree=3).knot_vector)
+    control_points = [(0, 0, 0), (3, 4, 0), (-1, 4, 0), (-4, 0, 0), (-4, -3, 0)]
+    curve = Curve.from_uniform_knot_style(control_points, degree=3)
 
     doctest.testmod(globs=globals())
