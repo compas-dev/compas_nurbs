@@ -9,7 +9,7 @@
     -17.44557341144607, 
     0.0
   ], 
-  "knot_style": "chord", 
+  "knot_style": 0, 
   "degree": 5, 
   "points": [
     [
