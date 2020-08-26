@@ -8,6 +8,7 @@ from compas_nurbs.utilities import linspace
 from geomdl.NURBS import Curve as GNCurve
 from geomdl.NURBS import Curve as GCurve
 
+
 def test_bspline_curve():
 
     degree = 5
@@ -27,7 +28,6 @@ def test_bspline_curve():
     assert(allclose(res1, res2))
 
 
-
 def test_nurbs_curve():
 
     degree = 5
@@ -39,7 +39,7 @@ def test_nurbs_curve():
     res1 = crv.points_at(params)
 
     knot_vector = crv.knot_vector
-    
+
     ncrv = GCurve()
     ncrv.degree = degree
     ncrv.ctrlpts = [list(pt) for pt in control_points]
@@ -48,7 +48,6 @@ def test_nurbs_curve():
     res2 = ncrv.evaluate_list(params)
     print(res2)
     assert(allclose(res1, res2))
-
 
 
 if __name__ == "__main__":

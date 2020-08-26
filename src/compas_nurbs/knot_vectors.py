@@ -201,7 +201,7 @@ def knot_vector_and_params(points, degree, knot_style, extended=False, periodic=
     knot_style : int
         The knot style: 0 for 'Uniform', 1 for 'Chord', 2 for 'ChordSquareRoot'
     extended : bool
-        `True` if the knot vector and params should be calculated for interpolation 
+        `True` if the knot vector and params should be calculated for interpolation
         with end derivatives. Defaults to `False`.
     periodic : bool
         `True` if knot vector should be computed for a `closed` curve. Defaults to

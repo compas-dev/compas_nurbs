@@ -27,3 +27,18 @@ def rhino_nurbs_surface_from_surface(surface):
         ns.KnotsV[i] = knots_v[i]
     assert(ns.IsValid)
     return ns
+
+
+def rhino_curve_from_curve(curve):
+    import Rhino.Geometry as rg
+    P = [rg.Point3d(*p) for p in curve.control_points]
+    kv = curve.knot_vector[1:-1]
+    degree = curve.degree
+    cvcount = len(P)
+    knotcount = len(kv)
+    nc = rg.NurbsCurve(3, False, degree+1, cvcount)
+    for i in range(cvcount):
+        nc.Points.SetPoint(i, P[i])
+    for i in range(knotcount):
+        nc.Knots[i] = kv[i]
+    return nc

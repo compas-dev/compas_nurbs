@@ -4,6 +4,7 @@ from compas.geometry import Primitive
 from compas.geometry import Point
 from compas.geometry import Vector
 from compas.geometry import Frame
+from compas.geometry import allclose  # noqa: F401
 
 from compas_nurbs.knot_vectors import knot_vector_uniform
 from compas_nurbs.knot_vectors import normalize_knot_vector
@@ -105,7 +106,6 @@ class Curve(Primitive):
         cpts, kv = interpolate_curve(points, degree, knot_style, start_derivative, end_derivative, periodic)
         return cls(cpts, degree, kv)
 
-
     # ==========================================================================
     # evaluate
     # ==========================================================================
@@ -125,6 +125,8 @@ class Curve(Primitive):
 
         Examples
         --------
+        >>> control_points = [(0, 0, 0), (3, 4, 0), (-1, 4, 0), (-4, 0, 0), (-4, -3, 0)]
+        >>> curve = Curve(control_points, 3)
         >>> curve.points_at([0.0, 0.5, 1.0])
         [Point(0.000, 0.000, 0.000), Point(-0.750, 3.000, 0.000), Point(-4.000, -3.000, 0.000)]
         """
@@ -150,6 +152,8 @@ class Curve(Primitive):
 
         Examples
         --------
+        >>> control_points = [(0, 0, 0), (3, 4, 0), (-1, 4, 0), (-4, 0, 0), (-4, -3, 0)]
+        >>> curve = Curve(control_points, 3)
         >>> curve.tangents_at([0.0, 0.5, 1.0])
         [Vector(0.600, 0.800, 0.000), Vector(-0.868, -0.496, 0.000), Vector(0.000, -1.000, 0.000)]
         """
@@ -170,6 +174,9 @@ class Curve(Primitive):
 
         Examples
         --------
+        >>> from compas.geometry import allclose
+        >>> control_points = [(0, 0, 0), (3, 4, 0), (-1, 4, 0), (-4, 0, 0), (-4, -3, 0)]
+        >>> curve = Curve(control_points, 3)
         >>> curvature = curve.curvatures_at([0.0, 0.5])
         >>> allclose(curvature, [0.042667, 0.162835])
         True
@@ -193,6 +200,8 @@ class Curve(Primitive):
 
         Examples
         --------
+        >>> control_points = [(0, 0, 0), (3, 4, 0), (-1, 4, 0), (-4, 0, 0), (-4, -3, 0)]
+        >>> curve = Curve(control_points, 3)
         >>> curve.frames_at([0.5])
         [Frame(Point(-0.750, 3.000, 0.000), Vector(-0.868, -0.496, 0.000), Vector(0.496, -0.868, 0.000))]
         """
@@ -267,9 +276,4 @@ class Curve(Primitive):
 if __name__ == '__main__':
 
     import doctest
-    from compas.geometry import allclose  # noqa: F401
-
-    control_points = [(0, 0, 0), (3, 4, 0), (-1, 4, 0), (-4, 0, 0), (-4, -3, 0)]
-    curve = Curve(control_points, 3)
-
     doctest.testmod(globs=globals())

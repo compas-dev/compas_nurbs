@@ -7,9 +7,6 @@ from .helpers import basis_functions_derivatives
 def evaluate_curve(control_points, degree, knot_vector, params, rational=False):
     """Evaluates a curve at the parameters params.
     """
-    if rational:
-        raise NotImplementedError
-
     number_of_control_points = len(control_points)
     spans = find_spans(knot_vector, number_of_control_points, params)
     bases = np.array(basis_functions(degree, knot_vector, spans, params))
@@ -20,9 +17,16 @@ def evaluate_curve(control_points, degree, knot_vector, params, rational=False):
         a = basis[:degree + 1]
         b = control_points[span - degree:span + 1]
         points.append(np.dot(a, b))
-    return np.array(points)
+    points = np.array(points)
 
-def evaluate_curve_derivatives(control_points, degree, knot_vector, params, order=1):
+    if not rational:
+        return points
+    else:
+        w = np.array([points[:, -1]]).T
+        return np.delete((1/w * points), -1, axis=1)
+
+
+def evaluate_curve_derivatives(control_points, degree, knot_vector, params, order=1, rational=False):
     """Evaluates the n-th order derivatives at the parametric positions `params`.
 
     Parameters
@@ -53,14 +57,37 @@ def evaluate_curve_derivatives(control_points, degree, knot_vector, params, orde
 
     spans = find_spans(knot_vector, number_of_control_points, params)
     bases = basis_functions_derivatives(degree, knot_vector, spans, params, order)
-    #bases = np.array(bases)[:, order, :]
+    # bases = np.array(bases)[:, order, :]
 
     derivatives = []
     for span, basis in zip(spans, bases):  # any chance to make this faster with matrix multiplication?
         a = basis[:degree + 1]
         b = control_points[span - degree:span + 1]
         derivatives.append(np.dot(a, b))
-    return np.array(derivatives)
+    derivatives = np.array(derivatives)
+
+    if not rational:
+        return derivatives
+    else:
+        w = np.array([derivatives[:, -1]]).T
+        return np.delete((1/w * derivatives), -1, axis=1)
+
+    """
+    # Call the parent function to evaluate A(u) and w(u) derivatives
+        CKw = super(CurveEvaluatorRational, self).derivatives(datadict, parpos, deriv_order, **kwargs)
+
+        # Algorithm A4.2
+        CK = [[0.0 for _ in range(dimension - 1)] for _ in range(deriv_order + 1)]
+        for k in range(0, deriv_order + 1):
+            v = [val for val in CKw[k][0:(dimension - 1)]]
+            for i in range(1, k + 1):
+                v[:] = [tmp - (linalg.binomial_coefficient(k, i) * CKw[i][-1] * drv) for tmp, drv in
+                        zip(v, CK[k - i])]
+            CK[k][:] = [tmp / CKw[0][-1] for tmp in v]
+
+        # Return C(u) derivatives
+        return CK
+    """
 
 
 def evaluate_surface(control_points, degree_u, degree_v, knot_vector_u, knot_vector_v, params_u, params_v, rational=False):
@@ -90,4 +117,4 @@ def evaluate_surface(control_points, degree_u, degree_v, knot_vector_u, knot_vec
 
 
 def evaluate_surface_derivatives(control_points, degree_u, degree_v, knot_vector_u, knot_vector_v, params_u, params_v, order=1, normalize=True):
-    pass
+    raise NotImplementedError

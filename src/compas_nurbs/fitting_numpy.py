@@ -1,6 +1,8 @@
 import numpy as np
 from scipy.linalg import lu_factor, lu_solve
 
+from compas.geometry import allclose  # noqa: F401
+
 from compas_nurbs.helpers import find_spans
 from compas_nurbs.helpers import basis_functions
 from compas_nurbs.knot_vectors import knot_vector_and_params
@@ -177,7 +179,6 @@ def interpolate_curve(points, degree, knot_style=0, start_derivative=None, end_d
 
 if __name__ == "__main__":
     from compas_nurbs import Curve
-    from compas.geometry import allclose  # noqa: F401
 
     knot_style = CurveKnotStyle.Uniform
     points = [[0.0, 0.0, 0.0], [0.973412, 1.962979, 0.0], [-0.66136, 2.434672, 0.0], [-2.34574, 1.016886, 0.0], [-3.513204, -0.855328, 0.0], [-4.0, -3.0, 0.0]]

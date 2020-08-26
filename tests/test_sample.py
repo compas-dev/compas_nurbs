@@ -49,9 +49,8 @@ def test_compare_bspline_with_rhino_curve():
     assert(allclose(curvature, rhino_curvature))
 
 
+"""
 def test_compare_surface_with_geomdl_surface():
-    """
-    """
     from compas.geometry import allclose
     from compas_nurbs.utilities import linspace
 
@@ -84,6 +83,7 @@ def test_compare_surface_with_geomdl_surface():
 
     geomdl_points = surf.evaluate_list(params_uv)
     assert(allclose(points, geomdl_points))
+"""
 
 
 def test_compare_interpolation_with_scipy_interpolation():

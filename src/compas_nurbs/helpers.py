@@ -140,3 +140,15 @@ def basis_functions_derivatives(degree, knot_vector, spans, params, order):
     TODO: check if np.vectorize makes it faster.
     """
     return list(map(lambda span, t: basis_function_derivatives(degree, knot_vector, span, t, order), spans, params))
+
+
+"""
+
+or base on scipy's bspline?
+https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.BSpline.html
+
+BSline.basis_element(t[, extrapolate])activa
+BSline.derivative(self[, nu])
+BSline.integrate(self, a, b[, extrapolate])
+
+"""
