@@ -128,7 +128,12 @@ class Curve(Primitive):
         >>> curve.points_at([0.0, 0.5, 1.0])
         [Point(0.000, 0.000, 0.000), Point(-0.750, 3.000, 0.000), Point(-4.000, -3.000, 0.000)]
         """
-        points = evaluate_curve(self.control_points, self.degree, self.knot_vector, params, self.rational)
+        if self.rational:
+            w = np.array([self.weights]).T
+            control_points = np.concatenate((w * self.control_points, w), axis=1)
+        else:
+            control_points = self.control_points
+        points = evaluate_curve(control_points, self.degree, self.knot_vector, params, self.rational)
         return [Point(*p) for p in points]
 
     def tangents_at(self, params):
@@ -201,7 +206,7 @@ class Curve(Primitive):
         return [Frame(pt, xaxis, yaxis) for pt, xaxis, yaxis in zip(points, tangents, normals)]
 
     def derivatives_at(self, params, order=1):
-        derivatives = evaluate_curve_derivatives(self.control_points, self.degree, self.knot_vector, params, order=order)
+        derivatives = evaluate_curve_derivatives(self.control_points, self.degree, self.knot_vector, params, order=order, rational=self.rational)
         return [list(d[order]) for d in derivatives]
 
     # ==========================================================================
@@ -215,9 +220,6 @@ class Curve(Primitive):
         raise NotImplementedError
 
     def trim(self):
-        raise NotImplementedError
-
-    def to_nurbs_curve(self):  # from bspline
         raise NotImplementedError
 
     def get_bounding_box(self):

@@ -23,6 +23,8 @@ Describe typical classes found in project
 import os
 from .bspline_curve import Curve
 from .bspline_surface import Surface
+from .nurbs_curve import NurbsCurve
+#from .nurbs_surface import NurbsSurface
 
 HERE = os.path.dirname(__file__)
 DATA = os.path.join(HERE, "data")

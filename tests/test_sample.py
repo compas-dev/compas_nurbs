@@ -21,7 +21,7 @@ def test_compare_bspline_with_rhino_curve():
     params = [i / float(n) for i in range(n + 1)]
 
     # create BSpline
-    curve = Curve.from_uniform_knot_style(control_points, degree)
+    curve = Curve(control_points, degree)
 
     # create Rhino curve
     rhino_control_points = [rhino3dm.Point3d(*p) for p in control_points]
