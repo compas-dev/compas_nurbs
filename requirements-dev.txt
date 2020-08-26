@@ -1,3 +1,4 @@
+cython
 sphinx>=1.5
 invoke>=0.14
 bumpversion>=0.5
