@@ -8,4 +8,5 @@ pylint
 pytest
 isort
 twine
+rhino3dm
 -e .
