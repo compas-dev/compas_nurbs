@@ -13,6 +13,7 @@ if not compas.IPY:
     from compas_nurbs.evaluators_numpy import evaluate_curve
     from compas_nurbs.evaluators_numpy import evaluate_curve_derivatives
     from compas_nurbs.calculations_numpy import normalize
+    from compas_nurbs.fitting_numpy import interpolate_curve
 else:
     from compas_nurbs.evaluators import evaluate_curve
     from compas_nurbs.evaluators import evaluate_curve_derivatives
@@ -27,7 +28,7 @@ class Curve(Primitive):
         The curve's control points.
     degree : int
         The degree of the curve.
-    knot_vector : list of float
+    knot_vector : list of float, optional
         The knot vector of the curve.
 
     Attributes
@@ -43,7 +44,7 @@ class Curve(Primitive):
 
     Examples
     --------
-    >>> control_points = [(0.68, 0.44, 0.00), (0.27, 2.50, 0.00), (6.03, 2.18, 0.00), (4.77, 4.50, 0.00)]
+    >>> control_points = [(0.6, 0.4, 0.0), (0.2, 2.5, 0.0), (6.0, 2.1, 0.0), (4.7, 4.5, 0.0)]
     >>> knot_vector = [0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0]
     >>> curve = Curve(control_points, 3, knot_vector)
 
@@ -52,9 +53,9 @@ class Curve(Primitive):
     https://github.com/orbingol/NURBS-Python/tree/5.x/geomdl
     """
 
-    def __init__(self, control_points, degree, knot_vector):
+    def __init__(self, control_points, degree, knot_vector=None):
         self.degree = degree
-        self.knot_vector = knot_vector
+        self.knot_vector = knot_vector or knot_vector_uniform(len(control_points), degree)
         self.rational = False
         if compas.IPY:
             self.control_points = control_points
@@ -79,24 +80,31 @@ class Curve(Primitive):
     # ==========================================================================
 
     @classmethod
-    def from_uniform_knot_style(cls, control_points, degree, periodic=False):
-        """
-        """
-        number_of_control_points = len(control_points)
-        knot_vector = knot_vector_uniform(degree, number_of_control_points, open=True, periodic=periodic)
-        return cls(control_points, degree, knot_vector)
+    def from_points(cls, points, degree, knot_style=0, start_derivative=None, end_derivative=None, periodic=False):
+        """Constructs an interpolated curve.
 
-    @classmethod
-    def from_chord_knot_style(cls, control_points, degree, periodic=False):
-        """
-        """
-        raise NotImplementedError
+        Parameters
+        ----------
+        points : list of point
+            The list of points on the curve we are looking for.
+        degree : int
+            The degree of the output parametric curve.
+        start_derivative : vector, optional
+            The start derivative of the curve. Defaults to ``None``.
+        end_derivative : vector
+            The end derivative of the curve. Defaults to ``None``.
+        knotstyle : int, optional
+            The knot style, either 0, 1, or 2 [uniform, chord, or chord_square_root].
+            Defaults to 0, uniform.
 
-    @classmethod
-    def from_chord_sqrt_knot_style(cls, control_points, degree, periodic=False):
+        Returns
+        -------
+        :class:`Curve`
+            The interpolated Curve.
         """
-        """
-        raise NotImplementedError
+        cpts, kv = interpolate_curve(points, degree, knot_style, start_derivative, end_derivative, periodic)
+        return cls(cpts, degree, kv)
+
 
     # ==========================================================================
     # evaluate
@@ -140,7 +148,7 @@ class Curve(Primitive):
         >>> curve.tangents_at([0.0, 0.5, 1.0])
         [Vector(0.600, 0.800, 0.000), Vector(-0.868, -0.496, 0.000), Vector(0.000, -1.000, 0.000)]
         """
-        st = evaluate_curve_derivatives(self.control_points, self.degree, self.knot_vector, params, order=1)
+        st = self.derivatives_at(params, order=1)
         return [Vector(*v) for v in normalize(st)]
 
     def curvatures_at(self, params):
@@ -161,8 +169,9 @@ class Curve(Primitive):
         >>> allclose(curvature, [0.042667, 0.162835])
         True
         """
-        st = evaluate_curve_derivatives(self.control_points, self.degree, self.knot_vector, params, order=1)
-        nd = evaluate_curve_derivatives(self.control_points, self.degree, self.knot_vector, params, order=2)
+        derivatives = evaluate_curve_derivatives(self.control_points, self.degree, self.knot_vector, params, order=2)
+        st = [list(d[1]) for d in derivatives]
+        nd = [list(d[2]) for d in derivatives]
         k = np.linalg.norm(np.cross(st, nd, axis=1), axis=1) / np.linalg.norm(st, axis=1)**3
         return list(k)
 
@@ -183,15 +192,17 @@ class Curve(Primitive):
         [Frame(Point(-0.750, 3.000, 0.000), Vector(-0.868, -0.496, 0.000), Vector(0.496, -0.868, 0.000))]
         """
         points = self.points_at(params)
-        st = evaluate_curve_derivatives(self.control_points, self.degree, self.knot_vector, params, order=1)
-        nd = evaluate_curve_derivatives(self.control_points, self.degree, self.knot_vector, params, order=2)
-        binormal = normalize(np.cross(st, nd, axis=1))
-        tangents = normalize(st)
+        derivatives = evaluate_curve_derivatives(self.control_points, self.degree, self.knot_vector, params, order=2)
+        d1 = [list(d[1]) for d in derivatives]
+        d2 = [list(d[2]) for d in derivatives]
+        binormal = normalize(np.cross(d1, d2, axis=1))
+        tangents = normalize(np.array(d1))
         normals = np.cross(binormal, tangents, axis=1)
         return [Frame(pt, xaxis, yaxis) for pt, xaxis, yaxis in zip(points, tangents, normals)]
 
-    def derivatives_at(self, params):
-        return evaluate_curve_derivatives(self.control_points, self.degree, self.knot_vector, params, order=1)
+    def derivatives_at(self, params, order=1):
+        derivatives = evaluate_curve_derivatives(self.control_points, self.degree, self.knot_vector, params, order=order)
+        return [list(d[order]) for d in derivatives]
 
     # ==========================================================================
     # operations
@@ -257,6 +268,6 @@ if __name__ == '__main__':
     from compas.geometry import allclose  # noqa: F401
 
     control_points = [(0, 0, 0), (3, 4, 0), (-1, 4, 0), (-4, 0, 0), (-4, -3, 0)]
-    curve = Curve.from_uniform_knot_style(control_points, degree=3)
+    curve = Curve(control_points, 3)
 
     doctest.testmod(globs=globals())
