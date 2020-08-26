@@ -1,8 +1,8 @@
-from compas_nurbs.bspline import BSpline
+from compas_nurbs.bspline_curve import Curve
 
 
-class NurbsCurve(BSpline):
+class NurbsCurve(Curve):
 
     def __init__(self, control_points, degree, knot_vector):
-        super(BSpline, self).__init__(control_points, degree, knot_vector)
+        super(Curve, self).__init__(control_points, degree, knot_vector)
         self.rational = True
