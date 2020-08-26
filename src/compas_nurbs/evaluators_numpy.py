@@ -22,9 +22,8 @@ def evaluate_curve(control_points, degree, knot_vector, params, rational=False):
         points.append(np.dot(a, b))
     return np.array(points)
 
-
 def evaluate_curve_derivatives(control_points, degree, knot_vector, params, order=1):
-    """Evaluates the n-th order derivatives at the input parametric position.
+    """Evaluates the n-th order derivatives at the parametric positions `params`.
 
     Parameters
     ----------
@@ -54,15 +53,14 @@ def evaluate_curve_derivatives(control_points, degree, knot_vector, params, orde
 
     spans = find_spans(knot_vector, number_of_control_points, params)
     bases = basis_functions_derivatives(degree, knot_vector, spans, params, order)
-    bases = np.array(bases)[:, order, :]
+    #bases = np.array(bases)[:, order, :]
 
     derivatives = []
     for span, basis in zip(spans, bases):  # any chance to make this faster with matrix multiplication?
         a = basis[:degree + 1]
         b = control_points[span - degree:span + 1]
         derivatives.append(np.dot(a, b))
-    derivatives = np.array(derivatives)
-    return derivatives
+    return np.array(derivatives)
 
 
 def evaluate_surface(control_points, degree_u, degree_v, knot_vector_u, knot_vector_v, params_u, params_v, rational=False):
