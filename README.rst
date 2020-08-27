@@ -18,7 +18,7 @@ compas_nurbs: compas_nurbs
 
 **NURBS for COMPAS**
 
-This package is inspirated and partly builds upon the NURBS-Python_ package, however uses a NumPy_ based backend for faster calculation if using CPython.
+This package is inspirated and partly builds upon the NURBS-Python_. package, however uses a NumPy_. based backend for faster calculation if using CPython.
 It is streamlined with the COMPAS API.
 
 It is not yet complete, but hopefully the opensource community pushes the further development.
