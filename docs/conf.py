@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 import os
+import sphinx_compas_theme
 
 extensions = [
     'sphinx.ext.autodoc',
@@ -35,7 +36,8 @@ extlinks = {
 }
 # on_rtd is whether we are on readthedocs.org
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
-html_theme = 'alabaster'
+html_theme = 'compas'
+html_theme_path = sphinx_compas_theme.get_html_theme_path()
 html_theme_options = {
     'logo': 'logo.png',
     'description': 'compas_nurbs',

@@ -16,7 +16,21 @@ compas_nurbs: compas_nurbs
 
 .. Write project description
 
-**NURBS for COMPAS** ...
+**NURBS for COMPAS**
+
+This package is inspirated and partly builds upon the NURBS-Python_ package, however uses a NumPy_ based backend for faster calculation if using CPython.
+It is streamlined with the COMPAS API.
+
+It is not yet complete, but hopefully the opensource community pushes the further development.
+
+Terminology
+In anlehung an `Rhino` terminology, ``Curve``, and ``Surface`` are a non-uniform
+non-rational BSpline Geometries (NUBS), ``NurbsCurve``, and ``NurbsSurface`` are 
+non-uniform rational BSpline Geometries (NURBS).
+
+like 
+.. _NURBS-Python: https://github.com/orbingol/NURBS-Python
+.. _NumPy: https://numpy.org/
 
 
 Main features
