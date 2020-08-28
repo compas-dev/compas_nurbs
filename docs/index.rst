@@ -1,6 +1,6 @@
-============================
-compas_nurbs: compas_nurbs
-============================
+******************************
+compas_nurbs: NURBS for COMPAS
+******************************
 
 .. start-badges
 
@@ -14,27 +14,13 @@ compas_nurbs: compas_nurbs
 
 .. end-badges
 
-.. Write project description
-
-**NURBS for COMPAS** ...
-
-
-========
-Contents
-========
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
+   :titlesonly:
 
    readme
-   reference/index
-   contributing
-   authors
-   changelog
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   gettingstarted
+   examples
+   api
+   license

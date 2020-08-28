@@ -15,7 +15,7 @@ compas_nurbs: NURBS for COMPAS
 .. end-badges
 
 This package is inspirated and partly builds upon the NURBS-Python_ package, however uses a NumPy_-based backend for faster calculation if using CPython.
-It provides wrappers around the different backends, which are streamlined with the COMPAS API.
+It provides wrappers about the different backends, which are streamlined with the COMPAS API.
 
 Following Rhino3D_'s terminology, ``Curve``, and ``Surface`` are a non-uniform non-rational BSpline geometries (NUBS), ``NurbsCurve``, and ``NurbsSurface`` are 
 non-uniform rational BSpline Geometries (NURBS).
@@ -28,9 +28,9 @@ non-uniform rational BSpline Geometries (NURBS).
 Main features
 -------------
 
-* feature
-* feature
-* more features
+* classes Curve, Surface, NurbsCurve, NurbsSurface
+* Curve and Surface Interpolation
+* ...
 
 **compas_nurbs** runs on Python x.x and x.x.
 
