@@ -1,24 +1,15 @@
 import numpy as np
+
 from .helpers import find_spans
 from .helpers import basis_functions
 from .helpers import basis_functions_derivatives
 
 
-def evaluate_curve(control_points, degree, knot_vector, params, rational=False):
+def evaluate_curve(curve, params, rational=False):
     """Evaluates a curve at the parameters params.
     """
-    number_of_control_points = len(control_points)
-    spans = find_spans(knot_vector, number_of_control_points, params)
-    bases = np.array(basis_functions(degree, knot_vector, spans, params))
-    control_points = np.array(control_points)
-
-    points = []
-    for span, basis in zip(spans, bases):  # any chance to make this faster with matrix multiplication?
-        a = basis[:degree + 1]
-        b = control_points[span - degree:span + 1]
-        points.append(np.dot(a, b))
-    points = np.array(points)
-
+    points = curve(params)
+    
     if not rational:
         return points
     else:
@@ -26,7 +17,7 @@ def evaluate_curve(control_points, degree, knot_vector, params, rational=False):
         return np.delete((1/w * points), -1, axis=1)
 
 
-def evaluate_curve_derivatives(control_points, degree, knot_vector, params, order=1, rational=False):
+def evaluate_curve_derivatives(curve, params, order=1, rational=False):
     """Evaluates the n-th order derivatives at the parametric positions `params`.
 
     Parameters
@@ -50,27 +41,17 @@ def evaluate_curve_derivatives(control_points, degree, knot_vector, params, orde
     --------
     >>>
     """
-    number_of_control_points = len(control_points)
-
-    if order > degree:
-        raise ValueError("Order must be < than degree.")
-
-    spans = find_spans(knot_vector, number_of_control_points, params)
-    bases = basis_functions_derivatives(degree, knot_vector, spans, params, order)
-    # bases = np.array(bases)[:, order, :]
-
     derivatives = []
-    for span, basis in zip(spans, bases):  # any chance to make this faster with matrix multiplication?
-        a = basis[:degree + 1]
-        b = control_points[span - degree:span + 1]
-        derivatives.append(np.dot(a, b))
-    derivatives = np.array(derivatives)
-
+    for i in range(1, order + 1):
+        derivatives.append(curve.derivative(i)(params))
+    
     if not rational:
         return derivatives
     else:
-        w = np.array([derivatives[:, -1]]).T
-        return np.delete((1/w * derivatives), -1, axis=1)
+        print(derivatives)
+        print("NotImplementedError")
+        #w = np.array([derivatives[:, -1]]).T
+        #return np.delete((1/w * derivatives), -1, axis=1)
 
     """
     # Call the parent function to evaluate A(u) and w(u) derivatives

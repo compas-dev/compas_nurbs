@@ -9,7 +9,10 @@ from compas.geometry import allclose  # noqa: F401
 from compas_nurbs.knot_vectors import knot_vector_uniform
 from compas_nurbs.knot_vectors import normalize_knot_vector
 
+import geomdl.BSpline
+
 if not compas.IPY:
+    import scipy
     import numpy as np
     from compas_nurbs.evaluators_numpy import evaluate_curve
     from compas_nurbs.evaluators_numpy import evaluate_curve_derivatives
@@ -60,8 +63,13 @@ class Curve(Primitive):
         self.rational = False
         if compas.IPY:
             self.control_points = control_points
+            self._curve = geomdl.BSpline.Curve()
+            self._curve.degree = degree
+            self._curve.ctrlpts = [list(pt) for pt in control_points]
+            self._curve.knotvector = knot_vector
         else:
             self.control_points = np.array(control_points)
+            self._curve = scipy.interpolate.BSpline(self.knot_vector, control_points, self.degree)
 
     @property
     def knot_vector(self):
@@ -75,6 +83,11 @@ class Curve(Primitive):
     @property
     def domain(self):
         return [0., 1.]
+    
+    @property
+    def weighted_control_points(self):
+        w = np.array([self.weights]).T
+        return np.concatenate((w * self.control_points, w), axis=1)
 
     # ==========================================================================
     # constructors
@@ -130,12 +143,7 @@ class Curve(Primitive):
         >>> curve.points_at([0.0, 0.5, 1.0])
         [Point(0.000, 0.000, 0.000), Point(-0.750, 3.000, 0.000), Point(-4.000, -3.000, 0.000)]
         """
-        if self.rational:
-            w = np.array([self.weights]).T
-            control_points = np.concatenate((w * self.control_points, w), axis=1)
-        else:
-            control_points = self.control_points
-        points = evaluate_curve(control_points, self.degree, self.knot_vector, params, self.rational)
+        points = evaluate_curve(self._curve, params, self.rational)
         return [Point(*p) for p in points]
 
     def tangents_at(self, params):
@@ -157,8 +165,8 @@ class Curve(Primitive):
         >>> curve.tangents_at([0.0, 0.5, 1.0])
         [Vector(0.600, 0.800, 0.000), Vector(-0.868, -0.496, 0.000), Vector(0.000, -1.000, 0.000)]
         """
-        st = self.derivatives_at(params, order=1)
-        return [Vector(*v) for v in normalize(st)]
+        d1 = self.derivatives_at(params, order=1)[0]
+        return [Vector(*v) for v in normalize(d1)]
 
     def curvatures_at(self, params):
         """Evaluates the curvature at the given parametric positions.
@@ -181,10 +189,9 @@ class Curve(Primitive):
         >>> allclose(curvature, [0.042667, 0.162835])
         True
         """
-        derivatives = evaluate_curve_derivatives(self.control_points, self.degree, self.knot_vector, params, order=2)
-        st = [list(d[1]) for d in derivatives]
-        nd = [list(d[2]) for d in derivatives]
-        k = np.linalg.norm(np.cross(st, nd, axis=1), axis=1) / np.linalg.norm(st, axis=1)**3
+        derivatives = evaluate_curve_derivatives(self._curve, params, order=2)
+        d1, d2 = derivatives
+        k = np.linalg.norm(np.cross(d1, d2, axis=1), axis=1) / np.linalg.norm(d1, axis=1)**3 # TODO
         return list(k)
 
     def frames_at(self, params):
@@ -206,17 +213,15 @@ class Curve(Primitive):
         [Frame(Point(-0.750, 3.000, 0.000), Vector(-0.868, -0.496, 0.000), Vector(0.496, -0.868, 0.000))]
         """
         points = self.points_at(params)
-        derivatives = evaluate_curve_derivatives(self.control_points, self.degree, self.knot_vector, params, order=2)
-        d1 = [list(d[1]) for d in derivatives]
-        d2 = [list(d[2]) for d in derivatives]
+        derivatives = evaluate_curve_derivatives(self._curve, params, order=2)
+        d1, d2 = derivatives
         binormal = normalize(np.cross(d1, d2, axis=1))
         tangents = normalize(np.array(d1))
         normals = np.cross(binormal, tangents, axis=1)
         return [Frame(pt, xaxis, yaxis) for pt, xaxis, yaxis in zip(points, tangents, normals)]
 
     def derivatives_at(self, params, order=1):
-        derivatives = evaluate_curve_derivatives(self.control_points, self.degree, self.knot_vector, params, order=order, rational=self.rational)
-        return [list(d[order]) for d in derivatives]
+        return evaluate_curve_derivatives(self._curve, params, order=order, rational=self.rational)
 
     # ==========================================================================
     # operations
