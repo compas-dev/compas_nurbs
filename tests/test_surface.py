@@ -12,6 +12,7 @@ import rhino3dm
 
 def test_surface():
 
+    # settings
     control_points_2d = [[[0, 0, 0], [0, 4, 0.], [0, 8, -3]],
                          [[2, 0, 6], [2, 4, 0.], [2, 8, 0.]],
                          [[4, 0, 0], [4, 4, 0.], [4, 8, 3.]],
@@ -25,52 +26,37 @@ def test_surface():
 
     srf_geomdl = create_surface(control_points_2d, degree_u, degree_v, knot_vector_u, knot_vector_v)
     srf_numpy = Surface(control_points_2d, degree_u, degree_v, knot_vector_u, knot_vector_v)
-
     count_v, count_u = len(control_points_2d[0]), len(control_points_2d)
 
-    print(np.array(control_points_2d).shape)
-    control_points = list(flatten(control_points_2d))
-    control_points = np.array(control_points)
-    control_points_2d = control_points.reshape(count_u, count_v, control_points[0].shape[0])
+    # create Rhino surface
+    srf_rhino = rhino3dm.NurbsSurface.Create(3, False, degree_u + 1, degree_v + 1, count_u, count_v)
+    for u, l in enumerate(control_points_2d):
+        for v, (x, y, z) in enumerate(l):
+            srf_rhino.Points[(u, v)] = rhino3dm.Point4d(x, y, z, 1.)
+    for i, v in enumerate(knot_vector_u[1:-1]):
+        srf_rhino.KnotsU[i] = v
+    for i, v in enumerate(knot_vector_v[1:-1]):
+        srf_rhino.KnotsV[i] = v
 
     params_u = linspace(0., 1., 5)
     params_v = linspace(0., 1., 5)
     params = [(u, v) for u in params_u for v in params_v]
 
-    res2 = evaluate_surface(srf_geomdl, params)
-    res1 = srf_numpy.points_at(params)
+    # evaluate points
+    geomdl_points = evaluate_surface(srf_geomdl, params)
+    numpy_points = srf_numpy.points_at(params)
+    rhino_points = [srf_rhino.PointAt(*p) for p in params]
+    rhino_points = [[p.X, p.Y, p.Z] for p in rhino_points]
 
-    print(res2)
+    assert(allclose(numpy_points, geomdl_points))
+    assert(allclose(numpy_points, rhino_points))
 
-    assert(allclose(res1, res2))
-
+    # evaluate derivatives
     res2 = evaluate_surface_derivatives(srf_geomdl, params, order=2)
-    print(np.array(res2).shape)
 
-    ns = rhino3dm.NurbsSurface.Create(3, False, degree_u, degree_v, count_u, count_v)
-    P = [rhino3dm.Point3d(*p) for p in control_points]
-    kv_u = knot_vector_u[1:-1]
-    kv_v = knot_vector_v[1:-1]
-
-    print(count_u, count_v)
-
-    for u, l in enumerate(control_points_2d):
-        for v, (x, y, z) in enumerate(l):
-            ns.Points[(u, v)] = rhino3dm.Point4d(x, y, z, 1.)
-
-    print(ns.Points.CountU)
-    print(ns.Points.CountV)
-    print(">>", len(ns.KnotsU))
-    print(">>", len(ns.KnotsV))
-
-    """
-    for i in range(len(kv_u)):
-        print("i", i)
-        ns.KnotsU[i] = kv_u[i]
-    for i in range(len(kv_v)):
-        ns.KnotsV[i] = kv_v[i]
-    print(dir(ns))
-    """
+    # normals
+    rhino_normals = [srf_rhino.NormalAt(*p) for p in params]
+    rhino_normals = [[p.X, p.Y, p.Z] for p in rhino_normals]
 
 
 if __name__ == "__main__":
