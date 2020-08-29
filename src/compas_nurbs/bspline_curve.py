@@ -12,13 +12,14 @@ from compas_nurbs.knot_vectors import normalize_knot_vector
 import geomdl.BSpline
 
 if not compas.IPY:
-    import scipy
     import numpy as np
+    from compas_nurbs.evaluators_numpy import create_curve
     from compas_nurbs.evaluators_numpy import evaluate_curve
     from compas_nurbs.evaluators_numpy import evaluate_curve_derivatives
     from compas_nurbs.calculations_numpy import normalize
     from compas_nurbs.fitting_numpy import interpolate_curve
 else:
+    from compas_nurbs.evaluators import create_curve
     from compas_nurbs.evaluators import evaluate_curve
     from compas_nurbs.evaluators import evaluate_curve_derivatives
 
@@ -57,19 +58,13 @@ class Curve(Primitive):
     https://github.com/orbingol/NURBS-Python/tree/5.x/geomdl
     """
 
-    def __init__(self, control_points, degree, knot_vector=None):
+    def __init__(self, control_points, degree, knot_vector=None, weights=None, rational=False):
         self.degree = degree
         self.knot_vector = knot_vector or knot_vector_uniform(len(control_points), degree)
-        self.rational = False
-        if compas.IPY:
-            self.control_points = control_points
-            self._curve = geomdl.BSpline.Curve()
-            self._curve.degree = degree
-            self._curve.ctrlpts = [list(pt) for pt in control_points]
-            self._curve.knotvector = knot_vector
-        else:
-            self.control_points = np.array(control_points)
-            self._curve = scipy.interpolate.BSpline(self.knot_vector, control_points, self.degree)
+        self.rational = rational
+        self.control_points = control_points
+        self.weights = weights or [1. for _ in range(len(control_points))]
+        self._curve = create_curve(self.control_points, self.degree, self.knot_vector, self.rational, self.weights)
 
     @property
     def knot_vector(self):
@@ -83,11 +78,6 @@ class Curve(Primitive):
     @property
     def domain(self):
         return [0., 1.]
-    
-    @property
-    def weighted_control_points(self):
-        w = np.array([self.weights]).T
-        return np.concatenate((w * self.control_points, w), axis=1)
 
     # ==========================================================================
     # constructors
@@ -189,9 +179,8 @@ class Curve(Primitive):
         >>> allclose(curvature, [0.042667, 0.162835])
         True
         """
-        derivatives = evaluate_curve_derivatives(self._curve, params, order=2)
-        d1, d2 = derivatives
-        k = np.linalg.norm(np.cross(d1, d2, axis=1), axis=1) / np.linalg.norm(d1, axis=1)**3 # TODO
+        d1, d2 = self.derivatives_at(params, order=2)
+        k = np.linalg.norm(np.cross(d1, d2, axis=1), axis=1) / np.linalg.norm(d1, axis=1)**3  # TODO
         return list(k)
 
     def frames_at(self, params):
@@ -213,8 +202,7 @@ class Curve(Primitive):
         [Frame(Point(-0.750, 3.000, 0.000), Vector(-0.868, -0.496, 0.000), Vector(0.496, -0.868, 0.000))]
         """
         points = self.points_at(params)
-        derivatives = evaluate_curve_derivatives(self._curve, params, order=2)
-        d1, d2 = derivatives
+        d1, d2 = self.derivatives_at(params, order=2)
         binormal = normalize(np.cross(d1, d2, axis=1))
         tangents = normalize(np.array(d1))
         normals = np.cross(binormal, tangents, axis=1)
@@ -240,6 +228,9 @@ class Curve(Primitive):
         raise NotImplementedError
 
     def point_at_length(self):
+        raise NotImplementedError
+
+    def parameter_at(self, points):
         raise NotImplementedError
 
     # ==========================================================================

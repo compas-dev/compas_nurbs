@@ -1,15 +1,26 @@
+import scipy
 import numpy as np
 
 from .helpers import find_spans
 from .helpers import basis_functions
-from .helpers import basis_functions_derivatives
+
+from compas.geometry._primitives.curve import binomial_coefficient  # TODO compas: move this upwards
+
+
+def create_curve(control_points, degree, knot_vector, rational, weights):
+    if not rational:
+        return scipy.interpolate.BSpline(knot_vector, control_points, degree)
+    else:
+        w = np.array([weights]).T
+        weighted_control_points = np.concatenate((w * control_points, w), axis=1)
+        return scipy.interpolate.BSpline(knot_vector, weighted_control_points, degree)
 
 
 def evaluate_curve(curve, params, rational=False):
     """Evaluates a curve at the parameters params.
     """
     points = curve(params)
-    
+
     if not rational:
         return points
     else:
@@ -44,31 +55,22 @@ def evaluate_curve_derivatives(curve, params, order=1, rational=False):
     derivatives = []
     for i in range(1, order + 1):
         derivatives.append(curve.derivative(i)(params))
-    
+
     if not rational:
         return derivatives
     else:
-        print(derivatives)
-        print("NotImplementedError")
-        #w = np.array([derivatives[:, -1]]).T
-        #return np.delete((1/w * derivatives), -1, axis=1)
-
-    """
-    # Call the parent function to evaluate A(u) and w(u) derivatives
-        CKw = super(CurveEvaluatorRational, self).derivatives(datadict, parpos, deriv_order, **kwargs)
-
-        # Algorithm A4.2
-        CK = [[0.0 for _ in range(dimension - 1)] for _ in range(deriv_order + 1)]
-        for k in range(0, deriv_order + 1):
-            v = [val for val in CKw[k][0:(dimension - 1)]]
-            for i in range(1, k + 1):
-                v[:] = [tmp - (linalg.binomial_coefficient(k, i) * CKw[i][-1] * drv) for tmp, drv in
-                        zip(v, CK[k - i])]
-            CK[k][:] = [tmp / CKw[0][-1] for tmp in v]
-
-        # Return C(u) derivatives
-        return CK
-    """
+        # TODO: make this faster with numpy
+        derivatives.insert(0, evaluate_curve(curve, params, False))
+        D = []
+        for ders in zip(*derivatives):
+            new_ders = []
+            for k in range(0, order + 1):
+                value = ders[k][:-1]
+                for i in range(1, k + 1):
+                    value[:] = [tmp - (binomial_coefficient(k, i) * ders[i][-1] * drv) for tmp, drv in zip(value, new_ders[k - i])]
+                new_ders.append([tmp / ders[0][-1] for tmp in value])
+            D.append(new_ders[1:])
+        return np.array(D).transpose(1, 0, 2)
 
 
 def evaluate_surface(control_points, degree_u, degree_v, knot_vector_u, knot_vector_v, params_u, params_v, rational=False):

@@ -1,3 +1,22 @@
+import geomdl
+
+
+def create_curve(control_points, degree, knot_vector, rational, weights):
+    if not rational:
+        curve = geomdl.BSpline.Curve()
+        curve.degree = degree
+        curve.ctrlpts = [list(pt) for pt in control_points]
+        curve.knotvector = knot_vector
+        return curve
+    else:
+        curve = geomdl.Nurbs.Curve()
+        curve.degree = degree
+        curve.ctrlpts = [list(pt) for pt in control_points]
+        curve.knotvector = knot_vector
+        curve.weights = weights
+        return curve
+
+
 def evaluate_curve(curve, params, rational=False):
     return curve.evaluate_list(params)
 
