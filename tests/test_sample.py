@@ -48,6 +48,23 @@ def test_compare_bspline_with_rhino_curve():
     assert(allclose(tangents, rhino_tangents))
     assert(allclose(curvature, rhino_curvature))
 
+    # compare with scipy
+    from scipy.interpolate import BSpline
+    scipy_curve = BSpline(curve.knot_vector, curve.control_points, curve.degree)
+    scipy_points = scipy_curve(params)
+
+    print(tangents)
+    d1 = scipy_curve.derivative(1)(params)
+    scipy_tangents = (d1.T/np.linalg.norm(d1, axis=1).reshape(1, -1)).T
+
+    d2 = scipy_curve.derivative(2)(params)
+    k = np.linalg.norm(np.cross(d1, d2, axis=1), axis=1) / np.linalg.norm(d1, axis=1)**3
+    scipy_curvature = k
+
+    assert(allclose(points, scipy_points))
+    assert(allclose(tangents, scipy_tangents))
+    assert(allclose(curvature, scipy_curvature))
+
 
 """
 def test_compare_surface_with_geomdl_surface():
@@ -115,14 +132,21 @@ def test_compare_evaluators():
     from compas_nurbs import DATA
     from compas_nurbs.evaluators import evaluate_curve
     from compas_nurbs.evaluators_numpy import evaluate_curve as evaluate_curve_numpy
+    import geomdl.BSpline
 
     with open(os.path.join(DATA, "bsplines_data.json"), 'r') as f:
         data = json.load(f)
 
     curve = Curve.from_data(data)
     params = np.linspace(0, 1, 1000)
-    pts1 = evaluate_curve(curve.control_points, curve.degree, curve.knot_vector, params, rational=False)
-    pts2 = evaluate_curve_numpy(curve.control_points, curve.degree, curve.knot_vector, params, rational=False)
+
+    geomdl_curve = geomdl.BSpline.Curve()
+    geomdl_curve.degree = curve.degree
+    geomdl_curve.ctrlpts = [list(pt) for pt in curve.control_points]
+    geomdl_curve.knotvector = curve.knot_vector
+
+    pts1 = evaluate_curve(geomdl_curve, params, rational=False)
+    pts2 = evaluate_curve_numpy(curve._curve, params, rational=False)
     assert(allclose(pts1, pts2))
 
 

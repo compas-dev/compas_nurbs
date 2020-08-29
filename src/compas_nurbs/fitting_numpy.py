@@ -195,12 +195,12 @@ if __name__ == "__main__":
                                                              knot_style)
 
     crv = Curve(result[0], degree, result[1])
-    D0, D1 = crv.derivatives_at([0, 1], order=1)
+    D0, D1 = crv.derivatives_at([0, 1], order=1)[0]
     assert(allclose(D0, start_derivative))
     assert(allclose(D1, end_derivative))
 
-    result = interpolate_curve(points, degree, knot_style, end_derivative=start_derivative)
+    result = interpolate_curve(points, degree, knot_style)
     crv = Curve(result[0], degree, result[1])
-    D0, D1 = crv.derivatives_at([0, 1], order=1)
+    D0, D1 = crv.derivatives_at([0, 1], order=1)[0]
     assert(allclose(D0, start_derivative, tol=0.01))
     assert(allclose(D1, end_derivative, tol=0.01))
