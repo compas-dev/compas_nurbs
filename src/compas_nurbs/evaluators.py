@@ -1,4 +1,5 @@
-import geomdl
+import geomdl.BSpline
+from compas.utilities import flatten
 
 
 def create_curve(control_points, degree, knot_vector, rational, weights):
@@ -23,22 +24,32 @@ def evaluate_curve(curve, params, rational=False):
 
 def evaluate_curve_derivatives(curve, params, order=1):
     return curve.derivatives(params, order)
+    # TODO
 
 
-def evaluate_surface(control_points, degree_u, degree_v, knot_vector_u, knot_vector_v, params_u, params_v, rational=False):
-    from geomdl.BSpline import Surface as GSurface
-    srf = GSurface()
-    srf.degree_u = degree_u
-    srf.degree_v = degree_v
-    nu = len(control_points)
-    nv = len(control_points[0])
-    control_points_flattened = [list(pt) for pts in control_points for pt in pts]
-    srf.set_ctrlpts(control_points_flattened, nu, nv)
-    srf.knotvector_u = knot_vector_u
-    srf.knotvector_v = knot_vector_v
-    params = [(u, v) for v in params_v for u in params_u]
-    return srf.evaluate_list(params)
+def create_surface(control_points_2d, degree_u, degree_v, knot_vector_u, knot_vector_v, rational=False, weights_u=None, weights_v=None):
+    if not rational:
+        surface = geomdl.BSpline.Surface()
+        surface.degree_u = degree_u
+        surface.degree_v = degree_v
+        count_u, count_v = len(control_points_2d), len(control_points_2d[0])
+        surface.set_ctrlpts(list(flatten(control_points_2d)), count_u, count_v)
+        surface.knotvector_u = knot_vector_u
+        surface.knotvector_v = knot_vector_v
+        return surface
+    else:
+        pass
 
 
-def evaluate_surface_derivatives(control_points, degree_u, degree_v, knot_vector_u, knot_vector_v, params_u, params_v, order=1, normalize=True):
-    raise NotImplementedError
+def evaluate_surface(surface, params, rational=False):
+    return surface.evaluate_list(params)
+
+
+def evaluate_surface_derivatives(surface, params, order=1):
+    derivatives = [surface.derivatives(u, v, order=order) for (u, v) in params]
+    D = []
+    for i in range(1, order + 1):
+        D.append([])
+        for d in derivatives:
+            D[i - 1].append(d[i])
+    return D
