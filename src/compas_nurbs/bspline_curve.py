@@ -9,8 +9,6 @@ from compas.geometry import allclose  # noqa: F401
 from compas_nurbs.knot_vectors import knot_vector_uniform
 from compas_nurbs.knot_vectors import normalize_knot_vector
 
-import geomdl.BSpline
-
 if not compas.IPY:
     import numpy as np
     from compas_nurbs.evaluators_numpy import create_curve
@@ -232,6 +230,10 @@ class Curve(Primitive):
 
     def parameter_at(self, points):
         raise NotImplementedError
+
+    def transform(self, transformation):
+        Point.transform_collection(self.control_points, transformation)
+        self._curve = create_curve(self.control_points, self.degree, self.knot_vector, self.rational, self.weights)
 
     # ==========================================================================
     # queries
