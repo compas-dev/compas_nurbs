@@ -4,7 +4,6 @@ from compas.geometry import Primitive
 from compas.geometry import Point
 from compas.geometry import Vector
 from compas.geometry import Frame
-from compas.geometry import allclose  # noqa: F401
 
 from compas_nurbs.knot_vectors import knot_vector_uniform
 from compas_nurbs.knot_vectors import normalize_knot_vector
@@ -277,6 +276,6 @@ class Curve(Primitive):
 
 
 if __name__ == '__main__':
-
     import doctest
+    from compas.geometry import allclose  # noqa: F401
     doctest.testmod(globs=globals())

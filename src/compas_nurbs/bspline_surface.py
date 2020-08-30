@@ -15,7 +15,6 @@ else:
 
 
 # https://mcneel.github.io/rhino3dm/python/api/Surface.html
-# compute_rhino3d.Brep.CreateFromLoft(curves, start, end, loftType, closed, multiple=False)
 
 
 class SurfaceCurvature(object):
@@ -103,6 +102,10 @@ class Surface(Shape):
     # ==========================================================================
     # constructors
     # ==========================================================================
+    @classmethod
+    def from_curves(cls, curves):
+        # compute_rhino3d.Brep.CreateFromLoft(curves, start, end, loftType, closed, multiple=False)
+        pass
 
     @classmethod
     def from_points(cls, points):
@@ -247,11 +250,10 @@ class Surface(Shape):
 
     @classmethod
     def from_data(cls, data):
-        print(data)
         return cls(data['control_points_2d'], data['degree_u'], data['degree_v'], data['knot_vector_u'], data['knot_vector_v'])
 
     def to_obj(self):
-        pass
+        raise NotImplementedError
 
 
 if __name__ == "__main__":
