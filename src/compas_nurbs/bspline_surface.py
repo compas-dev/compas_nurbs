@@ -73,6 +73,7 @@ class Surface(Shape):
         self.control_points_2d = control_points_2d
         self.degree_u = degree_u
         self.degree_v = degree_v
+        # TODO checkers and setters
         self.knot_vector_u = knot_vector_u or generate(degree_u, self.count_u)
         self.knot_vector_v = knot_vector_v or generate(degree_v, self.count_v)
         self.rational = False
@@ -156,7 +157,23 @@ class Surface(Shape):
         return [Vector(*n) for n in normals]
 
     def curvatures_at(self, params):
-        """
+        """Evaluates the surface' curvature at the given parametric positions.
+
+        Parameters
+        ----------
+        params: list of tuples (u, v)
+            Evaluation parameters within the curve's domain of [0, 1]
+
+        Returns
+        -------
+        :class:`SurfaceCurvature`
+            A container class with several surface curvature quantities, such as 
+            - principal curvature directions
+            - principal curvature values (kappa)
+            - mean curvature
+            - gauss curvature
+            - normal
+
         Examples
         --------
         >>> params = [(0.5, 0.5)]
