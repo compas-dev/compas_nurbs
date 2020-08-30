@@ -4,6 +4,10 @@ import numpy as np
 from .helpers import find_spans
 from .helpers import basis_functions
 from .helpers import basis_functions_derivatives
+from .helpers import find_span
+from .helpers import basis_function_derivatives
+
+from compas.utilities import flatten
 
 from compas.geometry._primitives.curve import binomial_coefficient  # TODO compas: move this upwards
 
@@ -60,7 +64,7 @@ def evaluate_curve_derivatives(curve, params, order=1, rational=False):
     if not rational:
         return derivatives
     else:
-        # TODO: make this faster with numpy
+        # TODO: numpify this!
         derivatives.insert(0, evaluate_curve(curve, params, False))
         D = []
         for ders in zip(*derivatives):
@@ -76,11 +80,6 @@ def evaluate_curve_derivatives(curve, params, order=1, rational=False):
 # ===============================================================================
 # surface
 # ===============================================================================
-
-
-class Surface(object):
-    def __init__(self):
-        self.co = None
 
 
 def create_surface(control_points_2d, degree_u, degree_v, knot_vector_u, knot_vector_v, rational, weights_u, weights_v):
@@ -113,30 +112,17 @@ def evaluate_surface(surface, params, rational=False):
 
     points = []
     for span_u, basis_u, span_v, basis_v in zip(spans_u, bases_u, spans_v, bases_v):
-        idx_u = span_u - degree_u
-        idx_v = span_v - degree_v
         a = basis_v[:degree_v + 1]
-        b = control_points[idx_u:idx_u + degree_u + 1, idx_v:idx_v + degree_v + 1]
+        b = control_points[span_u - degree_u:span_u + 1, span_v - degree_v:span_v+1]
         c = basis_u[:degree_u + 1]
         points.append(np.dot(c, np.dot(a, b)))
+        
     return np.array(points)
 
 
 def evaluate_surface_derivatives(surface, params, order=1):
-
-    # Algorithm A3.6
-    d = (min(degree[0], deriv_order), min(degree[1], deriv_order))
-
-    #SKL = [[[0.0 for _ in range(dimension)] for _ in range(deriv_order + 1)] for _ in range(deriv_order + 1)]
-
     """
-    span = [0 for _ in range(pdimension)]
-    basisdrv = [[] for _ in range(pdimension)]
-    for idx in range(pdimension):
-        span[idx] = self._span_func(degree[idx], knotvector[idx], size[idx], parpos[idx])
-        basisdrv[idx] = helpers.basis_function_ders(degree[idx], knotvector[idx], span[idx], parpos[idx], d[idx])
-    """
-
+    """    
     control_points = np.array(surface.control_points_2d)
     degree_u, degree_v = surface.degree_u, surface.degree_v
     knot_vector_u, knot_vector_v = surface.knot_vector_u, surface.knot_vector_v
@@ -150,22 +136,14 @@ def evaluate_surface_derivatives(surface, params, order=1):
     spans_u = find_spans(knot_vector_u, number_of_control_points_u, params_u)
     bases_u = basis_functions_derivatives(degree_u, knot_vector_u, spans_u, params_u, order)
     spans_v = find_spans(knot_vector_v, number_of_control_points_v, params_v)
-    bases_v = basis_functions_derivatives(degree_v, knot_vector_v, spans_v, params_v)
+    bases_v = basis_functions_derivatives(degree_v, knot_vector_v, spans_v, params_v, order)
 
-    """
-    for k in range(0, d[0] + 1):
-        temp = [[0.0 for _ in range(dimension)] for _ in range(degree[1] + 1)]
-        for s in range(0, degree[1] + 1):
-            for r in range(0, degree[0] + 1):
-                cu = span[0] - degree[0] + r
-                cv = span[1] - degree[1] + s
-                temp[s][:] = [tmp + (basisdrv[0][k][r] * cp) for tmp, cp in zip(temp[s], ctrlpts[cv + (size[1] * cu)])]
-
-        # dd = min(deriv_order - k, d[1])
-        dd = min(deriv_order, d[1])
-        for l in range(0, dd + 1):
-            for s in range(0, degree[1] + 1):
-                SKL[k][l][:] = [elem + (basisdrv[1][l][s] * tmp) for elem, tmp in zip(SKL[k][l], temp[s])]
-
-    return SKL
-    """
+    dv = min(degree_v, order)
+    derivatives = []
+    for span_u, basis_u, span_v, basis_v in zip(spans_u, bases_u, spans_v, bases_v):
+        b = control_points[span_u - degree_u:span_u + 1, span_v - degree_v:span_v + 1]
+        temp = np.dot(b.T, np.array(basis_u).T).T
+        dd = min(order, dv)
+        SKL = np.dot(np.array(basis_v[:dd+1]), temp[:degree_v + 1]).transpose(1, 0, 2)
+        derivatives.append(SKL)
+    return derivatives

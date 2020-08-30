@@ -15,6 +15,7 @@ else:
 
 
 # https://mcneel.github.io/rhino3dm/python/api/Surface.html
+# compute_rhino3d.Brep.CreateFromLoft(curves, start, end, loftType, closed, multiple=False)
 
 class Surface(Shape):
     """
@@ -46,7 +47,7 @@ class Surface(Shape):
 
     @property
     def degree(self):
-        raise NotImplementedError
+        return (self.degree_u, self.degree_v)
 
     @property
     def bounding_box(self):
@@ -91,6 +92,12 @@ class Surface(Shape):
 
     def normals_at(self, params):
         pass
+        skl = obj.derivatives(uv[0], uv[1], 1)
+        point = skl[0][0]
+        vector = linalg.vector_cross(skl[1][0], skl[0][1])
+        vector = linalg.vector_normalize(vector) if normalize else vector
+        return tuple(point), tuple(vector)
+        pass
 
     def frames_at(self, params):
         pass
@@ -116,6 +123,9 @@ class Surface(Shape):
 
     def parameters_at(self):
         raise NotImplementedError
+
+    def derivatives_at(self, params, order=1):
+        return evaluate_surface_derivatives(self._surface, params, order=order)
 
     # ==========================================================================
     # queries

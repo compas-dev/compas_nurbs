@@ -47,9 +47,12 @@ def evaluate_surface(surface, params, rational=False):
 
 def evaluate_surface_derivatives(surface, params, order=1):
     derivatives = [surface.derivatives(u, v, order=order) for (u, v) in params]
+    return derivatives
+    """
     D = []
     for i in range(1, order + 1):
         D.append([])
         for d in derivatives:
             D[i - 1].append(d[i])
     return D
+    """
