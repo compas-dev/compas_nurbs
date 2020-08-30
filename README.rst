@@ -20,6 +20,9 @@ It provides wrappers about the different backends, which are streamlined with th
 Following Rhino3D_'s terminology, ``Curve``, and ``Surface`` are a non-uniform non-rational BSpline geometries (NUBS), ``NurbsCurve``, and ``NurbsSurface`` are 
 non-uniform rational BSpline Geometries (NURBS).
 
+https://github.com/nortikin/sverchok/blob/516164038e5e682b39065d657900d19dedb6ec84/utils/surface/data.py
+
+
 .. _NURBS-Python: https://github.com/orbingol/NURBS-Python
 .. _NumPy: https://numpy.org/
 .. _Rhino3D: https://www.rhino3d.com/
