@@ -23,7 +23,7 @@ else:
 
 
 class Curve(Primitive):
-    """Represents a base class for n-variate B-spline (non-rational) curves.
+    """A base class for n-variate B-spline (non-rational) curves.
 
     Parameters
     ----------
@@ -153,8 +153,8 @@ class Curve(Primitive):
         >>> curve.tangents_at([0.0, 0.5, 1.0])
         [Vector(0.600, 0.800, 0.000), Vector(-0.868, -0.496, 0.000), Vector(0.000, -1.000, 0.000)]
         """
-        d1 = self.derivatives_at(params, order=1)[0]
-        return [Vector(*v) for v in normalize(d1)]
+        D = self.derivatives_at(params, order=1)
+        return [Vector(*v) for v in normalize(D[:, 1])]
 
     def curvatures_at(self, params):
         """Evaluates the curvature at the given parametric positions.
@@ -177,7 +177,8 @@ class Curve(Primitive):
         >>> allclose(curvature, [0.042667, 0.162835])
         True
         """
-        d1, d2 = self.derivatives_at(params, order=2)
+        D = self.derivatives_at(params, order=2)
+        d1, d2 = D[:, 1], D[:, 2]
         k = np.linalg.norm(np.cross(d1, d2, axis=1), axis=1) / np.linalg.norm(d1, axis=1)**3  # TODO
         return list(k)
 
@@ -199,12 +200,16 @@ class Curve(Primitive):
         >>> curve.frames_at([0.5])
         [Frame(Point(-0.750, 3.000, 0.000), Vector(-0.868, -0.496, 0.000), Vector(0.496, -0.868, 0.000))]
         """
-        points = self.points_at(params)
-        d1, d2 = self.derivatives_at(params, order=2)
+        D = self.derivatives_at(params, order=2)
+        points, d1, d2 = D[:, 0], D[:, 1], D[:, 2]
         binormal = normalize(np.cross(d1, d2, axis=1))
         tangents = normalize(np.array(d1))
         normals = np.cross(binormal, tangents, axis=1)
         return [Frame(pt, xaxis, yaxis) for pt, xaxis, yaxis in zip(points, tangents, normals)]
+
+    def osculating_circle(self, u):
+        radius = 1./self.curvatures_at([u])[0]
+        raise NotImplementedError
 
     def derivatives_at(self, params, order=1):
         return evaluate_curve_derivatives(self._curve, params, order=order, rational=self.rational)
