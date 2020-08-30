@@ -32,9 +32,10 @@ def tests_rhino_compare_params_knot_vectors():
         assert(allclose(kvd, data['knot_vector'], tol=0.02))
 
         curve = Curve(data['control_points'], data['degree'], data['knot_vector'])
-        D0, Dn = curve.derivatives_at([0, 1], order=1)[0]  # TODO: how to estimate derivatives
+        D = curve.derivatives_at([0, 1], order=1)  # TODO: how to estimate derivatives
+        D0, D1 = D[0, 1], D[1, 1]
 
-        control_points, knot_vector = global_curve_interpolation_with_end_derivatives(points, degree, D0, Dn, knot_style, periodic=False)
+        control_points, knot_vector = global_curve_interpolation_with_end_derivatives(points, degree, D0, D1, knot_style, periodic=False)
 
         if knot_style != CurveKnotStyle.Chord:
             assert(allclose(control_points, data['control_points'], tol=1.4))
@@ -72,7 +73,8 @@ def test_interpolation_with_end_derivatives():
     result = global_curve_interpolation_with_end_derivatives(points, degree, start_derivative, end_derivative)
     solution = [(0, 0, 0), (1.48, 0.9, 0), (4.95, 5.08, 0), (-1.56, 4.87, 0), (-4.72, -0.56, 0), (-3.94, -1.95, 0), (-4, -3, 0)]
     crv = Curve(result[0], degree, result[1])
-    D0, D1 = crv.derivatives_at([0, 1], order=1)[0]
+    D = crv.derivatives_at([0, 1], order=1)
+    D0, D1 = D[0, 1], D[1, 1]
     assert(allclose(D0, start_derivative))
     assert(allclose(D1, end_derivative))
     assert(allclose(result[0], solution, tol=0.005))
