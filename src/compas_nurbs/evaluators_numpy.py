@@ -4,10 +4,6 @@ import numpy as np
 from .helpers import find_spans
 from .helpers import basis_functions
 from .helpers import basis_functions_derivatives
-from .helpers import find_span
-from .helpers import basis_function_derivatives
-
-from compas.utilities import flatten
 
 from compas.geometry._primitives.curve import binomial_coefficient  # TODO compas: move this upwards
 
@@ -58,16 +54,18 @@ def evaluate_curve_derivatives(curve, params, order=1, rational=False):
     >>>
     """
     derivatives = []
-    for i in range(1, order + 1):
+    for i in range(0, order + 1):
         derivatives.append(curve.derivative(i)(params))
+    derivatives = np.array(derivatives).transpose(1, 0, 2)
 
     if not rational:
         return derivatives
     else:
         # TODO: numpify this!
-        derivatives.insert(0, evaluate_curve(curve, params, False))
+        #derivatives.insert(0, evaluate_curve(curve, params, False))
         D = []
-        for ders in zip(*derivatives):
+        # for ders in zip(*derivatives):
+        for ders in derivatives:
             new_ders = []
             for k in range(0, order + 1):
                 value = ders[k][:-1]
@@ -116,13 +114,12 @@ def evaluate_surface(surface, params, rational=False):
         b = control_points[span_u - degree_u:span_u + 1, span_v - degree_v:span_v+1]
         c = basis_u[:degree_u + 1]
         points.append(np.dot(c, np.dot(a, b)))
-        
     return np.array(points)
 
 
 def evaluate_surface_derivatives(surface, params, order=1):
     """
-    """    
+    """
     control_points = np.array(surface.control_points_2d)
     degree_u, degree_v = surface.degree_u, surface.degree_v
     knot_vector_u, knot_vector_v = surface.knot_vector_u, surface.knot_vector_v
@@ -146,4 +143,81 @@ def evaluate_surface_derivatives(surface, params, order=1):
         dd = min(order, dv)
         SKL = np.dot(np.array(basis_v[:dd+1]), temp[:degree_v + 1]).transpose(1, 0, 2)
         derivatives.append(SKL)
-    return derivatives
+    return np.array(derivatives)
+
+
+def calculate_surface_curvature(derivatives, order=False):
+    """Calculates surface curvature quantities.
+
+    If "order" parameter is set to True, then it will be guaranteed, that C1
+    value is always less than C2.
+    """
+    fu = derivatives[:, 1, 0]
+    fv = derivatives[:, 0, 1]
+    fuu = derivatives[:, 2, 0]
+    fvv = derivatives[:, 0, 2]
+    fuv = derivatives[:, 1, 1]
+
+    normal = np.cross(fu, fv)
+    norm = np.linalg.norm(normal, axis=1, keepdims=True)
+    normal = normal / norm
+
+    nuu = (fuu * normal).sum(axis=1)
+    nvv = (fvv * normal).sum(axis=1)
+    nuv = (fuv * normal).sum(axis=1)
+
+    duu = np.linalg.norm(fu, axis=1) ** 2
+    dvv = np.linalg.norm(fv, axis=1) ** 2
+    duv = (fu * fv).sum(axis=1)
+
+    mean = (duu*nvv - 2*duv*nuv + dvv*nuu) / (2*(duu*dvv - duv*duv))
+    gauss = (nuu * nvv - nuv*nuv) / (duu * dvv - duv*duv)
+
+    n = len(derivatives)  # number of params
+    L = np.empty((n, 2, 2))
+    L[:, 0, 0] = nuu
+    L[:, 0, 1] = nuv
+    L[:, 1, 0] = nuv
+    L[:, 1, 1] = nvv
+
+    G = np.empty((n, 2, 2))
+    G[:, 0, 0] = duu
+    G[:, 0, 1] = duv
+    G[:, 1, 0] = duv
+    G[:, 1, 1] = dvv
+
+    M = np.matmul(np.linalg.inv(G), L)
+    eigvals, eigvecs = np.linalg.eig(M)
+    # Values of first and second principal curvatures
+    c1 = eigvals[:, 0]
+    c2 = eigvals[:, 1]
+
+    if order:
+        c1mask = (c1 < c2)
+        c2mask = np.logical_not(c1mask)
+        c1_r = np.where(c1mask, c1, c2)
+        c2_r = np.where(c2mask, c1, c2)
+    else:
+        c1_r = c1
+        c2_r = c2
+
+    # dir_1 corresponds to c1, dir_2 corresponds to c2
+    dir_1_x = eigvecs[:, 0, 0][np.newaxis].T
+    dir_2_x = eigvecs[:, 0, 1][np.newaxis].T
+    dir_1_y = eigvecs[:, 1, 0][np.newaxis].T
+    dir_2_y = eigvecs[:, 1, 1][np.newaxis].T
+    dir_1 = dir_1_x * fu + dir_1_y * fv
+    dir_2 = dir_2_x * fu + dir_2_y * fv
+    dir_1 = dir_1 / np.linalg.norm(dir_1, axis=1, keepdims=True)
+    dir_2 = dir_2 / np.linalg.norm(dir_2, axis=1, keepdims=True)
+
+    if order:
+        c1maskT = c1mask[np.newaxis].T
+        c2maskT = c2mask[np.newaxis].T
+        dir_1_r = np.where(c1maskT, dir_1, -dir_2)
+        dir_2_r = np.where(c2maskT, dir_1, dir_2)
+    else:
+        dir_1_r = dir_1
+        dir_2_r = dir_2
+
+    return c1_r, c2_r, dir_1_r, dir_2_r, normal, mean, gauss
