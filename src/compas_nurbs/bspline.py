@@ -1,0 +1,117 @@
+import compas
+
+from compas.geometry import Primitive
+
+from compas_nurbs.knot_vectors import knot_vector_uniform
+from compas_nurbs.knot_vectors import normalize_knot_vector
+from compas_nurbs.knot_vectors import check_knot_vector
+
+if not compas.IPY:
+    from collections.abc import Iterable
+else:
+    from collections import Iterable
+
+
+class BSpline(Primitive):
+    """A base class for rational and non-rational B-Spline geometry.
+    """
+
+    def __init__(self, control_points, degree, knot_vector, rational, weights=None):
+        self.degree = degree  # (degree_u, degree_v) for surfaces
+        self.__rational = rational
+        self.__pdim = len(degree) if isinstance(degree, Iterable) else 1
+        self.control_points = control_points  # 2d for surfaces
+        self.knot_vector = knot_vector  # (knotvector_u, knotvector_v) for surfaces
+        self.weights = weights  # 2d for surfaces
+        self._build_backend()
+
+    def _build_backend(self): # needs to be overwritten by derivative classes
+        raise NotImplementedError
+
+    @property
+    def rational(self):
+        return self.__rational
+
+    @property
+    def domain(self):
+        if self.__pdim == 1:
+            return [0., 1.]
+        else:
+            return [[0., 1.] for _ in range(self.__pdim)]
+
+    @property
+    def control_points(self):
+        return self._control_points
+
+    @control_points.setter
+    def control_points(self, control_points):
+        self._control_points = control_points
+        if self.__pdim == 1:
+            if len(self.control_points) < self.degree + 1:
+                raise ValueError("len(control_points) must be >= degree + 1")
+        else:
+            ok1 = len(self.degree) == len(self.count)
+            ok2 = all([c < d + 1 for c, d in zip(self.count, self.degree)])
+            if not all([ok1, ok2]):
+                raise ValueError("Invalid control points")
+
+    @property
+    def count(self):
+        if self.__pdim == 1:
+            return len(self.control_points)
+        else:
+            a, c = self.control_points, []  # lambda?
+            for _ in range(self.__pdim):
+                c.append(len(a))
+                a = a[0]
+            return c
+
+    @property
+    def knot_vector(self):
+        """list of float : The knot vector"""
+        return self._knot_vector
+
+    @knot_vector.setter
+    def knot_vector(self, knot_vector):
+        if self.__pdim == 1:
+            if knot_vector:
+                if not check_knot_vector(knot_vector, self.count, self.degree):
+                    raise ValueError("Invalid knot vector")
+                self._knot_vector = normalize_knot_vector(knot_vector)
+            else:
+                self._knot_vector = knot_vector_uniform(len(self.control_points), self.degree)
+        else:
+            if knot_vector:
+                ok1 = all([check_knot_vector(kv, c, d) for kv, c, d in zip(knot_vector, self.count, self.degree)])
+                ok2 = len(knot_vector) == len(self.count)
+                if not all([ok1, ok2]):
+                    raise ValueError("Invalid knot vector")
+                self._knot_vector = [normalize_knot_vector(kv) for kv in knot_vector]
+            else:
+                self._knot_vector = [knot_vector_uniform(c, d) for c, d in zip(self.count, self.degree)]
+
+    @property
+    def weights(self):
+        return self._weights
+
+    @weights.setter
+    def weights(self, weights):
+        self._weights = weights  # TODO check
+
+    # ==========================================================================
+    # serialisation
+    # ==========================================================================
+
+    @property
+    def data(self):
+        """dict: The data dictionary that represents the bspline geometry."""
+        return {'control_points': self.control_points,
+                'degree': self.degree,
+                'knot_vector': self.knot_vector,
+                'rational': self.rational,
+                'weights': self.weights}
+
+    @classmethod
+    def from_data(cls, data):
+        return cls(data['control_points'], data['degree'], data['knot_vector'], data['rational'], data['weights'])
+

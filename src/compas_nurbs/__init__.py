@@ -46,9 +46,9 @@ NurbsSurface
 """
 
 import os
-from .bspline_curve import Curve
+from .curve import Curve
+from .curve import NurbsCurve  # noqa: F401
 from .bspline_surface import Surface
-from .nurbs_curve import NurbsCurve  # noqa: F401
 from .nurbs_surface import NurbsSurface
 
 HERE = os.path.dirname(__file__)
