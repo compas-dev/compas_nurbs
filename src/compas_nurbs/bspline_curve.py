@@ -4,21 +4,103 @@ from compas.geometry import Primitive
 from compas.geometry import Point
 from compas.geometry import Vector
 from compas.geometry import Frame
+from compas.geometry import Circle
+from compas.geometry import Plane
 
 from compas_nurbs.knot_vectors import knot_vector_uniform
 from compas_nurbs.knot_vectors import normalize_knot_vector
+from compas_nurbs.knot_vectors import check_knot_vector
 
 if not compas.IPY:
     import numpy as np
+    from collections.abc import Iterable
     from compas_nurbs.evaluators_numpy import create_curve
     from compas_nurbs.evaluators_numpy import evaluate_curve
     from compas_nurbs.evaluators_numpy import evaluate_curve_derivatives
     from compas_nurbs.calculations_numpy import normalize
     from compas_nurbs.fitting_numpy import interpolate_curve
 else:
+    from collections import Iterable
     from compas_nurbs.evaluators import create_curve
     from compas_nurbs.evaluators import evaluate_curve
     from compas_nurbs.evaluators import evaluate_curve_derivatives
+
+
+
+
+class CurveCurvature(object):
+    def __init__(self, normal, binormal, tangent, curvature, center, radius):
+        self.normal = Vector(*normal)
+        self.binormal = Vector(*binormal)
+        self.tangent = Vector(*tangent)
+        self.frame = Frame()
+        self.curvature = curvature
+        self.center = center
+        self.radius = radius
+
+    @property
+    def osculating_circle(self):
+        radius = 1./self.curvatures_at([u])[0]
+        return Circle(Plane(self.center, self.binormal), radius)
+
+
+
+class BSpline(Primitive):
+    """A base class for rational and non-rational BSpline geometry
+    """
+    def __init__(self, control_points, degree, knot_vector, rational, weights=None):
+        self.degree = degree # (degree_u, degree_v) for surfaces
+        self.__rational = rational
+        self.__pdim = len(degree) if isinstance(degree, Iterable) else 1
+        self.control_points = control_points # 2d for surfaces, check if correct for degree
+        self.knot_vector = knot_vector # (knotvector_u, knotvector_v) for surfaces, check if ok for points and 
+        
+        self.weights = weights # 2d for curfaces
+        self.domain = [0,1]
+    
+    @property
+    def control_points(self):
+        return self._control_points
+    
+    @control_points.setter
+    def control_points(self, control_points):
+        pass
+
+    @property
+    def count(self):
+        if self.__pdim == 1:
+            return len(self.control_points)
+        else:
+            a, c = self.control_points, [] # lambda?
+            for _ in range(self.__pdim):
+                c.append(len(a))
+                a = a[0]
+            return c
+
+    @property
+    def knot_vector(self):
+        """list of float : The knot vector"""
+        return self._knot_vector
+
+    @knot_vector.setter
+    def knot_vector(self, knot_vector):
+        if self.__pdim == 1:
+            if knot_vector:
+                if not check_knot_vector(knot_vector, self.count, self.degree):
+                    raise ValueError("Invalid knot vector")
+                self.knot_vector = normalize_knot_vector(knot_vector)
+            else:
+                self.knot_vector = knot_vector_uniform(len(self.control_points), self.degree)
+        else:
+            if knot_vector:
+                ok1 = all([check_knot_vector(kv, c, d) for kv, c, d in zip(knot_vector, self.count, self.degree)])
+                ok2 = len(knot_vector) == len(count)
+                if not all([ok1, ok2]):
+                    raise ValueError("Invalid knot vector")
+                self._knot_vector = [normalize_knot_vector(kv) for kv in knot_vector]
+            else:
+                self._knot_vector = [knot_vector_uniform(c, d) for c, d in zip(self.count, self.degree)]
+        
 
 
 class Curve(Primitive):
@@ -55,13 +137,18 @@ class Curve(Primitive):
     https://github.com/orbingol/NURBS-Python/tree/5.x/geomdl
     """
 
-    def __init__(self, control_points, degree, knot_vector=None, weights=None, rational=False):
+    def __init__(self, control_points, degree, knot_vector=None, rational=False, weights=None):
+        super(Curve, self).__init__()
+        self.__rational = rational
         self.degree = degree
         self.knot_vector = knot_vector or knot_vector_uniform(len(control_points), degree)
-        self.rational = rational
         self.control_points = control_points
         self.weights = weights or [1. for _ in range(len(control_points))]
         self._curve = create_curve(self.control_points, self.degree, self.knot_vector, self.rational, self.weights)
+    
+    @property
+    def rational(self):
+        return self.__rational
 
     @property
     def knot_vector(self):
@@ -125,8 +212,6 @@ class Curve(Primitive):
 
         Examples
         --------
-        >>> control_points = [(0, 0, 0), (3, 4, 0), (-1, 4, 0), (-4, 0, 0), (-4, -3, 0)]
-        >>> curve = Curve(control_points, 3)
         >>> curve.points_at([0.0, 0.5, 1.0])
         [Point(0.000, 0.000, 0.000), Point(-0.750, 3.000, 0.000), Point(-4.000, -3.000, 0.000)]
         """
@@ -147,8 +232,6 @@ class Curve(Primitive):
 
         Examples
         --------
-        >>> control_points = [(0, 0, 0), (3, 4, 0), (-1, 4, 0), (-4, 0, 0), (-4, -3, 0)]
-        >>> curve = Curve(control_points, 3)
         >>> curve.tangents_at([0.0, 0.5, 1.0])
         [Vector(0.600, 0.800, 0.000), Vector(-0.868, -0.496, 0.000), Vector(0.000, -1.000, 0.000)]
         """
@@ -169,9 +252,6 @@ class Curve(Primitive):
 
         Examples
         --------
-        >>> from compas.geometry import allclose
-        >>> control_points = [(0, 0, 0), (3, 4, 0), (-1, 4, 0), (-4, 0, 0), (-4, -3, 0)]
-        >>> curve = Curve(control_points, 3)
         >>> curvature = curve.curvatures_at([0.0, 0.5])
         >>> allclose(curvature, [0.042667, 0.162835])
         True
@@ -194,8 +274,6 @@ class Curve(Primitive):
 
         Examples
         --------
-        >>> control_points = [(0, 0, 0), (3, 4, 0), (-1, 4, 0), (-4, 0, 0), (-4, -3, 0)]
-        >>> curve = Curve(control_points, 3)
         >>> curve.frames_at([0.5])
         [Frame(Point(-0.750, 3.000, 0.000), Vector(-0.868, -0.496, 0.000), Vector(0.496, -0.868, 0.000))]
         """
@@ -206,9 +284,6 @@ class Curve(Primitive):
         normals = np.cross(binormal, tangents, axis=1)
         return [Frame(pt, xaxis, yaxis) for pt, xaxis, yaxis in zip(points, tangents, normals)]
 
-    def osculating_circle(self, u):
-        radius = 1./self.curvatures_at([u])[0]
-        raise NotImplementedError
 
     def derivatives_at(self, params, order=1):
         return evaluate_curve_derivatives(self._curve, params, order=order, rational=self.rational)
@@ -218,7 +293,9 @@ class Curve(Primitive):
     # ==========================================================================
 
     def reverse(self):
-        raise NotImplementedError
+        self.knot_vector = list(reversed(self.knot_vector))
+        self.control_points = list(reversed(self.control_points))
+        self.weights = list(reversed(self.weights))
 
     def split(self):
         raise NotImplementedError
@@ -278,4 +355,6 @@ class Curve(Primitive):
 if __name__ == '__main__':
     import doctest
     from compas.geometry import allclose  # noqa: F401
+    control_points = [(0, 0, 0), (3, 4, 0), (-1, 4, 0), (-4, 0, 0), (-4, -3, 0)]
+    curve = Curve(control_points, 3)
     doctest.testmod(globs=globals())
