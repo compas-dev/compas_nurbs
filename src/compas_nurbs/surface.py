@@ -1,7 +1,8 @@
 
 import compas
 from compas.geometry import Shape, Vector, Point
-from geomdl.knotvector import generate
+
+from compas_nurbs.bspline import BSpline
 
 if not compas.IPY:
     from compas_nurbs.evaluators_numpy import evaluate_surface
@@ -27,7 +28,7 @@ class SurfaceCurvature(object):
         self.osculating_circle = None
 
 
-class Surface(Shape):
+class Surface(BSpline):  # and Shape
     """A base class for n-variate B-spline (non-rational) surfaces.
 
     Parameters
@@ -62,9 +63,10 @@ class Surface(Shape):
     --------
     >>> control_points_2d = [[[0, 0, 0], [0, 4, 0], [0, 8, -3]], [[2, 0, 6], [2, 4, 0], [2, 8, 0]], [[4, 0, 0], [4, 4, 0], [4, 8, 3]], [[6, 0, 0], [6, 4, -3], [6, 8, 0]]]
     >>> degree_u, degree_v = 3, 2
-    >>> surface = Surface(control_points_2d, degree_u, degree_v)
+    >>> surface = Surface(control_points_2d, (degree_u, degree_v))
     """
 
+    """
     def __init__(self, control_points_2d, degree_u, degree_v, knot_vector_u=None, knot_vector_v=None):
         self.control_points_2d = control_points_2d
         self.degree_u = degree_u
@@ -77,15 +79,26 @@ class Surface(Shape):
             self._surface = create_surface(control_points_2d, degree_u, degree_v, knot_vector_u, knot_vector_v, rational=False, weights_u=None, weights_v=None)
         else:
             self._surface = self  # no numpy surface
+    """
 
+    def __init__(self, control_points, degree, knot_vector=None, rational=False, weights=None):
+        super(Surface, self).__init__(control_points, degree, knot_vector, rational, weights)
+
+    def _build_backend(self):
+        if compas.IPY:
+            self._surface = create_surface(self.control_points, self.degree, self.knot_vector, self.rational, self.weights)
+        else:
+            self._surface = self  # no numpy surface
+
+    """
     @property
     def count_u(self):
-        """The number of control points in the u-direction."""
+        #The number of control points in the u-direction
         return len(self.control_points_2d)
 
     @property
     def count_v(self):
-        """The number of control points in the v-direction."""
+        #The number of control points in the v-direction
         return len(self.control_points_2d[0])
 
     @property
@@ -95,6 +108,7 @@ class Surface(Shape):
     @property
     def bounding_box(self):
         raise NotImplementedError
+    """
 
     # ==========================================================================
     # constructors
@@ -236,9 +250,10 @@ class Surface(Shape):
     # serialisation
     # ==========================================================================
 
+    """
     @property
     def data(self):
-        """dict: The data dictionary that represents the surface."""
+        #dict: The data dictionary that represents the surface
         return {'control_points_2d': self.control_points_2d,
                 'degree_u': self.degree_u,
                 'degree_v': self.degree_v,
@@ -248,6 +263,7 @@ class Surface(Shape):
     @classmethod
     def from_data(cls, data):
         return cls(data['control_points_2d'], data['degree_u'], data['degree_v'], data['knot_vector_u'], data['knot_vector_v'])
+    """
 
     def to_obj(self):
         raise NotImplementedError
@@ -258,12 +274,12 @@ if __name__ == "__main__":
     import doctest
     from compas.geometry import allclose  # noqa: F401
     from compas.geometry import close  # noqa: F401
-    control_points_2d = [[[0, 0, 0], [0, 4, 0.], [0, 8, -3]],
-                         [[2, 0, 6], [2., 4, 0.], [2, 8, 0.]],
-                         [[4, 0, 0], [4., 4, 0.], [4, 8, 3.]],
-                         [[6, 0, 0], [6., 4, -3], [6, 8, 0.]]]
-    degree_u, degree_v = 3, 2
-    surface = Surface(control_points_2d, degree_u, degree_v)
+    control_points = [[[0, 0, 0], [0., 4, 0.], [0, 8, -3]],
+                      [[2, 0, 6], [2., 4, 0.], [2, 8, 0.]],
+                      [[4, 0, 0], [4., 4, 0.], [4, 8, 3.]],
+                      [[6, 0, 0], [6., 4, -3], [6, 8, 0.]]]
+    degree = (3, 2)
+    surface = Surface(control_points, degree)
     params = [(u, v) for u in [0, 0.5, 1] for v in [0, 0.5, 1]]
 
     doctest.testmod(globs=globals())
