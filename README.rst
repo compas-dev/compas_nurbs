@@ -14,13 +14,20 @@ compas_nurbs: NURBS for COMPAS
 
 .. end-badges
 
-This package is inspirated and partly builds upon the NURBS-Python_ package, however uses a NumPy_-based backend for faster calculation if using CPython.
+This package is inspirated and partly builds upon the NURBS-Python_ package, however uses a NumPy_-based backend for better performance if using CPython.
 It provides wrappers about the different backends, which are streamlined with the COMPAS API.
 
 Following Rhino3D_'s terminology, ``Curve``, and ``Surface`` are a non-uniform non-rational BSpline geometries (NUBS), ``NurbsCurve``, and ``NurbsSurface`` are 
 non-uniform rational BSpline Geometries (NURBS).
 
+Rational shapes use homogeneous coordinates which includes a weight alongside with the Cartesian coordinates.
+Rational B-Splines are also named as NURBS (Non-Uniform Rational Basis Spline) and non-rational B-splines are sometimes named as NUBS (Non-Uniform Basis Spline) or directly as B-Splines.
+
 https://github.com/nortikin/sverchok/blob/516164038e5e682b39065d657900d19dedb6ec84/utils/surface/data.py
+
+https://github.com/nortikin/sverchok
+
+https://github.com/alecjacobson/geometry-processing-curvature
 
 
 .. _NURBS-Python: https://github.com/orbingol/NURBS-Python
