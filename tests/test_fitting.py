@@ -93,7 +93,7 @@ def test_scipy_interpolation():
         control_points, knot_vector = global_curve_interpolation(points, degree, knot_style=knot_style, periodic=False)
         # why this makes such a strange behaviour for testing?
         # ...Windows fatal exception: code 0xc0000374
-        (t, c, k), u = interpolate.splprep(points.T, k=degree, task=-1, t=kvd, u=uk)
+        # (t, c, k), u = interpolate.splprep(points.T, k=degree, task=-1, t=kvd, u=uk)
         # P = np.array(c).T
         # assert(allclose(control_points, P))
 

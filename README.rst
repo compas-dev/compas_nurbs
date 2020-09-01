@@ -18,42 +18,44 @@ This package is inspirated and partly builds upon the NURBS-Python_ package, how
 It provides wrappers about the different backends, which are streamlined with the COMPAS API.
 
 Following Rhino3D_'s terminology, ``Curve``, and ``Surface`` are non-uniform non-rational B-Spline geometries (NUBS), ``NurbsCurve``, and ``NurbsSurface`` are 
-non-uniform rational B-Spline Geometries (NURBS).
+non-uniform rational B-Spline Geometries (NURBS). They all built upon the class ``BSpline``.
+Coordinates have to be in 3D space (x, y, z).
 
-Rational shapes use homogeneous coordinates which includes a weight alongside with the Cartesian coordinates.
-Rational B-Splines are also named as NURBS (Non-Uniform Rational Basis Spline) and non-rational B-splines are sometimes named as NUBS (Non-Uniform Basis Spline) or directly as B-Splines.
-
-points in 3 dimaensions
-
-https://github.com/nortikin/sverchok/blob/516164038e5e682b39065d657900d19dedb6ec84/utils/surface/data.py
-
-https://github.com/nortikin/sverchok
-
-https://github.com/alecjacobson/geometry-processing-curvature
+Links
+-----
+* NURBS-Python_
+* Sverchok_
 
 
 .. _NURBS-Python: https://github.com/orbingol/NURBS-Python
 .. _NumPy: https://numpy.org/
 .. _Rhino3D: https://www.rhino3d.com/
+.. _Sverchok: https://github.com/nortikin/sverchok
 
-
-Main features
--------------
-
-* classes Curve, Surface, NurbsCurve, NurbsSurface
-* Curve and Surface Interpolation
-* ...
 
 **compas_nurbs** runs on Python x.x and x.x.
 
 
-Documentation
--------------
+Curve Interpolation
+-------------------
+* Global curve interpolation, curve interpolation with end derivatives
+* Different possibilities for knot vector : uniform, chord, chord square root
+* TODO: use interpolate.splprep for degree <= 5, however strange behaviour detected (check function test_scipy_interpolation in test_fitting.py)
+* Comparison test with Rhino interpolation reveil that Rhino has bezier-spaced knots for degree >= 5, uniform knotstyle.
+* TODO: Curve approximation
 
-.. Explain how to access documentation: API, examples, etc.
+Surface Interpolation
+---------------------
+* Still TODO, use scipy.interpolate.bisplrep?
+* Surface approximation
 
-..
-.. optional sections:
+Operations and queries TODO's:
+------------------------------
+* split, trim, ...
+* ``Curve.parameter_at``, ``Surface.parameter_at`` 
+* bounding_box
+* intersect
+
 
 Requirements
 ------------

@@ -23,8 +23,8 @@ def surface_from_rhino_surface(rhino_surface):
     knot_vector = [knot_vector_u, knot_vector_v]
     count_u = len(knot_vector_u) - 1 - degree[0]
     count_v = len(knot_vector_v) - 1 - degree[1]
-    points = reshape(points, (count_u, count_v)) 
-    weights = reshape(weights, (count_u, count_v)) 
+    points = reshape(points, (count_u, count_v))
+    weights = reshape(weights, (count_u, count_v))
     return NurbsSurface(points, degree, knot_vector, weights=weights)
 
 

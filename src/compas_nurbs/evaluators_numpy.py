@@ -11,6 +11,7 @@ from compas.geometry._primitives.curve import binomial_coefficient  # TODO compa
 # curve
 # ==============================================================================
 
+
 def create_curve(control_points, degree, knot_vector, rational, weights):
     if not rational:
         return scipy.interpolate.BSpline(knot_vector, control_points, degree)
@@ -76,6 +77,7 @@ def evaluate_curve_derivatives(curve, params, order=1, rational=False):
 # ==============================================================================
 # surface
 # ==============================================================================
+
 
 def evaluate_surface(surface, params, rational=False):
     """Evaluates a surface at the parameters.
@@ -172,7 +174,7 @@ def calculate_surface_curvature(derivatives, order=False):
 
     Note
     ----
-    This is copied from 
+    This is copied from https://github.com/nortikin/sverchok
     """
     fu = derivatives[:, 1, 0]
     fv = derivatives[:, 0, 1]

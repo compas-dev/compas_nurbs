@@ -1,24 +1,9 @@
 """
-
-Intro to project ...
-
-
-Setup
-=====
-
-In order to use this library, ...
-
-
 Main concepts
 =============
 
 Curve
 -----
-
-Curvature
-
-https://raw.githubusercontent.com/alecjacobson/geometry-processing-curvature/master/images/osculating-circle.gif
-
 
 .. autoclass:: Curve
    :members:

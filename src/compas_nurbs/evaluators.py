@@ -6,6 +6,7 @@ from compas.utilities import flatten
 # curve
 # ==============================================================================
 
+
 def create_curve(control_points, degree, knot_vector, rational=False, weights=None):
     if not rational:
         curve = geomdl.BSpline.Curve()
@@ -33,6 +34,7 @@ def evaluate_curve_derivatives(curve, params, order=1):
 # ==============================================================================
 # surface
 # ==============================================================================
+
 
 def create_surface(control_points_2d, degree, knot_vector, rational=False, weights=None):
 
