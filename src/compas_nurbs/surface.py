@@ -214,7 +214,7 @@ class Surface(BSpline, Shape):
 
 class NurbsSurface(Surface):
 
-    def __init__(self, control_points, degree, knot_vector=None, weights=None, rational=True):
+    def __init__(self, control_points, degree, knot_vector=None, rational=True, weights=None):
         super(NurbsSurface, self).__init__(control_points, degree, knot_vector, True, weights)
 
     @property
