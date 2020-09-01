@@ -1,9 +1,9 @@
 import os
 import json
-from scipy.interpolate import splprep
 import numpy as np
-from compas.geometry import allclose
+from scipy import interpolate  # noqa: F401
 
+from compas.geometry import allclose
 
 from compas_nurbs.fitting_numpy import global_curve_interpolation_with_end_derivatives
 from compas_nurbs.fitting_numpy import global_curve_interpolation
@@ -86,18 +86,16 @@ def test_scipy_interpolation():
         data = json.load(fp)
 
     points = np.array(data['points'])
-    #points = [[-4.0, -3.0, 0.0], [-3.513204, -0.855328, 0.0], [-2.345741, 1.016886, 0.0], [-0.66136, 2.434672, 0.0], [0.97341, 1.962979, 0.0], [0.0, 0.0, 0.0], [0.129106, -1.755842, 0.0], [3.287345, -1.823038, 0.0], [4.916863, 0.058466, 0.0], [7.033555, 2.124761, 0.0], [9.267841, 2.662334, 0.0], [11.031752, 0.293654, 0.0]]
-    #points = np.array(points)
 
     knot_style = CurveKnotStyle.Uniform
-    for degree in range(2, 6):
+    for degree in range(2, 6): # why this runs only 2 times?
         kvd, uk = knot_vector_and_params(points, degree, knot_style, extended=False)
-
         control_points, knot_vector = global_curve_interpolation(points, degree, knot_style=knot_style, periodic=False)
-
-        # (t, c, k), u = splprep(points.T, k=degree, task=-1, t=kvd, u=uk) # why this makes such a strange behaviour for testing?
-        #P = np.array(c).T
-        #assert(allclose(control_points, P))
+        # why this makes such a strange behaviour for testing?
+        # ...Windows fatal exception: code 0xc0000374
+        (t, c, k), u = interpolate.splprep(points.T, k=degree, task=-1, t=kvd, u=uk)
+        # P = np.array(c).T
+        # assert(allclose(control_points, P))
 
 
 if __name__ == "__main__":
