@@ -30,7 +30,7 @@ def rhino_surface_from_surface(surface, rational=False):
 
 
 def test_surface():
-    """Testing Surface against other libraries.
+    """Testing Surface against other libraries (geomdl, rhino3dm).
     """
     # settings
     control_points_2d = [[[0, 0, 0], [0, 4, 0.], [0, 8, -3]],
