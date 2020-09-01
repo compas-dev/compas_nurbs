@@ -20,6 +20,7 @@ else:
     from compas_nurbs.evaluators import create_curve
     from compas_nurbs.evaluators import evaluate_curve
     from compas_nurbs.evaluators import evaluate_curve_derivatives
+    from compas_nurbs.operations import curve_tangents
 
 
 class CurveCurvature(object):
