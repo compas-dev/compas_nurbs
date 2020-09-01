@@ -9,11 +9,12 @@ from compas.geometry import Plane
 from compas_nurbs.bspline import BSpline
 
 if not compas.IPY:
-    import numpy as np
     from compas_nurbs.evaluators_numpy import create_curve
     from compas_nurbs.evaluators_numpy import evaluate_curve
     from compas_nurbs.evaluators_numpy import evaluate_curve_derivatives
-    from compas_nurbs.calculations_numpy import normalize
+    from compas_nurbs.operations_numpy import curve_tangents
+    from compas_nurbs.operations_numpy import curve_frames
+    from compas_nurbs.operations_numpy import curve_curvatures
     from compas_nurbs.fitting_numpy import interpolate_curve
 else:
     from compas_nurbs.evaluators import create_curve
@@ -33,12 +34,12 @@ class CurveCurvature(object):
 
     @property
     def osculating_circle(self):
-        radius = 1./self.curvature
+        radius = 1. / self.curvature
         return Circle(Plane(self.center, self.binormal), radius)
 
 
 class Curve(BSpline):
-    """A base class for n-variate B-spline (non-rational) curves.
+    """A non-uniform non-rational B-Spline curve.
 
     Parameters
     ----------
@@ -65,15 +66,11 @@ class Curve(BSpline):
     >>> control_points = [(0.6, 0.4, 0.0), (0.2, 2.5, 0.0), (6.0, 2.1, 0.0), (4.7, 4.5, 0.0)]
     >>> knot_vector = [0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0]
     >>> curve = Curve(control_points, 3, knot_vector)
-
-    Notes
-    -----
-    https://github.com/orbingol/NURBS-Python/tree/5.x/geomdl
     """
 
     def __init__(self, control_points, degree, knot_vector=None, rational=False, weights=None):
         super(Curve, self).__init__(control_points, degree, knot_vector, rational, weights)
-    
+
     def _build_backend(self):
         self._curve = create_curve(self.control_points, self.degree, self.knot_vector, self.rational, self.weights)
 
@@ -149,8 +146,9 @@ class Curve(BSpline):
         >>> curve.tangents_at([0.0, 0.5, 1.0])
         [Vector(0.600, 0.800, 0.000), Vector(-0.868, -0.496, 0.000), Vector(0.000, -1.000, 0.000)]
         """
-        D = self.derivatives_at(params, order=1)
-        return [Vector(*v) for v in normalize(D[:, 1])]
+        derivatives = self.derivatives_at(params, order=1)
+        tangents = curve_tangents(derivatives)
+        return [Vector(*v) for v in tangents]
 
     def curvatures_at(self, params):
         """Evaluates the curvature at the given parametric positions.
@@ -170,9 +168,8 @@ class Curve(BSpline):
         >>> allclose(curvature, [0.042667, 0.162835])
         True
         """
-        D = self.derivatives_at(params, order=2)
-        d1, d2 = D[:, 1], D[:, 2]
-        k = np.linalg.norm(np.cross(d1, d2, axis=1), axis=1) / np.linalg.norm(d1, axis=1)**3  # TODO
+        derivatives = self.derivatives_at(params, order=2)
+        k = curve_curvatures(derivatives)
         return list(k)
 
     def frames_at(self, params):
@@ -191,11 +188,8 @@ class Curve(BSpline):
         >>> curve.frames_at([0.5])
         [Frame(Point(-0.750, 3.000, 0.000), Vector(-0.868, -0.496, 0.000), Vector(0.496, -0.868, 0.000))]
         """
-        D = self.derivatives_at(params, order=2)
-        points, d1, d2 = D[:, 0], D[:, 1], D[:, 2]
-        binormal = normalize(np.cross(d1, d2, axis=1))
-        tangents = normalize(np.array(d1))
-        normals = np.cross(binormal, tangents, axis=1)
+        derivatives = self.derivatives_at(params, order=2)
+        points, tangents, normals = curve_frames(derivatives)
         return [Frame(pt, xaxis, yaxis) for pt, xaxis, yaxis in zip(points, tangents, normals)]
 
     def derivatives_at(self, params, order=1):
@@ -206,55 +200,47 @@ class Curve(BSpline):
     # ==========================================================================
 
     def reverse(self):
+        """Reverses the curve.
+        """
         self.knot_vector = list(reversed(self.knot_vector))
         self.control_points = list(reversed(self.control_points))
         self.weights = list(reversed(self.weights))
-
-    def split(self):
-        raise NotImplementedError
-
-    def trim(self):
-        raise NotImplementedError
-
-    def get_bounding_box(self):
-        raise NotImplementedError
-
-    def point_at_length(self):
-        raise NotImplementedError
-
-    def parameter_at(self, points):
-        raise NotImplementedError
-
-    def transform(self, transformation):
-        # TODO: move this into BSpline class
-        Point.transform_collection(self.control_points, transformation)
         self._build_backend()
 
     # ==========================================================================
     # queries
     # ==========================================================================
 
+    @property
     def is_linear(self):
         raise NotImplementedError
 
+    @property
     def is_periodic(self):
         raise NotImplementedError
 
     @property
     def is_planar(self):
-        """Returns ``True`` if the curve is planar.
-        """
-        # TODO: only checks if the curve is planar in xy-, xz-, yz-plane, oriented bounding box to check?
-        ranges = np.ptp(self.control_points, axis=0)
-        is_planar = not ranges.all()
-        ix, iy, iz = np.argsort(ranges)[::-1]
-        return is_planar, np.take(self.control_points, [ix, iy], axis=1)
+        raise NotImplementedError
 
 
 class NurbsCurve(Curve):
+    """A non-uniform rational B-Spline curve (NURBS-Curve).
+
+
+    Examples
+    --------
+    >>> control_points = [(0, 0, 0), (3, 4, 0), (-1, 4, 0), (-4, 0, 0), (-4, -3, 0)]
+    >>> weights = [0.3, 0.2, 1., 0.4, 2.]
+    >>> curve = Curve(control_points, 3, weights=weights)
+    """
 
     def __init__(self, control_points, degree, knot_vector=None, weights=None):
         super(NurbsCurve, self).__init__(control_points, degree, knot_vector, rational=True, weights=weights)
+
+    @property
+    def weighted_control_points(self):
+        return [[w * x, w * y, w * z, w] for (x, y, z), w in zip(self.control_points, self.weights)]
 
 
 if __name__ == '__main__':

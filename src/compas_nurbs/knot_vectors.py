@@ -247,4 +247,33 @@ def normalize_knot_vector(knot_vector):
         The normalized knot vector.
     """
     knot_vector = [v - knot_vector[0] for v in knot_vector]
-    return [v/float(knot_vector[-1]) for v in knot_vector]
+    return [v / float(knot_vector[-1]) for v in knot_vector]
+
+
+def check_knot_vector(knot_vector, num_points, degree):
+    """Checks the validity of the knot vector.
+
+    Parameters
+    ----------
+    list of float
+        The knot vector to check.
+    num_points : int
+        Number of points to compute parameters for.
+    degree : int
+        The degree
+
+    Returns
+    -------
+    bool
+        True if the knot vector is valid, False otherwise.
+    """
+    if len(knot_vector) != degree + num_points + 1:  # m = p + n + 1
+        return False
+
+    # Check ascending order
+    prev_knot = knot_vector[0]
+    for knot in knot_vector:
+        if prev_knot > knot:
+            return False
+        prev_knot = knot
+    return True

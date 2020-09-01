@@ -52,9 +52,11 @@ def test_nurbs_curve():
     res2 = ncrv.evaluate_list(params)
     assert(allclose(res1, res2))
 
-    d = [ncrv.derivatives(u, order=2)[1:] for u in params]
-    print(d)
-    D1 = list(zip(*d))
+    params = [0.5]
+
+    D1 = [ncrv.derivatives(u, order=2) for u in params]
+    print(D1)
+    print()
     D2 = crv.derivatives_at(params, order=2)
     assert(allclose(D1, D2))
 

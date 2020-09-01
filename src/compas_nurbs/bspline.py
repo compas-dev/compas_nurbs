@@ -1,7 +1,10 @@
 import compas
 
+from compas.geometry import Point
 from compas.geometry import Primitive
 
+from compas_nurbs.utilities import prod
+from compas_nurbs.utilities import reshape
 from compas_nurbs.knot_vectors import knot_vector_uniform
 from compas_nurbs.knot_vectors import normalize_knot_vector
 from compas_nurbs.knot_vectors import check_knot_vector
@@ -14,6 +17,8 @@ else:
 
 class BSpline(Primitive):
     """A base class for rational and non-rational B-Spline geometry.
+
+    Contains all setters and checkers.
     """
 
     def __init__(self, control_points, degree, knot_vector, rational, weights=None):
@@ -25,7 +30,7 @@ class BSpline(Primitive):
         self.weights = weights  # 2d for surfaces
         self._build_backend()
 
-    def _build_backend(self): # needs to be overwritten by derivative classes
+    def _build_backend(self):  # needs to be overwritten by derivative classes
         raise NotImplementedError
 
     @property
@@ -51,7 +56,7 @@ class BSpline(Primitive):
                 raise ValueError("len(control_points) must be >= degree + 1")
         else:
             ok1 = len(self.degree) == len(self.count)
-            ok2 = all([c < d + 1 for c, d in zip(self.count, self.degree)])
+            ok2 = all([c >= d + 1 for c, d in zip(self.count, self.degree)])
             if not all([ok1, ok2]):
                 raise ValueError("Invalid control points")
 
@@ -79,7 +84,7 @@ class BSpline(Primitive):
                     raise ValueError("Invalid knot vector")
                 self._knot_vector = normalize_knot_vector(knot_vector)
             else:
-                self._knot_vector = knot_vector_uniform(len(self.control_points), self.degree)
+                self._knot_vector = knot_vector_uniform(self.count, self.degree)
         else:
             if knot_vector:
                 ok1 = all([check_knot_vector(kv, c, d) for kv, c, d in zip(knot_vector, self.count, self.degree)])
@@ -96,7 +101,39 @@ class BSpline(Primitive):
 
     @weights.setter
     def weights(self, weights):
-        self._weights = weights  # TODO check
+        if self.__pdim == 1:
+            if weights:
+                if len(weights) != self.count:
+                    raise ValueError("Invalid weights! Number of weights must be equal to number of control points.")
+                else:
+                    self._weights = weights
+            else:
+                self._weights = [1. for _ in range(self.count)]
+        else:
+            if not weights:
+                self._weights = reshape([1. for _ in range(prod(self.count))], self.count)
+            else:
+                self._weights = weights  # TODO check
+
+    # ==========================================================================
+    # operations
+    # ==========================================================================
+
+    def transform(self, transformation):
+        Point.transform_collection(self.control_points, transformation)  # TODO more dimen?
+        self._build_backend()
+
+    def get_bounding_box(self):
+        raise NotImplementedError
+
+    def trim(self):
+        raise NotImplementedError
+
+    def split(self):
+        raise NotImplementedError
+
+    def parameters_at(self):
+        raise NotImplementedError
 
     # ==========================================================================
     # serialisation
@@ -114,4 +151,3 @@ class BSpline(Primitive):
     @classmethod
     def from_data(cls, data):
         return cls(data['control_points'], data['degree'], data['knot_vector'], data['rational'], data['weights'])
-

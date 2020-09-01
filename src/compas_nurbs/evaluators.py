@@ -1,4 +1,5 @@
 import geomdl.BSpline
+import geomdl.NURBS
 from compas.utilities import flatten
 
 
@@ -27,32 +28,31 @@ def evaluate_curve_derivatives(curve, params, order=1):
     # TODO
 
 
-def create_surface(control_points_2d, degree_u, degree_v, knot_vector_u, knot_vector_v, rational=False, weights_u=None, weights_v=None):
+def create_surface(control_points_2d, degree, knot_vector, rational=False, weights=None):
+
+    surface = geomdl.NURBS.Surface() if rational else geomdl.BSpline.Surface()
+    surface.degree_u = degree[0]
+    surface.degree_v = degree[1]
+    count_u, count_v = len(control_points_2d), len(control_points_2d[0])
+    ctrlpts = list(flatten(control_points_2d))
+
     if not rational:
-        surface = geomdl.BSpline.Surface()
-        surface.degree_u = degree_u
-        surface.degree_v = degree_v
-        count_u, count_v = len(control_points_2d), len(control_points_2d[0])
-        surface.set_ctrlpts(list(flatten(control_points_2d)), count_u, count_v)
-        surface.knotvector_u = knot_vector_u
-        surface.knotvector_v = knot_vector_v
-        return surface
+        surface.set_ctrlpts(ctrlpts, count_u, count_v)
     else:
-        pass
+        weights = list(flatten(weights)) or [1. for _ in range(count_u, count_v)]
+        ctrlptsw = [[w * x, w * y, w * z, w] for (x, y, z), w in zip(ctrlpts, weights)]
+        surface.set_ctrlpts(ctrlptsw, count_u, count_v)
+
+    surface.knotvector_u = knot_vector[0]
+    surface.knotvector_v = knot_vector[1]
+
+    return surface
 
 
 def evaluate_surface(surface, params, rational=False):
     return surface.evaluate_list(params)
 
 
-def evaluate_surface_derivatives(surface, params, order=1):
+def evaluate_surface_derivatives(surface, params, order=1, rational=False):
     derivatives = [surface.derivatives(u, v, order=order) for (u, v) in params]
     return derivatives
-    """
-    D = []
-    for i in range(1, order + 1):
-        D.append([])
-        for d in derivatives:
-            D[i - 1].append(d[i])
-    return D
-    """

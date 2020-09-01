@@ -26,7 +26,7 @@ def evaluate_curve(curve, params, rational=False):
         return points
     else:
         w = np.array([points[:, -1]]).T
-        return np.delete((1/w * points), -1, axis=1)
+        return np.delete((1 / w * points), -1, axis=1)
 
 
 def evaluate_curve_derivatives(curve, params, order=1, rational=False):
@@ -34,11 +34,8 @@ def evaluate_curve_derivatives(curve, params, order=1, rational=False):
 
     Parameters
     ----------
-    control_points: np.array
-    degree : int
-        The degree of the curve
-    knot_vector : list
-        The knot vector of the curve
+    curve: :class:`scipy.interpolate.BSpline`
+        The B-spline curve.
     params : list
         Parametric positions where the derivatives will be computed. Range [0, 1]
     order : int
@@ -62,9 +59,7 @@ def evaluate_curve_derivatives(curve, params, order=1, rational=False):
         return derivatives
     else:
         # TODO: numpify this!
-        #derivatives.insert(0, evaluate_curve(curve, params, False))
         D = []
-        # for ders in zip(*derivatives):
         for ders in derivatives:
             new_ders = []
             for k in range(0, order + 1):
@@ -72,67 +67,66 @@ def evaluate_curve_derivatives(curve, params, order=1, rational=False):
                 for i in range(1, k + 1):
                     value[:] = [tmp - (binomial_coefficient(k, i) * ders[i][-1] * drv) for tmp, drv in zip(value, new_ders[k - i])]
                 new_ders.append([tmp / ders[0][-1] for tmp in value])
-            D.append(new_ders[1:])
-        return np.array(D).transpose(1, 0, 2)
+            D.append(new_ders)
+        return D
 
 # ===============================================================================
 # surface
 # ===============================================================================
 
 
-def create_surface(control_points_2d, degree_u, degree_v, knot_vector_u, knot_vector_v, rational, weights_u, weights_v):
-    if not rational:
-        pass
-    else:
-        pass
-
-
 def evaluate_surface(surface, params, rational=False):
-    """Evaluates a surface at the parameters params_u, params_v.
+    """Evaluates a surface at the parameters.
     """
     if rational:
-        raise NotImplementedError
-
-    control_points = np.array(surface.control_points_2d)
-    degree_u, degree_v = surface.degree_u, surface.degree_v
-    knot_vector_u, knot_vector_v = surface.knot_vector_u, surface.knot_vector_v
-
-    number_of_control_points_u = len(control_points)
-    number_of_control_points_v = len(control_points[0])
+        control_points = np.array(surface.weighted_control_points)
+    else:
+        control_points = np.array(surface.control_points)
+    degree_u, degree_v = surface.degree
+    knot_vector_u, knot_vector_v = surface.knot_vector
+    count_u, count_v = surface.count
 
     params_u = [p[0] for p in params]
     params_v = [p[1] for p in params]
 
-    spans_u = find_spans(knot_vector_u, number_of_control_points_u, params_u)
+    spans_u = find_spans(knot_vector_u, count_u, params_u)
     bases_u = basis_functions(degree_u, knot_vector_u, spans_u, params_u)
-    spans_v = find_spans(knot_vector_v, number_of_control_points_v, params_v)
+    spans_v = find_spans(knot_vector_v, count_v, params_v)
     bases_v = basis_functions(degree_v, knot_vector_v, spans_v, params_v)
 
     points = []
     for span_u, basis_u, span_v, basis_v in zip(spans_u, bases_u, spans_v, bases_v):
         a = basis_v[:degree_v + 1]
-        b = control_points[span_u - degree_u:span_u + 1, span_v - degree_v:span_v+1]
+        b = control_points[span_u - degree_u:span_u + 1, span_v - degree_v:span_v + 1]
         c = basis_u[:degree_u + 1]
         points.append(np.dot(c, np.dot(a, b)))
-    return np.array(points)
+    points = np.array(points)
+
+    if not rational:
+        return points
+    else:
+        w = np.array([points[:, -1]]).T
+        return np.delete((1 / w * points), -1, axis=1)
 
 
-def evaluate_surface_derivatives(surface, params, order=1):
+def evaluate_surface_derivatives(surface, params, order=1, rational=False):
     """
     """
-    control_points = np.array(surface.control_points_2d)
-    degree_u, degree_v = surface.degree_u, surface.degree_v
-    knot_vector_u, knot_vector_v = surface.knot_vector_u, surface.knot_vector_v
+    if rational:
+        control_points = np.array(surface.weighted_control_points)
+    else:
+        control_points = np.array(surface.control_points)
 
-    number_of_control_points_u = len(control_points)
-    number_of_control_points_v = len(control_points[0])
+    degree_u, degree_v = surface.degree
+    knot_vector_u, knot_vector_v = surface.knot_vector
+    count_u, count_v = surface.count
 
     params_u = [p[0] for p in params]
     params_v = [p[1] for p in params]
 
-    spans_u = find_spans(knot_vector_u, number_of_control_points_u, params_u)
+    spans_u = find_spans(knot_vector_u, count_u, params_u)
     bases_u = basis_functions_derivatives(degree_u, knot_vector_u, spans_u, params_u, order)
-    spans_v = find_spans(knot_vector_v, number_of_control_points_v, params_v)
+    spans_v = find_spans(knot_vector_v, count_v, params_v)
     bases_v = basis_functions_derivatives(degree_v, knot_vector_v, spans_v, params_v, order)
 
     dv = min(degree_v, order)
@@ -141,9 +135,31 @@ def evaluate_surface_derivatives(surface, params, order=1):
         b = control_points[span_u - degree_u:span_u + 1, span_v - degree_v:span_v + 1]
         temp = np.dot(b.T, np.array(basis_u).T).T
         dd = min(order, dv)
-        SKL = np.dot(np.array(basis_v[:dd+1]), temp[:degree_v + 1]).transpose(1, 0, 2)
+        SKL = np.dot(np.array(basis_v[:dd + 1]), temp[:degree_v + 1]).transpose(1, 0, 2)
         derivatives.append(SKL)
-    return np.array(derivatives)
+
+    if not rational:
+        return np.array(derivatives)
+    else:
+        # TODO: numpify this!
+        D = []
+        for SKLw in derivatives:
+            dimension = 4
+            SKL = [[[0.0 for _ in range(dimension)] for _ in range(order + 1)] for _ in range(order + 1)]
+            for k in range(0, order + 1):
+                for l in range(0, order + 1):
+                    v = list(SKLw[k, l])[:]
+                    for j in range(1, l + 1):
+                        v[:] = [tmp - (binomial_coefficient(l, j) * SKLw[0][j][-1] * drv) for tmp, drv in zip(v, SKL[k][l - j])]
+                    for i in range(1, k + 1):
+                        v[:] = [tmp - (binomial_coefficient(k, i) * SKLw[i][0][-1] * drv) for tmp, drv in zip(v, SKL[k - i][l])]
+                        v2 = [0.0 for _ in range(dimension - 1)]
+                        for j in range(1, l + 1):
+                            v2[:] = [tmp + (binomial_coefficient(l, j) * SKLw[i][j][-1] * drv) for tmp, drv in zip(v2, SKL[k - i][l - j])]
+                        v[:] = [tmp - (binomial_coefficient(k, i) * tmp2) for tmp, tmp2 in zip(v, v2)]
+                    SKL[k][l][:] = [tmp / SKLw[0][0][-1] for tmp in v[0:(dimension - 1)]]
+            D.append(SKL)
+        return np.array(D)
 
 
 def calculate_surface_curvature(derivatives, order=False):
@@ -170,8 +186,8 @@ def calculate_surface_curvature(derivatives, order=False):
     dvv = np.linalg.norm(fv, axis=1) ** 2
     duv = (fu * fv).sum(axis=1)
 
-    mean = (duu*nvv - 2*duv*nuv + dvv*nuu) / (2*(duu*dvv - duv*duv))
-    gauss = (nuu * nvv - nuv*nuv) / (duu * dvv - duv*duv)
+    mean = (duu * nvv - 2 * duv * nuv + dvv * nuu) / (2 * (duu * dvv - duv * duv))
+    gauss = (nuu * nvv - nuv * nuv) / (duu * dvv - duv * duv)
 
     n = len(derivatives)  # number of params
     L = np.empty((n, 2, 2))

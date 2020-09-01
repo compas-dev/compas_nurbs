@@ -55,7 +55,7 @@ def test_compare_bspline_with_rhino_curve():
 
     print(tangents)
     d1 = scipy_curve.derivative(1)(params)
-    scipy_tangents = (d1.T/np.linalg.norm(d1, axis=1).reshape(1, -1)).T
+    scipy_tangents = (d1.T / np.linalg.norm(d1, axis=1).reshape(1, -1)).T
 
     d2 = scipy_curve.derivative(2)(params)
     k = np.linalg.norm(np.cross(d1, d2, axis=1), axis=1) / np.linalg.norm(d1, axis=1)**3
@@ -110,8 +110,8 @@ def test_compare_interpolation_with_scipy_interpolation():
     import scipy.interpolate as interpolate
     import matplotlib.pyplot as plt
 
-    x = np.array([0.,  1.2,  1.9,  3.2,  4.,  6.5])
-    y = np.array([0.,  2.3,  3.,  4.3,  2.9,  3.1])
+    x = np.array([0., 1.2, 1.9, 3.2, 4., 6.5])
+    y = np.array([0., 2.3, 3., 4.3, 2.9, 3.1])
 
     t, c, k = interpolate.splrep(x, y, s=0, k=4)
     # t = vector of knots

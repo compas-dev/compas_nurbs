@@ -97,8 +97,8 @@ def global_curve_interpolation_with_end_derivatives(points,
     M[-2][-2] = -1.
     M[-2][-1] = 1.
 
-    v0 = np.array(start_derivative) * kv[degree+1]/degree
-    vn = np.array(end_derivative) * (1 - kv[len(kv) - 1 - degree-1])/degree
+    v0 = np.array(start_derivative) * kv[degree + 1] / degree
+    vn = np.array(end_derivative) * (1 - kv[len(kv) - 1 - degree - 1]) / degree
     C = points[:]
     C = np.insert(C, 1, v0, axis=0)
     C = np.insert(C, -1, vn, axis=0)

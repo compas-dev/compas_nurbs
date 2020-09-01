@@ -19,66 +19,55 @@ else:
 
 
 class SurfaceCurvature(object):
+    """A container class with several surface curvature quantities.
+
+    - principal curvature directions
+    - principal curvature values (kappa)
+    - mean curvature
+    - gauss curvature
+    - normal
+    """
+
     def __init__(self, kappa, direction, normal, mean, gauss):
         self.normal = Vector(*normal)
         self.kappa = list(kappa)
         self.direction = [Vector(*d) for d in direction]
         self.mean = mean
         self.gauss = gauss
-        self.osculating_circle = None
+
+    @property
+    def osculating_circle(self):
+        pass
 
 
-class Surface(BSpline):  # and Shape
+class Surface(BSpline, Shape):
     """A base class for n-variate B-spline (non-rational) surfaces.
 
     Parameters
     ----------
-    control_points_2d : list of list of point
+    control_points : list of list of point
         The surface' 2-dimensional array of control points.
-    degree_u : int
-        Surface degree in u-direction.
-    degree_v : int
-        Surface degree in v-direction.
-    knot_vector_u : list of float, optional
-        Surface knot vector for the u-direction.
-    knot_vector_v : list of float, optional
-        Surface knot vector for the v-direction.
+    degree : tuple of int
+        Surface degree for the u- and the v-direction: (u, v).
+    knot_vector : tuple of list of float, optional
+        Surface knot vectors. One for the u- and one for the v-direction: (ku, kv).
 
     Attributes
     ----------
     data : dict
         The data representation of the surface.
-    control_points_2d : list of list of point
+    control_points : list of list of point
         The surface' 2-dimensional array of control points.
-    degree_u : int
-        Surface degree in u-direction.
-    degree_v : int
-        Surface degree in v-direction.
-    knot_vector_u : list of float, optional
-        Surface knot vector for the u-direction.
-    knot_vector_v : list of float, optional
-        Surface knot vector for the v-direction.
+    degree : tuple of int
+        Surface degree for the u- and the v-direction: (u, v).
+    knot_vector : tuple of list of float
+        Surface knot vectors. One for the u- and one for the v-direction: (ku, kv).
 
     Examples
     --------
     >>> control_points_2d = [[[0, 0, 0], [0, 4, 0], [0, 8, -3]], [[2, 0, 6], [2, 4, 0], [2, 8, 0]], [[4, 0, 0], [4, 4, 0], [4, 8, 3]], [[6, 0, 0], [6, 4, -3], [6, 8, 0]]]
     >>> degree_u, degree_v = 3, 2
     >>> surface = Surface(control_points_2d, (degree_u, degree_v))
-    """
-
-    """
-    def __init__(self, control_points_2d, degree_u, degree_v, knot_vector_u=None, knot_vector_v=None):
-        self.control_points_2d = control_points_2d
-        self.degree_u = degree_u
-        self.degree_v = degree_v
-        # TODO checkers and setters
-        self.knot_vector_u = knot_vector_u or generate(degree_u, self.count_u)
-        self.knot_vector_v = knot_vector_v or generate(degree_v, self.count_v)
-        self.rational = False
-        if compas.IPY:
-            self._surface = create_surface(control_points_2d, degree_u, degree_v, knot_vector_u, knot_vector_v, rational=False, weights_u=None, weights_v=None)
-        else:
-            self._surface = self  # no numpy surface
     """
 
     def __init__(self, control_points, degree, knot_vector=None, rational=False, weights=None):
@@ -90,29 +79,10 @@ class Surface(BSpline):  # and Shape
         else:
             self._surface = self  # no numpy surface
 
-    """
-    @property
-    def count_u(self):
-        #The number of control points in the u-direction
-        return len(self.control_points_2d)
-
-    @property
-    def count_v(self):
-        #The number of control points in the v-direction
-        return len(self.control_points_2d[0])
-
-    @property
-    def domain(self):
-        raise NotImplementedError
-
-    @property
-    def bounding_box(self):
-        raise NotImplementedError
-    """
-
     # ==========================================================================
     # constructors
     # ==========================================================================
+
     @classmethod
     def from_curves(cls, curves):
         # compute_rhino3d.Brep.CreateFromLoft(curves, start, end, loftType, closed, multiple=False)
@@ -181,7 +151,7 @@ class Surface(BSpline):  # and Shape
         Returns
         -------
         :class:`SurfaceCurvature`
-            A container class with several surface curvature quantities, such as 
+            A container class with several surface curvature quantities, such as
             - principal curvature directions
             - principal curvature values (kappa)
             - mean curvature
@@ -207,25 +177,6 @@ class Surface(BSpline):  # and Shape
         kappa1, kappa2, direction1, direction2, normal, mean, gauss = calculate_surface_curvature(derivatives)
         return [SurfaceCurvature((k1, k2), (d1, d2), n, m, g) for k1, k2, d1, d2, n, m, g in zip(kappa1, kappa2, direction1, direction2, normal, mean, gauss)]
 
-    def isocurve_at(self,):
-        raise NotImplementedError
-
-    # ==========================================================================
-    # operations
-    # ==========================================================================
-
-    def transform(self, transformation):
-        pass
-
-    def trim(self):
-        raise NotImplementedError
-
-    def split(self):
-        raise NotImplementedError
-
-    def parameters_at(self):
-        raise NotImplementedError
-
     def derivatives_at(self, params, order=1):
         """Evaluates n-th order surface derivatives at the given (u, v) parameter pairs.
 
@@ -240,7 +191,14 @@ class Surface(BSpline):  # and Shape
         -------
         list of list of list
         """
-        return evaluate_surface_derivatives(self._surface, params, order=order)
+        return evaluate_surface_derivatives(self._surface, params, order=order, rational=self.rational)
+
+    def isocurve_at(self,):
+        raise NotImplementedError
+
+    # ==========================================================================
+    # operations
+    # ==========================================================================
 
     # ==========================================================================
     # queries
@@ -250,23 +208,18 @@ class Surface(BSpline):  # and Shape
     # serialisation
     # ==========================================================================
 
-    """
-    @property
-    def data(self):
-        #dict: The data dictionary that represents the surface
-        return {'control_points_2d': self.control_points_2d,
-                'degree_u': self.degree_u,
-                'degree_v': self.degree_v,
-                'knot_vector_u': self.knot_vector_u,
-                'knot_vector_v': self.knot_vector_v, }
-
-    @classmethod
-    def from_data(cls, data):
-        return cls(data['control_points_2d'], data['degree_u'], data['degree_v'], data['knot_vector_u'], data['knot_vector_v'])
-    """
-
     def to_obj(self):
         raise NotImplementedError
+
+
+class NurbsSurface(Surface):
+
+    def __init__(self, control_points, degree, knot_vector=None, weights=None, rational=True):
+        super(NurbsSurface, self).__init__(control_points, degree, knot_vector, True, weights)
+
+    @property
+    def weighted_control_points(self):
+        return [[[w * x, w * y, w * z, w] for (x, y, z), w in zip(cl, wl)] for cl, wl in zip(self.control_points, self.weights)]
 
 
 if __name__ == "__main__":
