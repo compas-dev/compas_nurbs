@@ -49,9 +49,9 @@ import os
 from .curve import Curve
 from .curve import NurbsCurve  # noqa: F401
 from .surface import Surface
-from .nurbs_surface import NurbsSurface
+from .surface import NurbsSurface
 
 HERE = os.path.dirname(__file__)
 DATA = os.path.join(HERE, "data")
 
-__all__ = ['Curve', 'Surface']
+__all__ = ['Curve', 'Surface', 'NurbsCurve', 'NurbsSurface']
