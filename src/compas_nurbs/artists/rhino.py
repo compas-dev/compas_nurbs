@@ -1,11 +1,31 @@
 import compas
 from compas.utilities import flatten
 from compas_rhino.artists import BaseArtist
-
+from compas_nurbs.utilities import reshape
+from compas_nurbs import NurbsSurface
 
 if compas.IPY:
     import Rhino.Geometry as rg
     import rhinoscriptsyntax as rs
+
+
+def surface_from_rhino_surface(rhino_surface):
+    """TODO: where does this go?
+    """
+    S = rhino_surface
+    knot_vector_u = list(S.KnotsU)
+    knot_vector_v = list(S.KnotsV)
+    knot_vector_u = [knot_vector_u[0]] + knot_vector_u + [knot_vector_u[-1]]
+    knot_vector_v = [knot_vector_v[0]] + knot_vector_v + [knot_vector_v[-1]]
+    degree = S.Degree(0), S.Degree(1)
+    points = [[p.X, p.Y, p.Z] for p in S.Points]
+    weights = [p.Weight for p in S.Points]
+    knot_vector = [knot_vector_u, knot_vector_v]
+    count_u = len(knot_vector_u) - 1 - degree[0]
+    count_v = len(knot_vector_v) - 1 - degree[1]
+    points = reshape(points, (count_u, count_v)) 
+    weights = reshape(weights, (count_u, count_v)) 
+    return NurbsSurface(points, degree, knot_vector, weights=weights)
 
 
 class CurveArtist(BaseArtist):
