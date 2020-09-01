@@ -2,8 +2,11 @@ import geomdl.BSpline
 import geomdl.NURBS
 from compas.utilities import flatten
 
+# ==============================================================================
+# curve
+# ==============================================================================
 
-def create_curve(control_points, degree, knot_vector, rational, weights):
+def create_curve(control_points, degree, knot_vector, rational=False, weights=None):
     if not rational:
         curve = geomdl.BSpline.Curve()
         curve.degree = degree
@@ -11,7 +14,7 @@ def create_curve(control_points, degree, knot_vector, rational, weights):
         curve.knotvector = knot_vector
         return curve
     else:
-        curve = geomdl.Nurbs.Curve()
+        curve = geomdl.NURBS.Curve()
         curve.degree = degree
         curve.ctrlpts = [list(pt) for pt in control_points]
         curve.knotvector = knot_vector
@@ -24,9 +27,12 @@ def evaluate_curve(curve, params, rational=False):
 
 
 def evaluate_curve_derivatives(curve, params, order=1):
-    return curve.derivatives(params, order)
-    # TODO
+    derivatives = [curve.derivatives(u, order=order) for u in params]
+    return derivatives
 
+# ==============================================================================
+# surface
+# ==============================================================================
 
 def create_surface(control_points_2d, degree, knot_vector, rational=False, weights=None):
 

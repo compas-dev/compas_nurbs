@@ -7,6 +7,9 @@ from .helpers import basis_functions_derivatives
 
 from compas.geometry._primitives.curve import binomial_coefficient  # TODO compas: move this upwards
 
+# ==============================================================================
+# curve
+# ==============================================================================
 
 def create_curve(control_points, degree, knot_vector, rational, weights):
     if not rational:
@@ -68,12 +71,11 @@ def evaluate_curve_derivatives(curve, params, order=1, rational=False):
                     value[:] = [tmp - (binomial_coefficient(k, i) * ders[i][-1] * drv) for tmp, drv in zip(value, new_ders[k - i])]
                 new_ders.append([tmp / ders[0][-1] for tmp in value])
             D.append(new_ders)
-        return D
+        return np.array(D)
 
-# ===============================================================================
+# ==============================================================================
 # surface
-# ===============================================================================
-
+# ==============================================================================
 
 def evaluate_surface(surface, params, rational=False):
     """Evaluates a surface at the parameters.
@@ -167,6 +169,10 @@ def calculate_surface_curvature(derivatives, order=False):
 
     If "order" parameter is set to True, then it will be guaranteed, that C1
     value is always less than C2.
+
+    Note
+    ----
+    This is copied from 
     """
     fu = derivatives[:, 1, 0]
     fv = derivatives[:, 0, 1]
