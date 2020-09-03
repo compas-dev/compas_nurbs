@@ -212,10 +212,10 @@ class Surface(BSpline, Shape):
         raise NotImplementedError
 
 
-class NurbsSurface(Surface):
+class RationalSurface(Surface):
 
     def __init__(self, control_points, degree, knot_vector=None, rational=True, weights=None):
-        super(NurbsSurface, self).__init__(control_points, degree, knot_vector, True, weights)
+        super(RationalSurface, self).__init__(control_points, degree, knot_vector, True, weights)
 
     @property
     def weighted_control_points(self):

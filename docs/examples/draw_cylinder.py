@@ -4,11 +4,11 @@ from geomdl import BSpline
 from geomdl import utilities
 from geomdl.visualization import VisMPL
 from compas_nurbs import DATA
-from compas_nurbs import NurbsSurface
+from compas_nurbs import RationalSurface
 from compas_nurbs.evaluators import create_surface
 
 
-surface = NurbsSurface.from_json(os.path.join(DATA, "cylinder.json"))
+surface = RationalSurface.from_json(os.path.join(DATA, "cylinder.json"))
 geomdl_surface = create_surface(surface.control_points, surface.degree, surface.knot_vector, rational=True, weights=surface.weights)
 
 

@@ -15,16 +15,16 @@ Surface
    :members:
 
 
-NurbsCurve
+RationalCurve
 ----------
 
-.. autoclass:: NurbsCurve
+.. autoclass:: RationalCurve
    :members:
 
-NurbsSurface
+RationalSurface
 ------------
 
-.. autoclass:: NurbsSurface
+.. autoclass:: RationalSurface
    :members:
 
 
@@ -32,11 +32,11 @@ NurbsSurface
 
 import os
 from .curve import Curve
-from .curve import NurbsCurve  # noqa: F401
+from .curve import RationalCurve  # noqa: F401
 from .surface import Surface
-from .surface import NurbsSurface
+from .surface import RationalSurface
 
 HERE = os.path.dirname(__file__)
 DATA = os.path.join(HERE, "data")
 
-__all__ = ['Curve', 'Surface', 'NurbsCurve', 'NurbsSurface']
+__all__ = ['Curve', 'Surface', 'RationalCurve', 'RationalSurface']
