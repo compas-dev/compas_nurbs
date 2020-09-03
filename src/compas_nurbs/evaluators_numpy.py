@@ -5,7 +5,7 @@ from .helpers import find_spans
 from .helpers import basis_functions
 from .helpers import basis_functions_derivatives
 
-from compas.geometry._primitives.curve import binomial_coefficient  # TODO compas: move this upwards
+from compas.geometry.primitives.curve import binomial_coefficient  # TODO compas: move this upwards
 
 # ==============================================================================
 # curve
@@ -21,19 +21,19 @@ def create_curve(control_points, degree, knot_vector, rational, weights):
         return scipy.interpolate.BSpline(knot_vector, weighted_control_points, degree)
 
 
-def evaluate_curve(curve, params, rational=False):
+def evaluate_curve(curve, params):
     """Evaluates a curve at the parameters params.
     """
-    points = curve(params)
+    points = curve._curve(params)
 
-    if not rational:
+    if not curve.rational:
         return points
     else:
         w = np.array([points[:, -1]]).T
         return np.delete((1 / w * points), -1, axis=1)
 
 
-def evaluate_curve_derivatives(curve, params, order=1, rational=False):
+def evaluate_curve_derivatives(curve, params, order=1):
     """Evaluates the n-th order derivatives at the parametric positions `params`.
 
     Parameters
@@ -56,10 +56,10 @@ def evaluate_curve_derivatives(curve, params, order=1, rational=False):
     """
     derivatives = []
     for i in range(0, order + 1):
-        derivatives.append(curve.derivative(i)(params))
+        derivatives.append(curve._curve.derivative(i)(params))
     derivatives = np.array(derivatives).transpose(1, 0, 2)
 
-    if not rational:
+    if not curve.rational:
         return derivatives
     else:
         # TODO: numpify this!
@@ -79,10 +79,10 @@ def evaluate_curve_derivatives(curve, params, order=1, rational=False):
 # ==============================================================================
 
 
-def evaluate_surface(surface, params, rational=False):
+def evaluate_surface(surface, params):
     """Evaluates a surface at the parameters.
     """
-    if rational:
+    if surface.rational:
         control_points = np.array(surface.weighted_control_points)
     else:
         control_points = np.array(surface.control_points)
@@ -106,17 +106,17 @@ def evaluate_surface(surface, params, rational=False):
         points.append(np.dot(c, np.dot(a, b)))
     points = np.array(points)
 
-    if not rational:
+    if not surface.rational:
         return points
     else:
         w = np.array([points[:, -1]]).T
         return np.delete((1 / w * points), -1, axis=1)
 
 
-def evaluate_surface_derivatives(surface, params, order=1, rational=False):
+def evaluate_surface_derivatives(surface, params, order=1):
     """
     """
-    if rational:
+    if surface.rational:
         control_points = np.array(surface.weighted_control_points)
     else:
         control_points = np.array(surface.control_points)
@@ -142,7 +142,7 @@ def evaluate_surface_derivatives(surface, params, order=1, rational=False):
         SKL = np.dot(np.array(basis_v[:dd + 1]), temp[:degree_v + 1]).transpose(1, 0, 2)
         derivatives.append(SKL)
 
-    if not rational:
+    if not surface.rational:
         return np.array(derivatives)
     else:
         # TODO: numpify this!

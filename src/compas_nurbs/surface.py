@@ -115,7 +115,7 @@ class Surface(BSpline, Shape):
         >>> surface.points_at(params)
         [Point(0.600, 0.800, 1.159), Point(0.600, 4.000, -0.164), Point(3.000, 0.800, 1.763), Point(3.000, 4.000, 0.562)]
         """
-        points = evaluate_surface(self._surface, params, self.rational)
+        points = evaluate_surface(self._surface, params)
         return [Point(*p) for p in points]
 
     def normals_at(self, params):
@@ -191,7 +191,7 @@ class Surface(BSpline, Shape):
         -------
         list of list of list
         """
-        return evaluate_surface_derivatives(self._surface, params, order=order, rational=self.rational)
+        return evaluate_surface_derivatives(self._surface, params, order=order)
 
     def isocurve_at(self,):
         raise NotImplementedError

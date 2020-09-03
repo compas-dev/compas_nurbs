@@ -127,7 +127,7 @@ class Curve(BSpline):
         >>> curve.points_at([0.0, 0.5, 1.0])
         [Point(0.000, 0.000, 0.000), Point(-0.750, 3.000, 0.000), Point(-4.000, -3.000, 0.000)]
         """
-        points = evaluate_curve(self._curve, params, self.rational)
+        points = evaluate_curve(self, params)
         return [Point(*p) for p in points]
 
     def tangents_at(self, params):
@@ -194,7 +194,7 @@ class Curve(BSpline):
         return [Frame(pt, xaxis, yaxis) for pt, xaxis, yaxis in zip(points, tangents, normals)]
 
     def derivatives_at(self, params, order=1):
-        return evaluate_curve_derivatives(self._curve, params, order=order, rational=self.rational)
+        return evaluate_curve_derivatives(self, params, order=order)
 
     # ==========================================================================
     # operations

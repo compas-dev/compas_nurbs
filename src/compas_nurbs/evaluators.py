@@ -23,7 +23,7 @@ def create_curve(control_points, degree, knot_vector, rational=False, weights=No
         return curve
 
 
-def evaluate_curve(curve, params, rational=False):
+def evaluate_curve(curve, params):
     return curve.evaluate_list(params)
 
 
@@ -57,10 +57,10 @@ def create_surface(control_points_2d, degree, knot_vector, rational=False, weigh
     return surface
 
 
-def evaluate_surface(surface, params, rational=False):
+def evaluate_surface(surface, params):
     return surface.evaluate_list(params)
 
 
-def evaluate_surface_derivatives(surface, params, order=1, rational=False):
+def evaluate_surface_derivatives(surface, params, order=1):
     derivatives = [surface.derivatives(u, v, order=order) for (u, v) in params]
     return derivatives

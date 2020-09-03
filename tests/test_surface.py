@@ -116,7 +116,7 @@ def test_nurbs_surface():
 
     # derivatives
     derivatives = surface.derivatives_at(params, order=1)
-    geomdl_derivatives = evaluate_surface_derivatives(srf_geomdl, params, order=1, rational=True)
+    geomdl_derivatives = evaluate_surface_derivatives(srf_geomdl, params, order=1)
     assert(allclose(geomdl_derivatives, derivatives))
 
     # normals
