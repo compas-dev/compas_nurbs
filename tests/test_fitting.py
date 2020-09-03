@@ -88,7 +88,7 @@ def test_scipy_interpolation():
     points = np.array(data['points'])
 
     knot_style = CurveKnotStyle.Uniform
-    for degree in range(2, 6): # why this runs only 2 times?
+    for degree in range(2, 6):  # why this runs only 2 times?
         kvd, uk = knot_vector_and_params(points, degree, knot_style, extended=False)
         control_points, knot_vector = global_curve_interpolation(points, degree, knot_style=knot_style, periodic=False)
         # why this makes such a strange behaviour for testing?

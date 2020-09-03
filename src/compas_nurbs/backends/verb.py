@@ -17,20 +17,26 @@ import urllib.parse as python_lib_urllib_Parse
 
 class _hx_AnonObject:
     _hx_disable_getattr = False
+
     def __init__(self, fields):
         self.__dict__ = fields
+
     def __repr__(self):
         return repr(self.__dict__)
+
     def __contains__(self, item):
         return item in self.__dict__
+
     def __getitem__(self, item):
         return self.__dict__[item]
+
     def __getattr__(self, name):
         if (self._hx_disable_getattr):
             raise AttributeError('field does not exist')
         else:
             return None
-    def _hx_hasattr(self,field):
+
+    def _hx_hasattr(self, field):
         self._hx_disable_getattr = True
         try:
             getattr(self, field)
@@ -39,7 +45,6 @@ class _hx_AnonObject:
         except AttributeError:
             self._hx_disable_getattr = False
             return False
-
 
 
 _hx_classes = {}
@@ -51,7 +56,7 @@ class Enum:
     _hx_fields = ["tag", "index", "params"]
     _hx_methods = ["__str__"]
 
-    def __init__(self,tag,index,params):
+    def __init__(self, tag, index, params):
         self.tag = tag
         self.index = index
         self.params = params
@@ -67,11 +72,14 @@ class Enum:
         _hx_o.tag = None
         _hx_o.index = None
         _hx_o.params = None
+
+
 Enum._hx_class = Enum
 _hx_classes["Enum"] = Enum
 
 
-class Class: pass
+class Class:
+    pass
 
 
 class Date:
@@ -80,18 +88,18 @@ class Date:
     _hx_fields = ["date", "dateUTC"]
     _hx_statics = ["fromTime", "makeLocal", "fromString"]
 
-    def __init__(self,year,month,day,hour,_hx_min,sec):
+    def __init__(self, year, month, day, hour, _hx_min, sec):
         self.dateUTC = None
         if (year < python_lib_datetime_Datetime.min.year):
             year = python_lib_datetime_Datetime.min.year
         if (day == 0):
             day = 1
-        self.date = Date.makeLocal(python_lib_datetime_Datetime(year,(month + 1),day,hour,_hx_min,sec,0))
+        self.date = Date.makeLocal(python_lib_datetime_Datetime(year, (month + 1), day, hour, _hx_min, sec, 0))
         self.dateUTC = self.date.astimezone(python_lib_datetime_Timezone.utc)
 
     @staticmethod
     def fromTime(t):
-        d = Date(2000,0,1,0,0,0)
+        d = Date(2000, 0, 1, 0, 0, 0)
         d.date = Date.makeLocal(python_lib_datetime_Datetime.fromtimestamp((t / 1000.0)))
         d.dateUTC = d.date.astimezone(python_lib_datetime_Timezone.utc)
         return d
@@ -113,14 +121,14 @@ class Date:
             return Date.fromTime((((Std.parseInt((k[0] if 0 < len(k) else None)) * 3600000.) + ((Std.parseInt((k[1] if 1 < len(k) else None)) * 60000.))) + ((Std.parseInt((k[2] if 2 < len(k) else None)) * 1000.))))
         elif (_g == 10):
             k = s.split("-")
-            return Date(Std.parseInt((k[0] if 0 < len(k) else None)),(Std.parseInt((k[1] if 1 < len(k) else None)) - 1),Std.parseInt((k[2] if 2 < len(k) else None)),0,0,0)
+            return Date(Std.parseInt((k[0] if 0 < len(k) else None)), (Std.parseInt((k[1] if 1 < len(k) else None)) - 1), Std.parseInt((k[2] if 2 < len(k) else None)), 0, 0, 0)
         elif (_g == 19):
             k = s.split(" ")
             _this = (k[0] if 0 < len(k) else None)
             y = _this.split("-")
             _this = (k[1] if 1 < len(k) else None)
             t = _this.split(":")
-            return Date(Std.parseInt((y[0] if 0 < len(y) else None)),(Std.parseInt((y[1] if 1 < len(y) else None)) - 1),Std.parseInt((y[2] if 2 < len(y) else None)),Std.parseInt((t[0] if 0 < len(t) else None)),Std.parseInt((t[1] if 1 < len(t) else None)),Std.parseInt((t[2] if 2 < len(t) else None)))
+            return Date(Std.parseInt((y[0] if 0 < len(y) else None)), (Std.parseInt((y[1] if 1 < len(y) else None)) - 1), Std.parseInt((y[2] if 2 < len(y) else None)), Std.parseInt((t[0] if 0 < len(t) else None)), Std.parseInt((t[1] if 1 < len(t) else None)), Std.parseInt((t[2] if 2 < len(t) else None)))
         else:
             raise haxe_Exception.thrown(("Invalid date format : " + ("null" if s is None else s)))
 
@@ -128,6 +136,8 @@ class Date:
     def _hx_empty_init(_hx_o):
         _hx_o.date = None
         _hx_o.dateUTC = None
+
+
 Date._hx_class = Date
 _hx_classes["Date"] = Date
 
@@ -138,12 +148,14 @@ class Lambda:
     _hx_statics = ["fold"]
 
     @staticmethod
-    def fold(it,f,first):
+    def fold(it, f, first):
         x = HxOverrides.iterator(it)
         while x.hasNext():
             x1 = x.next()
-            first = f(x1,first)
+            first = f(x1, first)
         return first
+
+
 Lambda._hx_class = Lambda
 _hx_classes["Lambda"] = Lambda
 
@@ -155,7 +167,9 @@ class _Math_Math_Impl_:
 
     @staticmethod
     def abs(v):
-        return Reflect.field(Math,"fabs")(v)
+        return Reflect.field(Math, "fabs")(v)
+
+
 _Math_Math_Impl_._hx_class = _Math_Math_Impl_
 _hx_classes["_Math.Math_Impl_"] = _Math_Math_Impl_
 
@@ -166,11 +180,11 @@ class Reflect:
     _hx_statics = ["field", "callMethod", "isFunction"]
 
     @staticmethod
-    def field(o,field):
-        return python_Boot.field(o,field)
+    def field(o, field):
+        return python_Boot.field(o, field)
 
     @staticmethod
-    def callMethod(o,func,args):
+    def callMethod(o, func, args):
         if callable(func):
             return func(*args)
         else:
@@ -179,9 +193,11 @@ class Reflect:
     @staticmethod
     def isFunction(f):
         if (not ((python_lib_Inspect.isfunction(f) or python_lib_Inspect.ismethod(f)))):
-            return python_Boot.hasField(f,"func_code")
+            return python_Boot.hasField(f, "func_code")
         else:
             return True
+
+
 Reflect._hx_class = Reflect
 _hx_classes["Reflect"] = Reflect
 
@@ -192,19 +208,19 @@ class Std:
     _hx_statics = ["isOfType", "string", "parseInt", "shortenPossibleNumber", "parseFloat"]
 
     @staticmethod
-    def isOfType(v,t):
+    def isOfType(v, t):
         if ((v is None) and ((t is None))):
             return False
         if (t is None):
             return False
         if (t == Dynamic):
             return (v is not None)
-        isBool = isinstance(v,bool)
+        isBool = isinstance(v, bool)
         if ((t == Bool) and isBool):
             return True
-        if ((((not isBool) and (not (t == Bool))) and (t == Int)) and isinstance(v,int)):
+        if ((((not isBool) and (not (t == Bool))) and (t == Int)) and isinstance(v, int)):
             return True
-        vIsFloat = isinstance(v,float)
+        vIsFloat = isinstance(v, float)
         tmp = None
         tmp1 = None
         if (((not isBool) and vIsFloat) and (t == Int)):
@@ -224,23 +240,23 @@ class Std:
             tmp = False
         if ((tmp and ((v <= 2147483647))) and ((v >= -2147483648))):
             return True
-        if (((not isBool) and (t == Float)) and isinstance(v,(float, int))):
+        if (((not isBool) and (t == Float)) and isinstance(v, (float, int))):
             return True
         if (t == str):
-            return isinstance(v,str)
+            return isinstance(v, str)
         isEnumType = (t == Enum)
-        if ((isEnumType and python_lib_Inspect.isclass(v)) and hasattr(v,"_hx_constructs")):
+        if ((isEnumType and python_lib_Inspect.isclass(v)) and hasattr(v, "_hx_constructs")):
             return True
         if isEnumType:
             return False
         isClassType = (t == Class)
-        if ((((isClassType and (not isinstance(v,Enum))) and python_lib_Inspect.isclass(v)) and hasattr(v,"_hx_class_name")) and (not hasattr(v,"_hx_constructs"))):
+        if ((((isClassType and (not isinstance(v, Enum))) and python_lib_Inspect.isclass(v)) and hasattr(v, "_hx_class_name")) and (not hasattr(v, "_hx_constructs"))):
             return True
         if isClassType:
             return False
         tmp = None
         try:
-            tmp = isinstance(v,t)
+            tmp = isinstance(v, t)
         except BaseException as _g:
             None
             tmp = False
@@ -249,8 +265,9 @@ class Std:
         if python_lib_Inspect.isclass(t):
             cls = t
             loop = None
+
             def _hx_local_1(intf):
-                f = (intf._hx_interfaces if (hasattr(intf,"_hx_interfaces")) else [])
+                f = (intf._hx_interfaces if (hasattr(intf, "_hx_interfaces")) else [])
                 if (f is not None):
                     _g = 0
                     while (_g < len(f)):
@@ -279,7 +296,7 @@ class Std:
 
     @staticmethod
     def string(s):
-        return python_Boot.toString1(s,"")
+        return python_Boot.toString1(s, "")
 
     @staticmethod
     def parseInt(x):
@@ -340,9 +357,9 @@ class Std:
                 lastDigitIndex = i
                 previous = c
             if (firstDigitIndex <= lastDigitIndex):
-                digits = HxString.substring(x,firstDigitIndex,(lastDigitIndex + 1))
+                digits = HxString.substring(x, firstDigitIndex, (lastDigitIndex + 1))
                 try:
-                    return (((-1 if ((sign == -1)) else 1)) * int(digits,base))
+                    return (((-1 if ((sign == -1)) else 1)) * int(digits, base))
                 except BaseException as _g:
                     return None
             return None
@@ -356,7 +373,7 @@ class Std:
             i = _g
             _g = (_g + 1)
             c = ("" if (((i < 0) or ((i >= len(x))))) else x[i])
-            _g2 = HxString.charCodeAt(c,0)
+            _g2 = HxString.charCodeAt(c, 0)
             if (_g2 is None):
                 break
             else:
@@ -378,20 +395,26 @@ class Std:
                 if (r1 != x):
                     return Std.parseFloat(r1)
             return Math.NaN
+
+
 Std._hx_class = Std
 _hx_classes["Std"] = Std
 
 
-class Float: pass
+class Float:
+    pass
 
 
-class Int: pass
+class Int:
+    pass
 
 
-class Bool: pass
+class Bool:
+    pass
 
 
-class Dynamic: pass
+class Dynamic:
+    pass
 
 
 class StringBuf:
@@ -405,6 +428,8 @@ class StringBuf:
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.b = None
+
+
 StringBuf._hx_class = StringBuf
 _hx_classes["StringBuf"] = StringBuf
 
@@ -412,6 +437,8 @@ _hx_classes["StringBuf"] = StringBuf
 class haxe_IMap:
     _hx_class_name = "haxe.IMap"
     __slots__ = ()
+
+
 haxe_IMap._hx_class = haxe_IMap
 _hx_classes["haxe.IMap"] = haxe_IMap
 
@@ -432,6 +459,8 @@ class haxe_ds_StringMap:
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.h = None
+
+
 haxe_ds_StringMap._hx_class = haxe_ds_StringMap
 _hx_classes["haxe.ds.StringMap"] = haxe_ds_StringMap
 
@@ -442,7 +471,7 @@ class python_HaxeIterator:
     _hx_fields = ["it", "x", "has", "checked"]
     _hx_methods = ["next", "hasNext"]
 
-    def __init__(self,it):
+    def __init__(self, it):
         self.checked = False
         self.has = False
         self.x = None
@@ -461,7 +490,7 @@ class python_HaxeIterator:
                 self.has = True
             except BaseException as _g:
                 None
-                if Std.isOfType(haxe_Exception.caught(_g).unwrap(),StopIteration):
+                if Std.isOfType(haxe_Exception.caught(_g).unwrap(), StopIteration):
                     self.has = False
                     self.x = None
                 else:
@@ -475,8 +504,11 @@ class python_HaxeIterator:
         _hx_o.x = None
         _hx_o.has = None
         _hx_o.checked = None
+
+
 python_HaxeIterator._hx_class = python_HaxeIterator
 _hx_classes["python.HaxeIterator"] = python_HaxeIterator
+
 
 class ValueType(Enum):
     __slots__ = ()
@@ -490,6 +522,8 @@ class ValueType(Enum):
     @staticmethod
     def TEnum(e):
         return ValueType("TEnum", 7, (e,))
+
+
 ValueType.TNull = ValueType("TNull", 0, ())
 ValueType.TInt = ValueType("TInt", 1, ())
 ValueType.TFloat = ValueType("TFloat", 2, ())
@@ -512,7 +546,7 @@ class Type:
 
     @staticmethod
     def getClassName(c):
-        if hasattr(c,"_hx_class_name"):
+        if hasattr(c, "_hx_class_name"):
             return c._hx_class_name
         else:
             if (c == list):
@@ -539,11 +573,11 @@ class Type:
             return Math
         if (name == "String"):
             return str
-        cl = _hx_classes.get(name,None)
+        cl = _hx_classes.get(name, None)
         tmp = None
         if (cl is not None):
             o = cl
-            tmp = (not (((o is not None) and ((HxOverrides.eq(o,str) or python_lib_Inspect.isclass(o))))))
+            tmp = (not (((o is not None) and ((HxOverrides.eq(o, str) or python_lib_Inspect.isclass(o))))))
         else:
             tmp = True
         if tmp:
@@ -555,7 +589,7 @@ class Type:
         if (name == "Bool"):
             return Bool
         o = Type.resolveClass(name)
-        if hasattr(o,"_hx_constructs"):
+        if hasattr(o, "_hx_constructs"):
             return o
         else:
             return None
@@ -564,32 +598,33 @@ class Type:
     def createEmptyInstance(cl):
         i = cl.__new__(cl)
         callInit = None
+
         def _hx_local_0(cl):
             sc = Type.getSuperClass(cl)
             if (sc is not None):
                 callInit(sc)
-            if hasattr(cl,"_hx_empty_init"):
+            if hasattr(cl, "_hx_empty_init"):
                 cl._hx_empty_init(i)
         callInit = _hx_local_0
         callInit(cl)
         return i
 
     @staticmethod
-    def createEnum(e,constr,params = None):
-        f = Reflect.field(e,constr)
+    def createEnum(e, constr, params=None):
+        f = Reflect.field(e, constr)
         if (f is None):
             raise haxe_Exception.thrown(("No such constructor " + ("null" if constr is None else constr)))
         if Reflect.isFunction(f):
             if (params is None):
                 raise haxe_Exception.thrown((("Constructor " + ("null" if constr is None else constr)) + " need parameters"))
-            return Reflect.callMethod(e,f,params)
+            return Reflect.callMethod(e, f, params)
         if ((params is not None) and ((len(params) != 0))):
             raise haxe_Exception.thrown((("Constructor " + ("null" if constr is None else constr)) + " does not need parameters"))
         return f
 
     @staticmethod
     def getEnumConstructs(e):
-        if hasattr(e,"_hx_constructs"):
+        if hasattr(e, "_hx_constructs"):
             x = e._hx_constructs
             return list(x)
         else:
@@ -599,26 +634,28 @@ class Type:
     def typeof(v):
         if (v is None):
             return ValueType.TNull
-        elif isinstance(v,bool):
+        elif isinstance(v, bool):
             return ValueType.TBool
-        elif isinstance(v,int):
+        elif isinstance(v, int):
             return ValueType.TInt
-        elif isinstance(v,float):
+        elif isinstance(v, float):
             return ValueType.TFloat
-        elif isinstance(v,str):
+        elif isinstance(v, str):
             return ValueType.TClass(str)
-        elif isinstance(v,list):
+        elif isinstance(v, list):
             return ValueType.TClass(list)
-        elif (isinstance(v,_hx_AnonObject) or python_lib_Inspect.isclass(v)):
+        elif (isinstance(v, _hx_AnonObject) or python_lib_Inspect.isclass(v)):
             return ValueType.TObject
-        elif isinstance(v,Enum):
+        elif isinstance(v, Enum):
             return ValueType.TEnum(v.__class__)
-        elif (isinstance(v,type) or hasattr(v,"_hx_class")):
+        elif (isinstance(v, type) or hasattr(v, "_hx_class")):
             return ValueType.TClass(v.__class__)
         elif callable(v):
             return ValueType.TFunction
         else:
             return ValueType.TUnknown
+
+
 Type._hx_class = Type
 _hx_classes["Type"] = Type
 
@@ -632,15 +669,14 @@ class haxe_Exception(Exception):
     _hx_interfaces = []
     _hx_super = Exception
 
-
-    def __init__(self,message,previous = None,native = None):
+    def __init__(self, message, previous=None, native=None):
         self._hx___previousException = None
         self._hx___nativeException = None
         self._hx___nativeStack = None
         self._hx___skipStack = 0
         super().__init__(message)
         self._hx___previousException = previous
-        if ((native is not None) and Std.isOfType(native,BaseException)):
+        if ((native is not None) and Std.isOfType(native, BaseException)):
             self._hx___nativeException = native
             self._hx___nativeStack = haxe_NativeStackTrace.exceptionStack()
         else:
@@ -659,18 +695,18 @@ class haxe_Exception(Exception):
 
     @staticmethod
     def caught(value):
-        if Std.isOfType(value,haxe_Exception):
+        if Std.isOfType(value, haxe_Exception):
             return value
-        elif Std.isOfType(value,BaseException):
-            return haxe_Exception(str(value),None,value)
+        elif Std.isOfType(value, BaseException):
+            return haxe_Exception(str(value), None, value)
         else:
-            return haxe_ValueException(value,None,value)
+            return haxe_ValueException(value, None, value)
 
     @staticmethod
     def thrown(value):
-        if Std.isOfType(value,haxe_Exception):
+        if Std.isOfType(value, haxe_Exception):
             return value.get_native()
-        elif Std.isOfType(value,BaseException):
+        elif Std.isOfType(value, BaseException):
             return value
         else:
             e = haxe_ValueException(value)
@@ -683,6 +719,8 @@ class haxe_Exception(Exception):
         _hx_o._hx___skipStack = None
         _hx_o._hx___nativeException = None
         _hx_o._hx___previousException = None
+
+
 haxe_Exception._hx_class = haxe_Exception
 _hx_classes["haxe.Exception"] = haxe_Exception
 
@@ -705,6 +743,8 @@ class haxe_NativeStackTrace:
             return infos
         else:
             return []
+
+
 haxe_NativeStackTrace._hx_class = haxe_NativeStackTrace
 _hx_classes["haxe.NativeStackTrace"] = haxe_NativeStackTrace
 
@@ -727,8 +767,8 @@ class haxe_Serializer:
     def toString(self):
         return self.buf.b.getvalue()
 
-    def serializeString(self,s):
-        x = self.shash.h.get(s,None)
+    def serializeString(self, s):
+        x = self.shash.h.get(s, None)
         if (x is not None):
             self.buf.b.write("R")
             _this = self.buf
@@ -739,7 +779,7 @@ class haxe_Serializer:
         self.scount = (self.scount + 1)
         self.shash.h[s] = value
         self.buf.b.write("y")
-        s = python_lib_urllib_Parse.quote(s,"")
+        s = python_lib_urllib_Parse.quote(s, "")
         _this = self.buf
         s1 = Std.string(len(s))
         _this.b.write(s1)
@@ -748,13 +788,13 @@ class haxe_Serializer:
         s1 = Std.string(s)
         _this.b.write(s1)
 
-    def serializeRef(self,v):
+    def serializeRef(self, v):
         _g = 0
         _g1 = len(self.cache)
         while (_g < _g1):
             i = _g
             _g = (_g + 1)
-            if HxOverrides.eq((self.cache[i] if i >= 0 and i < len(self.cache) else None),v):
+            if HxOverrides.eq((self.cache[i] if i >= 0 and i < len(self.cache) else None), v):
                 self.buf.b.write("r")
                 _this = self.buf
                 s = Std.string(i)
@@ -764,17 +804,17 @@ class haxe_Serializer:
         _this.append(v)
         return False
 
-    def serializeFields(self,v):
+    def serializeFields(self, v):
         _g = 0
         _g1 = python_Boot.fields(v)
         while (_g < len(_g1)):
             f = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
             _g = (_g + 1)
             self.serializeString(f)
-            self.serialize(Reflect.field(v,f))
+            self.serialize(Reflect.field(v, f))
         self.buf.b.write("g")
 
-    def serialize(self,v):
+    def serialize(self, v):
         _g = Type.typeof(v)
         tmp = _g.index
         if (tmp == 0):
@@ -802,11 +842,11 @@ class haxe_Serializer:
         elif (tmp == 3):
             self.buf.b.write(("t" if v else "f"))
         elif (tmp == 4):
-            if Std.isOfType(v,Class):
+            if Std.isOfType(v, Class):
                 className = Type.getClassName(v)
                 self.buf.b.write("A")
                 self.serializeString(className)
-            elif Std.isOfType(v,Enum):
+            elif Std.isOfType(v, Enum):
                 self.buf.b.write("B")
                 self.serializeString(Type.getEnumName(v))
             else:
@@ -833,7 +873,7 @@ class haxe_Serializer:
                     while k.hasNext():
                         k1 = k.next()
                         self.serialize(k1)
-                        self.serialize(v1.h.get(k1,None))
+                        self.serialize(v1.h.get(k1, None))
                     self.buf.b.write("h")
                 elif (_g1 == "haxe.ds.StringMap"):
                     self.buf.b.write("b")
@@ -842,20 +882,20 @@ class haxe_Serializer:
                     while k.hasNext():
                         k1 = k.next()
                         self.serializeString(k1)
-                        self.serialize(v1.h.get(k1,None))
+                        self.serialize(v1.h.get(k1, None))
                     self.buf.b.write("h")
                 else:
                     if self.useCache:
                         _this = self.cache
                         if (len(_this) != 0):
                             _this.pop()
-                    if python_Boot.hasField(v,"hxSerialize"):
+                    if python_Boot.hasField(v, "hxSerialize"):
                         self.buf.b.write("C")
                         self.serializeString(Type.getClassName(c))
                         if self.useCache:
                             _this = self.cache
                             _this.append(v)
-                        Reflect.field(v,"hxSerialize")(self)
+                        Reflect.field(v, "hxSerialize")(self)
                         self.buf.b.write("g")
                     else:
                         self.buf.b.write("c")
@@ -902,13 +942,13 @@ class haxe_Serializer:
                         _this = self.cache
                         if (len(_this) != 0):
                             _this.pop()
-                    if python_Boot.hasField(v,"hxSerialize"):
+                    if python_Boot.hasField(v, "hxSerialize"):
                         self.buf.b.write("C")
                         self.serializeString(Type.getClassName(c))
                         if self.useCache:
                             _this = self.cache
                             _this.append(v)
-                        Reflect.field(v,"hxSerialize")(self)
+                        Reflect.field(v, "hxSerialize")(self)
                         self.buf.b.write("g")
                     else:
                         self.buf.b.write("c")
@@ -929,13 +969,13 @@ class haxe_Serializer:
                         _this = self.cache
                         if (len(_this) != 0):
                             _this.pop()
-                    if python_Boot.hasField(v,"hxSerialize"):
+                    if python_Boot.hasField(v, "hxSerialize"):
                         self.buf.b.write("C")
                         self.serializeString(Type.getClassName(c))
                         if self.useCache:
                             _this = self.cache
                             _this.append(v)
-                        Reflect.field(v,"hxSerialize")(self)
+                        Reflect.field(v, "hxSerialize")(self)
                         self.buf.b.write("g")
                     else:
                         self.buf.b.write("c")
@@ -960,13 +1000,13 @@ class haxe_Serializer:
                         _this = self.cache
                         if (len(_this) != 0):
                             _this.pop()
-                    if python_Boot.hasField(v,"hxSerialize"):
+                    if python_Boot.hasField(v, "hxSerialize"):
                         self.buf.b.write("C")
                         self.serializeString(Type.getClassName(c))
                         if self.useCache:
                             _this = self.cache
                             _this.append(v)
-                        Reflect.field(v,"hxSerialize")(self)
+                        Reflect.field(v, "hxSerialize")(self)
                         self.buf.b.write("g")
                     else:
                         self.buf.b.write("c")
@@ -994,7 +1034,7 @@ class haxe_Serializer:
                         while (_g1 < _g2):
                             i1 = _g1
                             _g1 = (_g1 + 1)
-                            val = HxString.charCodeAt(haxe_Serializer.BASE64,i1)
+                            val = HxString.charCodeAt(haxe_Serializer.BASE64, i1)
                             b64[i1] = val
                         haxe_Serializer.BASE64_CODES = b64
                     while (i < _hx_max):
@@ -1009,19 +1049,19 @@ class haxe_Serializer:
                         b3 = v1.b[pos2]
                         _this = self.buf
                         c1 = b64[(b1 >> 2)]
-                        s = "".join(map(chr,[c1]))
+                        s = "".join(map(chr, [c1]))
                         _this.b.write(s)
                         _this1 = self.buf
                         c2 = b64[((((b1 << 4) | ((b2 >> 4)))) & 63)]
-                        s1 = "".join(map(chr,[c2]))
+                        s1 = "".join(map(chr, [c2]))
                         _this1.b.write(s1)
                         _this2 = self.buf
                         c3 = b64[((((b2 << 2) | ((b3 >> 6)))) & 63)]
-                        s2 = "".join(map(chr,[c3]))
+                        s2 = "".join(map(chr, [c3]))
                         _this2.b.write(s2)
                         _this3 = self.buf
                         c4 = b64[(b3 & 63)]
-                        s3 = "".join(map(chr,[c4]))
+                        s3 = "".join(map(chr, [c4]))
                         _this3.b.write(s3)
                     if (i == _hx_max):
                         pos = i
@@ -1032,15 +1072,15 @@ class haxe_Serializer:
                         b2 = v1.b[pos]
                         _this = self.buf
                         c1 = b64[(b1 >> 2)]
-                        s = "".join(map(chr,[c1]))
+                        s = "".join(map(chr, [c1]))
                         _this.b.write(s)
                         _this = self.buf
                         c1 = b64[((((b1 << 4) | ((b2 >> 4)))) & 63)]
-                        s = "".join(map(chr,[c1]))
+                        s = "".join(map(chr, [c1]))
                         _this.b.write(s)
                         _this = self.buf
                         c1 = b64[((b2 << 2) & 63)]
-                        s = "".join(map(chr,[c1]))
+                        s = "".join(map(chr, [c1]))
                         _this.b.write(s)
                     elif (i == ((_hx_max + 1))):
                         pos = i
@@ -1048,24 +1088,24 @@ class haxe_Serializer:
                         b1 = v1.b[pos]
                         _this = self.buf
                         c1 = b64[(b1 >> 2)]
-                        s = "".join(map(chr,[c1]))
+                        s = "".join(map(chr, [c1]))
                         _this.b.write(s)
                         _this = self.buf
                         c1 = b64[((b1 << 4) & 63)]
-                        s = "".join(map(chr,[c1]))
+                        s = "".join(map(chr, [c1]))
                         _this.b.write(s)
                 else:
                     if self.useCache:
                         _this = self.cache
                         if (len(_this) != 0):
                             _this.pop()
-                    if python_Boot.hasField(v,"hxSerialize"):
+                    if python_Boot.hasField(v, "hxSerialize"):
                         self.buf.b.write("C")
                         self.serializeString(Type.getClassName(c))
                         if self.useCache:
                             _this = self.cache
                             _this.append(v)
-                        Reflect.field(v,"hxSerialize")(self)
+                        Reflect.field(v, "hxSerialize")(self)
                         self.buf.b.write("g")
                     else:
                         self.buf.b.write("c")
@@ -1085,20 +1125,20 @@ class haxe_Serializer:
                         _this = self.buf
                         s = Std.string(k1)
                         _this.b.write(s)
-                        self.serialize(v1.h.get(k1,None))
+                        self.serialize(v1.h.get(k1, None))
                     self.buf.b.write("h")
                 else:
                     if self.useCache:
                         _this = self.cache
                         if (len(_this) != 0):
                             _this.pop()
-                    if python_Boot.hasField(v,"hxSerialize"):
+                    if python_Boot.hasField(v, "hxSerialize"):
                         self.buf.b.write("C")
                         self.serializeString(Type.getClassName(c))
                         if self.useCache:
                             _this = self.cache
                             _this.append(v)
-                        Reflect.field(v,"hxSerialize")(self)
+                        Reflect.field(v, "hxSerialize")(self)
                         self.buf.b.write("g")
                     else:
                         self.buf.b.write("c")
@@ -1112,13 +1152,13 @@ class haxe_Serializer:
                     _this = self.cache
                     if (len(_this) != 0):
                         _this.pop()
-                if python_Boot.hasField(v,"hxSerialize"):
+                if python_Boot.hasField(v, "hxSerialize"):
                     self.buf.b.write("C")
                     self.serializeString(Type.getClassName(c))
                     if self.useCache:
                         _this = self.cache
                         _this.append(v)
-                    Reflect.field(v,"hxSerialize")(self)
+                    Reflect.field(v, "hxSerialize")(self)
                     self.buf.b.write("g")
                 else:
                     self.buf.b.write("c")
@@ -1173,6 +1213,8 @@ class haxe_Serializer:
         _hx_o.scount = None
         _hx_o.useCache = None
         _hx_o.useEnumIndex = None
+
+
 haxe_Serializer._hx_class = haxe_Serializer
 _hx_classes["haxe.Serializer"] = haxe_Serializer
 
@@ -1185,14 +1227,16 @@ class haxe__Unserializer_DefaultResolver:
     def __init__(self):
         pass
 
-    def resolveClass(self,name):
+    def resolveClass(self, name):
         return Type.resolveClass(name)
 
-    def resolveEnum(self,name):
+    def resolveEnum(self, name):
         return Type.resolveEnum(name)
 
     @staticmethod
-    def _hx_empty_init(_hx_o):        pass
+    def _hx_empty_init(_hx_o): pass
+
+
 haxe__Unserializer_DefaultResolver._hx_class = haxe__Unserializer_DefaultResolver
 _hx_classes["haxe._Unserializer.DefaultResolver"] = haxe__Unserializer_DefaultResolver
 
@@ -1204,7 +1248,7 @@ class haxe_Unserializer:
     _hx_methods = ["readDigits", "readFloat", "unserializeObject", "unserializeEnum", "unserialize"]
     _hx_statics = ["DEFAULT_RESOLVER", "BASE64", "CODES", "initCodes"]
 
-    def __init__(self,buf):
+    def __init__(self, buf):
         self.buf = buf
         self.length = len(buf)
         self.pos = 0
@@ -1261,9 +1305,9 @@ class haxe_Unserializer:
                 _hx_local_1
             else:
                 break
-        return Std.parseFloat(HxString.substr(self.buf,p1,(self.pos - p1)))
+        return Std.parseFloat(HxString.substr(self.buf, p1, (self.pos - p1)))
 
-    def unserializeObject(self,o):
+    def unserializeObject(self, o):
         while True:
             if (self.pos >= self.length):
                 raise haxe_Exception.thrown("Invalid object")
@@ -1272,17 +1316,18 @@ class haxe_Unserializer:
             if (((-1 if ((p >= len(s))) else ord(s[p]))) == 103):
                 break
             k = self.unserialize()
-            if (not Std.isOfType(k,str)):
+            if (not Std.isOfType(k, str)):
                 raise haxe_Exception.thrown("Invalid object key")
             v = self.unserialize()
             field = k
-            setattr(o,(("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field) if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field)),v)
+            setattr(o, (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field)
+                                                                                    if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field)), v)
         _hx_local_0 = self
         _hx_local_1 = _hx_local_0.pos
         _hx_local_0.pos = (_hx_local_1 + 1)
         _hx_local_1
 
-    def unserializeEnum(self,edecl,tag):
+    def unserializeEnum(self, edecl, tag):
         p = self.pos
         self.pos = (self.pos + 1)
         s = self.buf
@@ -1290,7 +1335,7 @@ class haxe_Unserializer:
             raise haxe_Exception.thrown("Invalid enum format")
         nargs = self.readDigits()
         if (nargs == 0):
-            return Type.createEnum(edecl,tag)
+            return Type.createEnum(edecl, tag)
         args = list()
         while True:
             tmp = nargs
@@ -1299,7 +1344,7 @@ class haxe_Unserializer:
                 break
             x = self.unserialize()
             args.append(x)
-        return Type.createEnum(edecl,tag,args)
+        return Type.createEnum(edecl, tag, args)
 
     def unserialize(self):
         p = self.pos
@@ -1326,7 +1371,7 @@ class haxe_Unserializer:
             o = Type.createEmptyInstance(cl)
             _this = self.cache
             _this.append(o)
-            Reflect.field(o,"hxUnserialize")(self)
+            Reflect.field(o, "hxUnserialize")(self)
             p = self.pos
             self.pos = (self.pos + 1)
             s = self.buf
@@ -1344,7 +1389,7 @@ class haxe_Unserializer:
                 if (not ((((-1 if ((p >= len(s))) else ord(s[p]))) != 104))):
                     break
                 s1 = self.unserialize()
-                h.set(s1,self.unserialize())
+                h.set(s1, self.unserialize())
             _hx_local_0 = self
             _hx_local_1 = _hx_local_0.pos
             _hx_local_0.pos = (_hx_local_1 + 1)
@@ -1428,7 +1473,7 @@ class haxe_Unserializer:
             tag = python_internal_ArrayImpl._get(Type.getEnumConstructs(edecl), index)
             if (tag is None):
                 raise haxe_Exception.thrown(((("Unknown enum index " + ("null" if name is None else name)) + "@") + Std.string(index)))
-            e = self.unserializeEnum(edecl,tag)
+            e = self.unserializeEnum(edecl, tag)
             _this = self.cache
             _this.append(e)
             return e
@@ -1473,7 +1518,7 @@ class haxe_Unserializer:
             c = (-1 if ((p >= len(s))) else ord(s[p]))
             while (c == 58):
                 i = self.readDigits()
-                h.set(i,self.unserialize())
+                h.set(i, self.unserialize())
                 p = self.pos
                 self.pos = (self.pos + 1)
                 s = self.buf
@@ -1613,7 +1658,7 @@ class haxe_Unserializer:
             else:
                 tmp = False
             if tmp:
-                d = Date.fromString(HxString.substr(self.buf,self.pos,19))
+                d = Date.fromString(HxString.substr(self.buf, self.pos, 19))
                 _hx_local_14 = self
                 _hx_local_15 = _hx_local_14.pos
                 _hx_local_14.pos = (_hx_local_15 + 19)
@@ -1628,7 +1673,7 @@ class haxe_Unserializer:
             edecl = self.resolver.resolveEnum(name)
             if (edecl is None):
                 raise haxe_Exception.thrown(("Enum not found " + ("null" if name is None else name)))
-            e = self.unserializeEnum(edecl,self.unserialize())
+            e = self.unserializeEnum(edecl, self.unserialize())
             _this = self.cache
             _this.append(e)
             return e
@@ -1641,7 +1686,7 @@ class haxe_Unserializer:
             s = self.buf
             if ((((-1 if ((p >= len(s))) else ord(s[p]))) != 58) or (((self.length - self.pos) < _hx_len))):
                 raise haxe_Exception.thrown("Invalid string length")
-            s = HxString.substr(self.buf,self.pos,_hx_len)
+            s = HxString.substr(self.buf, self.pos, _hx_len)
             _hx_local_16 = self
             _hx_local_17 = _hx_local_16.pos
             _hx_local_16.pos = (_hx_local_17 + _hx_len)
@@ -1660,7 +1705,8 @@ class haxe_Unserializer:
         _hx_local_19
         _this = self.buf
         index = self.pos
-        raise haxe_Exception.thrown(((("Invalid char " + HxOverrides.stringOrNull((("" if (((index < 0) or ((index >= len(_this))))) else _this[index])))) + " at position ") + Std.string(self.pos)))
+        raise haxe_Exception.thrown(
+            ((("Invalid char " + HxOverrides.stringOrNull((("" if (((index < 0) or ((index >= len(_this))))) else _this[index])))) + " at position ") + Std.string(self.pos)))
 
     @staticmethod
     def initCodes():
@@ -1682,6 +1728,8 @@ class haxe_Unserializer:
         _hx_o.cache = None
         _hx_o.scache = None
         _hx_o.resolver = None
+
+
 haxe_Unserializer._hx_class = haxe_Unserializer
 _hx_classes["haxe.Unserializer"] = haxe_Unserializer
 
@@ -1695,10 +1743,9 @@ class haxe_ValueException(haxe_Exception):
     _hx_interfaces = []
     _hx_super = haxe_Exception
 
-
-    def __init__(self,value,previous = None,native = None):
+    def __init__(self, value, previous=None, native=None):
         self.value = None
-        super().__init__(Std.string(value),previous,native)
+        super().__init__(Std.string(value), previous, native)
         self.value = value
 
     def unwrap(self):
@@ -1707,6 +1754,8 @@ class haxe_ValueException(haxe_Exception):
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.value = None
+
+
 haxe_ValueException._hx_class = haxe_ValueException
 _hx_classes["haxe.ValueException"] = haxe_ValueException
 
@@ -1721,7 +1770,7 @@ class haxe_ds_IntMap:
     def __init__(self):
         self.h = dict()
 
-    def set(self,key,value):
+    def set(self, key, value):
         self.h[key] = value
 
     def keys(self):
@@ -1730,6 +1779,8 @@ class haxe_ds_IntMap:
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.h = None
+
+
 haxe_ds_IntMap._hx_class = haxe_ds_IntMap
 _hx_classes["haxe.ds.IntMap"] = haxe_ds_IntMap
 
@@ -1745,8 +1796,8 @@ class haxe_ds_List:
         self.h = None
         self.length = 0
 
-    def add(self,item):
-        x = haxe_ds__List_ListNode(item,None)
+    def add(self, item):
+        x = haxe_ds__List_ListNode(item, None)
         if (self.h is None):
             self.h = x
         else:
@@ -1778,6 +1829,8 @@ class haxe_ds_List:
         _hx_o.h = None
         _hx_o.q = None
         _hx_o.length = None
+
+
 haxe_ds_List._hx_class = haxe_ds_List
 _hx_classes["haxe.ds.List"] = haxe_ds_List
 
@@ -1787,7 +1840,7 @@ class haxe_ds__List_ListNode:
     __slots__ = ("item", "next")
     _hx_fields = ["item", "next"]
 
-    def __init__(self,item,next):
+    def __init__(self, item, next):
         self.item = item
         self.next = next
 
@@ -1795,6 +1848,8 @@ class haxe_ds__List_ListNode:
     def _hx_empty_init(_hx_o):
         _hx_o.item = None
         _hx_o.next = None
+
+
 haxe_ds__List_ListNode._hx_class = haxe_ds__List_ListNode
 _hx_classes["haxe.ds._List.ListNode"] = haxe_ds__List_ListNode
 
@@ -1809,7 +1864,7 @@ class haxe_ds_ObjectMap:
     def __init__(self):
         self.h = dict()
 
-    def set(self,key,value):
+    def set(self, key, value):
         self.h[key] = value
 
     def keys(self):
@@ -1818,8 +1873,11 @@ class haxe_ds_ObjectMap:
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.h = None
+
+
 haxe_ds_ObjectMap._hx_class = haxe_ds_ObjectMap
 _hx_classes["haxe.ds.ObjectMap"] = haxe_ds_ObjectMap
+
 
 class haxe_ds_Option(Enum):
     __slots__ = ()
@@ -1829,6 +1887,8 @@ class haxe_ds_Option(Enum):
     @staticmethod
     def Some(v):
         return haxe_ds_Option("Some", 0, (v,))
+
+
 haxe_ds_Option._hx_None = haxe_ds_Option("None", 1, ())
 haxe_ds_Option._hx_class = haxe_ds_Option
 _hx_classes["haxe.ds.Option"] = haxe_ds_Option
@@ -1840,18 +1900,20 @@ class haxe_io_Bytes:
     _hx_fields = ["length", "b"]
     _hx_statics = ["alloc"]
 
-    def __init__(self,length,b):
+    def __init__(self, length, b):
         self.length = length
         self.b = b
 
     @staticmethod
     def alloc(length):
-        return haxe_io_Bytes(length,bytearray(length))
+        return haxe_io_Bytes(length, bytearray(length))
 
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.length = None
         _hx_o.b = None
+
+
 haxe_io_Bytes._hx_class = haxe_io_Bytes
 _hx_classes["haxe.io.Bytes"] = haxe_io_Bytes
 
@@ -1862,7 +1924,7 @@ class haxe_iterators_ArrayIterator:
     _hx_fields = ["array", "current"]
     _hx_methods = ["hasNext", "next"]
 
-    def __init__(self,array):
+    def __init__(self, array):
         self.current = 0
         self.array = array
 
@@ -1883,6 +1945,8 @@ class haxe_iterators_ArrayIterator:
     def _hx_empty_init(_hx_o):
         _hx_o.array = None
         _hx_o.current = None
+
+
 haxe_iterators_ArrayIterator._hx_class = haxe_iterators_ArrayIterator
 _hx_classes["haxe.iterators.ArrayIterator"] = haxe_iterators_ArrayIterator
 
@@ -1893,7 +1957,7 @@ class haxe_iterators_ArrayKeyValueIterator:
     _hx_fields = ["current", "array"]
     _hx_methods = ["hasNext", "next"]
 
-    def __init__(self,array):
+    def __init__(self, array):
         self.current = 0
         self.array = array
 
@@ -1914,6 +1978,8 @@ class haxe_iterators_ArrayKeyValueIterator:
     def _hx_empty_init(_hx_o):
         _hx_o.current = None
         _hx_o.array = None
+
+
 haxe_iterators_ArrayKeyValueIterator._hx_class = haxe_iterators_ArrayKeyValueIterator
 _hx_classes["haxe.iterators.ArrayKeyValueIterator"] = haxe_iterators_ArrayKeyValueIterator
 
@@ -1922,10 +1988,11 @@ class promhx_base_AsyncBase:
     _hx_class_name = "promhx.base.AsyncBase"
     __slots__ = ("_val", "_resolved", "_fulfilled", "_pending", "_update", "_error", "_errored", "_errorMap", "_errorVal", "_errorPending")
     _hx_fields = ["_val", "_resolved", "_fulfilled", "_pending", "_update", "_error", "_errored", "_errorMap", "_errorVal", "_errorPending"]
-    _hx_methods = ["catchError", "errorThen", "isResolved", "isErrored", "isErrorHandled", "isErrorPending", "isFulfilled", "isPending", "handleResolve", "_resolve", "handleError", "_handleError", "then", "unlink", "isLinked"]
+    _hx_methods = ["catchError", "errorThen", "isResolved", "isErrored", "isErrorHandled", "isErrorPending", "isFulfilled",
+                   "isPending", "handleResolve", "_resolve", "handleError", "_handleError", "then", "unlink", "isLinked"]
     _hx_statics = ["link", "immediateLinkUpdate", "linkAll", "pipeLink", "allResolved", "allFulfilled"]
 
-    def __init__(self,d = None):
+    def __init__(self, d=None):
         self._errorVal = None
         self._errorMap = None
         self._val = None
@@ -1938,21 +2005,23 @@ class promhx_base_AsyncBase:
         self._errored = False
         if (d is not None):
             next = self
+
             def _hx_local_0(x):
                 return x
             f = _hx_local_0
             _this = d._update
+
             def _hx_local_1(x):
                 next.handleResolve(f(x))
             _this.append(_hx_AnonObject({'_hx_async': next, 'linkf': _hx_local_1}))
-            promhx_base_AsyncBase.immediateLinkUpdate(d,next,f)
+            promhx_base_AsyncBase.immediateLinkUpdate(d, next, f)
 
-    def catchError(self,f):
+    def catchError(self, f):
         _this = self._error
         _this.append(f)
         return self
 
-    def errorThen(self,f):
+    def errorThen(self, f):
         self._errorMap = f
         return self
 
@@ -1974,14 +2043,15 @@ class promhx_base_AsyncBase:
     def isPending(self):
         return self._pending
 
-    def handleResolve(self,val):
+    def handleResolve(self, val):
         self._resolve(val)
 
-    def _resolve(self,val):
+    def _resolve(self, val):
         _gthis = self
         if self._pending:
             _g = self._resolve
             val1 = val
+
             def _hx_local_0():
                 _g(val1)
             tmp = _hx_local_0
@@ -1990,6 +2060,7 @@ class promhx_base_AsyncBase:
         else:
             self._resolved = True
             self._pending = True
+
             def _hx_local_2():
                 _gthis._val = val
                 _g = 0
@@ -2008,11 +2079,12 @@ class promhx_base_AsyncBase:
             promhx_base_EventLoop.queue.add(_hx_local_2)
             promhx_base_EventLoop.continueOnNextLoop()
 
-    def handleError(self,error):
+    def handleError(self, error):
         self._handleError(error)
 
-    def _handleError(self,error):
+    def _handleError(self, error):
         _gthis = self
+
         def _hx_local_2(e):
             if (len(_gthis._error) > 0):
                 _g = 0
@@ -2036,6 +2108,7 @@ class promhx_base_AsyncBase:
             self._errorPending = True
             self._errored = True
             self._errorVal = error
+
             def _hx_local_3():
                 if (_gthis._errorMap is not None):
                     try:
@@ -2049,28 +2122,30 @@ class promhx_base_AsyncBase:
             promhx_base_EventLoop.queue.add(_hx_local_3)
             promhx_base_EventLoop.continueOnNextLoop()
 
-    def then(self,f):
+    def then(self, f):
         ret = promhx_base_AsyncBase(None)
         next = ret
         f1 = f
         _this = self._update
+
         def _hx_local_0(x):
             next.handleResolve(f1(x))
         _this.append(_hx_AnonObject({'_hx_async': next, 'linkf': _hx_local_0}))
-        promhx_base_AsyncBase.immediateLinkUpdate(self,next,f1)
+        promhx_base_AsyncBase.immediateLinkUpdate(self, next, f1)
         return ret
 
-    def unlink(self,to):
+    def unlink(self, to):
         _gthis = self
+
         def _hx_local_1():
             def _hx_local_0(x):
                 return (x._hx_async != to)
-            tmp = list(filter(_hx_local_0,_gthis._update))
+            tmp = list(filter(_hx_local_0, _gthis._update))
             _gthis._update = tmp
         promhx_base_EventLoop.queue.add(_hx_local_1)
         promhx_base_EventLoop.continueOnNextLoop()
 
-    def isLinked(self,to):
+    def isLinked(self, to):
         updated = False
         _g = 0
         _g1 = self._update
@@ -2082,15 +2157,16 @@ class promhx_base_AsyncBase:
         return updated
 
     @staticmethod
-    def link(current,next,f):
+    def link(current, next, f):
         _this = current._update
+
         def _hx_local_0(x):
             next.handleResolve(f(x))
         _this.append(_hx_AnonObject({'_hx_async': next, 'linkf': _hx_local_0}))
-        promhx_base_AsyncBase.immediateLinkUpdate(current,next,f)
+        promhx_base_AsyncBase.immediateLinkUpdate(current, next, f)
 
     @staticmethod
-    def immediateLinkUpdate(current,next,f):
+    def immediateLinkUpdate(current, next, f):
         if ((current._errored and (not current._errorPending)) and ((len(current._error) <= 0))):
             next.handleError(current._errorVal)
         if (current._resolved and (not current._pending)):
@@ -2102,8 +2178,8 @@ class promhx_base_AsyncBase:
                 next.handleError(e)
 
     @staticmethod
-    def linkAll(all,next):
-        def _hx_local_0(arr,current,v):
+    def linkAll(all, next):
+        def _hx_local_0(arr, current, v):
             if ((len(arr) == 0) or promhx_base_AsyncBase.allFulfilled(arr)):
                 _g = []
                 a = HxOverrides.iterator(all)
@@ -2126,11 +2202,12 @@ class promhx_base_AsyncBase:
                 a21 = a2.next()
                 if (a21 != a1):
                     _g1.append(a21)
-            def _hx_local_2(_g,current,arr):
+
+            def _hx_local_2(_g, current, arr):
                 def _hx_local_1(v):
-                    (_g[0] if 0 < len(_g) else None)((arr[0] if 0 < len(arr) else None),(current[0] if 0 < len(current) else None),v)
+                    (_g[0] if 0 < len(_g) else None)((arr[0] if 0 < len(arr) else None), (current[0] if 0 < len(current) else None), v)
                 return _hx_local_1
-            x = _hx_AnonObject({'_hx_async': next1, 'linkf': _hx_local_2(_g,[a1],[_g1])})
+            x = _hx_AnonObject({'_hx_async': next1, 'linkf': _hx_local_2(_g, [a1], [_g1])})
             _this.append(x)
         if promhx_base_AsyncBase.allFulfilled(all):
             next1 = next
@@ -2143,8 +2220,9 @@ class promhx_base_AsyncBase:
             next1.handleResolve(_g1)
 
     @staticmethod
-    def pipeLink(current,ret,f):
+    def pipeLink(current, ret, f):
         linked = False
+
         def _hx_local_1(x):
             nonlocal linked
             if (not linked):
@@ -2152,9 +2230,10 @@ class promhx_base_AsyncBase:
                 pipe_ret = f(x)
                 _this = pipe_ret._update
                 _this.append(_hx_AnonObject({'_hx_async': ret, 'linkf': ret.handleResolve}))
+
                 def _hx_local_0(x):
                     return x
-                promhx_base_AsyncBase.immediateLinkUpdate(pipe_ret,ret,_hx_local_0)
+                promhx_base_AsyncBase.immediateLinkUpdate(pipe_ret, ret, _hx_local_0)
         linkf = _hx_local_1
         _this = current._update
         _this.append(_hx_AnonObject({'_hx_async': ret, 'linkf': linkf}))
@@ -2196,6 +2275,8 @@ class promhx_base_AsyncBase:
         _hx_o._errorMap = None
         _hx_o._errorVal = None
         _hx_o._errorPending = None
+
+
 promhx_base_AsyncBase._hx_class = promhx_base_AsyncBase
 _hx_classes["promhx.base.AsyncBase"] = promhx_base_AsyncBase
 
@@ -2209,14 +2290,13 @@ class promhx_Deferred(promhx_base_AsyncBase):
     _hx_interfaces = []
     _hx_super = promhx_base_AsyncBase
 
-
     def __init__(self):
         super().__init__()
 
-    def resolve(self,val):
+    def resolve(self, val):
         self.handleResolve(val)
 
-    def throwError(self,e):
+    def throwError(self, e):
         self.handleError(e)
 
     def promise(self):
@@ -2229,7 +2309,9 @@ class promhx_Deferred(promhx_base_AsyncBase):
         return promhx_PublicStream(self)
 
     @staticmethod
-    def _hx_empty_init(_hx_o):        pass
+    def _hx_empty_init(_hx_o): pass
+
+
 promhx_Deferred._hx_class = promhx_Deferred
 _hx_classes["promhx.Deferred"] = promhx_Deferred
 
@@ -2243,8 +2325,7 @@ class promhx_Promise(promhx_base_AsyncBase):
     _hx_interfaces = []
     _hx_super = promhx_base_AsyncBase
 
-
-    def __init__(self,d = None):
+    def __init__(self, d=None):
         self._rejected = None
         super().__init__(d)
         self._rejected = False
@@ -2252,29 +2333,31 @@ class promhx_Promise(promhx_base_AsyncBase):
     def isRejected(self):
         return self._rejected
 
-    def reject(self,e):
+    def reject(self, e):
         self._rejected = True
         self.handleError(e)
 
-    def handleResolve(self,val):
+    def handleResolve(self, val):
         if self._resolved:
             msg = "Promise has already been resolved"
             raise haxe_Exception.thrown(promhx_error_PromiseError.AlreadyResolved(msg))
         self._resolve(val)
 
-    def then(self,f):
+    def then(self, f):
         ret = promhx_Promise(None)
         next = ret
         f1 = f
         _this = self._update
+
         def _hx_local_0(x):
             next.handleResolve(f1(x))
         _this.append(_hx_AnonObject({'_hx_async': next, 'linkf': _hx_local_0}))
-        promhx_base_AsyncBase.immediateLinkUpdate(self,next,f1)
+        promhx_base_AsyncBase.immediateLinkUpdate(self, next, f1)
         return ret
 
-    def unlink(self,to):
+    def unlink(self, to):
         _gthis = self
+
         def _hx_local_1():
             if (not _gthis._fulfilled):
                 msg = "Downstream Promise is not fullfilled"
@@ -2282,20 +2365,21 @@ class promhx_Promise(promhx_base_AsyncBase):
             else:
                 def _hx_local_0(x):
                     return (x._hx_async != to)
-                tmp = list(filter(_hx_local_0,_gthis._update))
+                tmp = list(filter(_hx_local_0, _gthis._update))
                 _gthis._update = tmp
         promhx_base_EventLoop.queue.add(_hx_local_1)
         promhx_base_EventLoop.continueOnNextLoop()
 
-    def handleError(self,error):
+    def handleError(self, error):
         self._rejected = True
         self._handleError(error)
 
-    def pipe(self,f):
+    def pipe(self, f):
         ret = promhx_Promise(None)
         ret1 = ret
         f1 = f
         linked = False
+
         def _hx_local_1(x):
             nonlocal linked
             if (not linked):
@@ -2303,9 +2387,10 @@ class promhx_Promise(promhx_base_AsyncBase):
                 pipe_ret = f1(x)
                 _this = pipe_ret._update
                 _this.append(_hx_AnonObject({'_hx_async': ret1, 'linkf': ret1.handleResolve}))
+
                 def _hx_local_0(x):
                     return x
-                promhx_base_AsyncBase.immediateLinkUpdate(pipe_ret,ret1,_hx_local_0)
+                promhx_base_AsyncBase.immediateLinkUpdate(pipe_ret, ret1, _hx_local_0)
         linkf = _hx_local_1
         _this = self._update
         _this.append(_hx_AnonObject({'_hx_async': ret1, 'linkf': linkf}))
@@ -2318,8 +2403,9 @@ class promhx_Promise(promhx_base_AsyncBase):
                 ret1.handleError(e)
         return ret
 
-    def errorPipe(self,f):
+    def errorPipe(self, f):
         ret = promhx_Promise()
+
         def _hx_local_0(e):
             piped = f(e)
             piped.then(ret._resolve)
@@ -2332,7 +2418,8 @@ class promhx_Promise(promhx_base_AsyncBase):
         ret = promhx_Promise(None)
         all = itb
         next = ret
-        def _hx_local_0(arr,current,v):
+
+        def _hx_local_0(arr, current, v):
             if ((len(arr) == 0) or promhx_base_AsyncBase.allFulfilled(arr)):
                 _g = []
                 a = HxOverrides.iterator(all)
@@ -2355,11 +2442,12 @@ class promhx_Promise(promhx_base_AsyncBase):
                 a21 = a2.next()
                 if (a21 != a1):
                     _g1.append(a21)
-            def _hx_local_2(current,arr,_g):
+
+            def _hx_local_2(current, arr, _g):
                 def _hx_local_1(v):
-                    (_g[0] if 0 < len(_g) else None)((arr[0] if 0 < len(arr) else None),(current[0] if 0 < len(current) else None),v)
+                    (_g[0] if 0 < len(_g) else None)((arr[0] if 0 < len(arr) else None), (current[0] if 0 < len(current) else None), v)
                 return _hx_local_1
-            x = _hx_AnonObject({'_hx_async': next1, 'linkf': _hx_local_2([a1],[_g1],_g)})
+            x = _hx_AnonObject({'_hx_async': next1, 'linkf': _hx_local_2([a1], [_g1], _g)})
             _this.append(x)
         if promhx_base_AsyncBase.allFulfilled(all):
             next1 = next
@@ -2381,6 +2469,8 @@ class promhx_Promise(promhx_base_AsyncBase):
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o._rejected = None
+
+
 promhx_Promise._hx_class = promhx_Promise
 _hx_classes["promhx.Promise"] = promhx_Promise
 
@@ -2394,8 +2484,7 @@ class promhx_Stream(promhx_base_AsyncBase):
     _hx_interfaces = []
     _hx_super = promhx_base_AsyncBase
 
-
-    def __init__(self,d = None):
+    def __init__(self, d=None):
         self._end_promise = None
         self._end = None
         self._pause = None
@@ -2403,23 +2492,25 @@ class promhx_Stream(promhx_base_AsyncBase):
         super().__init__(d)
         self._end_promise = promhx_Promise()
 
-    def then(self,f):
+    def then(self, f):
         ret = promhx_Stream(None)
         next = ret
         f1 = f
         _this = self._update
+
         def _hx_local_0(x):
             next.handleResolve(f1(x))
         _this.append(_hx_AnonObject({'_hx_async': next, 'linkf': _hx_local_0}))
-        promhx_base_AsyncBase.immediateLinkUpdate(self,next,f1)
+        promhx_base_AsyncBase.immediateLinkUpdate(self, next, f1)
         _this = self._end_promise._update
+
         def _hx_local_1(x):
             ret.end()
         x = _hx_AnonObject({'_hx_async': ret._end_promise, 'linkf': _hx_local_1})
         _this.append(x)
         return ret
 
-    def detachStream(self,_hx_str):
+    def detachStream(self, _hx_str):
         filtered = []
         removed = False
         _g = 0
@@ -2430,7 +2521,7 @@ class promhx_Stream(promhx_base_AsyncBase):
             if (u._hx_async == _hx_str):
                 def _hx_local_1(x):
                     return (x._hx_async != _hx_str._end_promise)
-                tmp = list(filter(_hx_local_1,self._end_promise._update))
+                tmp = list(filter(_hx_local_1, self._end_promise._update))
                 self._end_promise._update = tmp
                 removed = True
             else:
@@ -2440,26 +2531,28 @@ class promhx_Stream(promhx_base_AsyncBase):
 
     def first(self):
         s = promhx_Promise(None)
+
         def _hx_local_0(x):
             if (not s._resolved):
                 s.handleResolve(x)
         self.then(_hx_local_0)
         return s
 
-    def handleResolve(self,val):
+    def handleResolve(self, val):
         if ((not self._end) and (not self._pause)):
             self._resolve(val)
 
-    def pause(self,_hx_set = None):
+    def pause(self, _hx_set=None):
         if (_hx_set is None):
             _hx_set = (not self._pause)
         self._pause = _hx_set
 
-    def pipe(self,f):
+    def pipe(self, f):
         ret = promhx_Stream(None)
         ret1 = ret
         f1 = f
         linked = False
+
         def _hx_local_1(x):
             nonlocal linked
             if (not linked):
@@ -2467,9 +2560,10 @@ class promhx_Stream(promhx_base_AsyncBase):
                 pipe_ret = f1(x)
                 _this = pipe_ret._update
                 _this.append(_hx_AnonObject({'_hx_async': ret1, 'linkf': ret1.handleResolve}))
+
                 def _hx_local_0(x):
                     return x
-                promhx_base_AsyncBase.immediateLinkUpdate(pipe_ret,ret1,_hx_local_0)
+                promhx_base_AsyncBase.immediateLinkUpdate(pipe_ret, ret1, _hx_local_0)
         linkf = _hx_local_1
         _this = self._update
         _this.append(_hx_AnonObject({'_hx_async': ret1, 'linkf': linkf}))
@@ -2480,19 +2574,22 @@ class promhx_Stream(promhx_base_AsyncBase):
                 None
                 e = haxe_Exception.caught(_g).unwrap()
                 ret1.handleError(e)
+
         def _hx_local_2(x):
             ret.end()
         self._end_promise.then(_hx_local_2)
         return ret
 
-    def errorPipe(self,f):
+    def errorPipe(self, f):
         ret = promhx_Stream(None)
+
         def _hx_local_0(e):
             piped = f(e)
             piped.then(ret._resolve)
             piped._end_promise.then(ret._end_promise._resolve)
         self.catchError(_hx_local_0)
         self.then(ret._resolve)
+
         def _hx_local_1(x):
             ret.end()
         self._end_promise.then(_hx_local_1)
@@ -2516,51 +2613,58 @@ class promhx_Stream(promhx_base_AsyncBase):
         promhx_base_EventLoop.continueOnNextLoop()
         return self
 
-    def endThen(self,f):
+    def endThen(self, f):
         return self._end_promise.then(f)
 
-    def filter(self,f):
+    def filter(self, f):
         ret = promhx_Stream(None)
         _this = self._update
+
         def _hx_local_0(x):
             if f(x):
                 ret.handleResolve(x)
         _this.append(_hx_AnonObject({'_hx_async': ret, 'linkf': _hx_local_0}))
+
         def _hx_local_1(x):
             return x
-        promhx_base_AsyncBase.immediateLinkUpdate(self,ret,_hx_local_1)
+        promhx_base_AsyncBase.immediateLinkUpdate(self, ret, _hx_local_1)
         return ret
 
-    def concat(self,s):
+    def concat(self, s):
         ret = promhx_Stream(None)
         _this = self._update
         _this.append(_hx_AnonObject({'_hx_async': ret, 'linkf': ret.handleResolve}))
+
         def _hx_local_0(x):
             return x
-        promhx_base_AsyncBase.immediateLinkUpdate(self,ret,_hx_local_0)
+        promhx_base_AsyncBase.immediateLinkUpdate(self, ret, _hx_local_0)
+
         def _hx_local_3(_):
             def _hx_local_1(x):
                 ret.handleResolve(x)
                 return ret
             s.pipe(_hx_local_1)
+
             def _hx_local_2(_):
                 ret.end()
             s._end_promise.then(_hx_local_2)
         self._end_promise.then(_hx_local_3)
         return ret
 
-    def merge(self,s):
+    def merge(self, s):
         ret = promhx_Stream(None)
         _this = self._update
         _this.append(_hx_AnonObject({'_hx_async': ret, 'linkf': ret.handleResolve}))
         _this = s._update
         _this.append(_hx_AnonObject({'_hx_async': ret, 'linkf': ret.handleResolve}))
+
         def _hx_local_0(x):
             return x
-        promhx_base_AsyncBase.immediateLinkUpdate(self,ret,_hx_local_0)
+        promhx_base_AsyncBase.immediateLinkUpdate(self, ret, _hx_local_0)
+
         def _hx_local_1(x):
             return x
-        promhx_base_AsyncBase.immediateLinkUpdate(s,ret,_hx_local_1)
+        promhx_base_AsyncBase.immediateLinkUpdate(s, ret, _hx_local_1)
         return ret
 
     @staticmethod
@@ -2578,7 +2682,8 @@ class promhx_Stream(promhx_base_AsyncBase):
         ret = promhx_Stream(None)
         all = itb
         next = ret
-        def _hx_local_0(arr,current,v):
+
+        def _hx_local_0(arr, current, v):
             if ((len(arr) == 0) or promhx_base_AsyncBase.allFulfilled(arr)):
                 _g = []
                 a = HxOverrides.iterator(all)
@@ -2601,11 +2706,12 @@ class promhx_Stream(promhx_base_AsyncBase):
                 a21 = a2.next()
                 if (a21 != a1):
                     _g1.append(a21)
-            def _hx_local_2(current,arr,_g):
+
+            def _hx_local_2(current, arr, _g):
                 def _hx_local_1(v):
-                    (_g[0] if 0 < len(_g) else None)((arr[0] if 0 < len(arr) else None),(current[0] if 0 < len(current) else None),v)
+                    (_g[0] if 0 < len(_g) else None)((arr[0] if 0 < len(arr) else None), (current[0] if 0 < len(current) else None), v)
                 return _hx_local_1
-            x = _hx_AnonObject({'_hx_async': next1, 'linkf': _hx_local_2([a1],[_g1],_g)})
+            x = _hx_AnonObject({'_hx_async': next1, 'linkf': _hx_local_2([a1], [_g1], _g)})
             _this.append(x)
         if promhx_base_AsyncBase.allFulfilled(all):
             next1 = next
@@ -2648,6 +2754,8 @@ class promhx_Stream(promhx_base_AsyncBase):
         _hx_o._pause = None
         _hx_o._end = None
         _hx_o._end_promise = None
+
+
 promhx_Stream._hx_class = promhx_Stream
 _hx_classes["promhx.Stream"] = promhx_Stream
 
@@ -2661,17 +2769,16 @@ class promhx_PublicStream(promhx_Stream):
     _hx_interfaces = []
     _hx_super = promhx_Stream
 
-
-    def __init__(self,_hx_def = None):
+    def __init__(self, _hx_def=None):
         super().__init__(_hx_def)
 
-    def resolve(self,val):
+    def resolve(self, val):
         self.handleResolve(val)
 
-    def throwError(self,e):
+    def throwError(self, e):
         self.handleError(e)
 
-    def update(self,val):
+    def update(self, val):
         self.handleResolve(val)
 
     @staticmethod
@@ -2681,7 +2788,9 @@ class promhx_PublicStream(promhx_Stream):
         return ps
 
     @staticmethod
-    def _hx_empty_init(_hx_o):        pass
+    def _hx_empty_init(_hx_o): pass
+
+
 promhx_PublicStream._hx_class = promhx_PublicStream
 _hx_classes["promhx.PublicStream"] = promhx_PublicStream
 
@@ -2710,7 +2819,7 @@ class promhx_base_EventLoop:
         return promhx_base_EventLoop.queue.isEmpty()
 
     @staticmethod
-    def finish(max_iterations = None):
+    def finish(max_iterations=None):
         if (max_iterations is None):
             max_iterations = 1000
         fn = None
@@ -2746,8 +2855,11 @@ class promhx_base_EventLoop:
             promhx_base_EventLoop.nextLoop(promhx_base_EventLoop.f)
         else:
             promhx_base_EventLoop.f()
+
+
 promhx_base_EventLoop._hx_class = promhx_base_EventLoop
 _hx_classes["promhx.base.EventLoop"] = promhx_base_EventLoop
+
 
 class promhx_error_PromiseError(Enum):
     __slots__ = ()
@@ -2761,6 +2873,8 @@ class promhx_error_PromiseError(Enum):
     @staticmethod
     def DownstreamNotFullfilled(message):
         return promhx_error_PromiseError("DownstreamNotFullfilled", 1, (message,))
+
+
 promhx_error_PromiseError._hx_class = promhx_error_PromiseError
 _hx_classes["promhx.error.PromiseError"] = promhx_error_PromiseError
 
@@ -2768,26 +2882,27 @@ _hx_classes["promhx.error.PromiseError"] = promhx_error_PromiseError
 class python_Boot:
     _hx_class_name = "python.Boot"
     __slots__ = ()
-    _hx_statics = ["keywords", "toString1", "fields", "simpleField", "hasField", "field", "getInstanceFields", "getSuperClass", "getClassFields", "prefixLength", "unhandleKeywords"]
+    _hx_statics = ["keywords", "toString1", "fields", "simpleField", "hasField", "field",
+                   "getInstanceFields", "getSuperClass", "getClassFields", "prefixLength", "unhandleKeywords"]
 
     @staticmethod
-    def toString1(o,s):
+    def toString1(o, s):
         if (o is None):
             return "null"
-        if isinstance(o,str):
+        if isinstance(o, str):
             return o
         if (s is None):
             s = ""
         if (len(s) >= 5):
             return "<...>"
-        if isinstance(o,bool):
+        if isinstance(o, bool):
             if o:
                 return "true"
             else:
                 return "false"
-        if (isinstance(o,int) and (not isinstance(o,bool))):
+        if (isinstance(o, int) and (not isinstance(o, bool))):
             return str(o)
-        if isinstance(o,float):
+        if isinstance(o, float):
             try:
                 if (o == int(o)):
                     return str(Math.floor((o + 0.5)))
@@ -2796,7 +2911,7 @@ class python_Boot:
             except BaseException as _g:
                 None
                 return str(o)
-        if isinstance(o,list):
+        if isinstance(o, list):
             o1 = o
             l = len(o1)
             st = "["
@@ -2809,16 +2924,17 @@ class python_Boot:
                 prefix = ""
                 if (i > 0):
                     prefix = ","
-                st = (("null" if st is None else st) + HxOverrides.stringOrNull(((("null" if prefix is None else prefix) + HxOverrides.stringOrNull(python_Boot.toString1((o1[i] if i >= 0 and i < len(o1) else None),s))))))
+                st = (("null" if st is None else st) + HxOverrides.stringOrNull(((("null" if prefix is None else prefix) +
+                                                                                  HxOverrides.stringOrNull(python_Boot.toString1((o1[i] if i >= 0 and i < len(o1) else None), s))))))
             st = (("null" if st is None else st) + "]")
             return st
         try:
-            if hasattr(o,"toString"):
+            if hasattr(o, "toString"):
                 return o.toString()
         except BaseException as _g:
             None
-        if hasattr(o,"__class__"):
-            if isinstance(o,_hx_AnonObject):
+        if hasattr(o, "__class__"):
+            if isinstance(o, _hx_AnonObject):
                 toStr = None
                 try:
                     fields = python_Boot.fields(o)
@@ -2827,7 +2943,7 @@ class python_Boot:
                     while (_g1 < len(fields)):
                         f = (fields[_g1] if _g1 >= 0 and _g1 < len(fields) else None)
                         _g1 = (_g1 + 1)
-                        x = ((("" + ("null" if f is None else f)) + " : ") + HxOverrides.stringOrNull(python_Boot.toString1(python_Boot.simpleField(o,f),(("null" if s is None else s) + "\t"))))
+                        x = ((("" + ("null" if f is None else f)) + " : ") + HxOverrides.stringOrNull(python_Boot.toString1(python_Boot.simpleField(o, f), (("null" if s is None else s) + "\t"))))
                         _g.append(x)
                     fieldsStr = _g
                     toStr = (("{ " + HxOverrides.stringOrNull(", ".join([x1 for x1 in fieldsStr]))) + " }")
@@ -2838,7 +2954,7 @@ class python_Boot:
                     return "{ ... }"
                 else:
                     return toStr
-            if isinstance(o,Enum):
+            if isinstance(o, Enum):
                 o1 = o
                 l = len(o1.params)
                 hasParams = (l > 0)
@@ -2852,11 +2968,12 @@ class python_Boot:
                         prefix = ""
                         if (i > 0):
                             prefix = ","
-                        paramsStr = (("null" if paramsStr is None else paramsStr) + HxOverrides.stringOrNull(((("null" if prefix is None else prefix) + HxOverrides.stringOrNull(python_Boot.toString1(o1.params[i],s))))))
+                        paramsStr = (("null" if paramsStr is None else paramsStr) +
+                                     HxOverrides.stringOrNull(((("null" if prefix is None else prefix) + HxOverrides.stringOrNull(python_Boot.toString1(o1.params[i], s))))))
                     return (((HxOverrides.stringOrNull(o1.tag) + "(") + ("null" if paramsStr is None else paramsStr)) + ")")
                 else:
                     return o1.tag
-            if hasattr(o,"_hx_class_name"):
+            if hasattr(o, "_hx_class_name"):
                 if (o.__class__.__name__ != "type"):
                     fields = python_Boot.getInstanceFields(o)
                     _g = []
@@ -2864,7 +2981,7 @@ class python_Boot:
                     while (_g1 < len(fields)):
                         f = (fields[_g1] if _g1 >= 0 and _g1 < len(fields) else None)
                         _g1 = (_g1 + 1)
-                        x = ((("" + ("null" if f is None else f)) + " : ") + HxOverrides.stringOrNull(python_Boot.toString1(python_Boot.simpleField(o,f),(("null" if s is None else s) + "\t"))))
+                        x = ((("" + ("null" if f is None else f)) + " : ") + HxOverrides.stringOrNull(python_Boot.toString1(python_Boot.simpleField(o, f), (("null" if s is None else s) + "\t"))))
                         _g.append(x)
                     fieldsStr = _g
                     toStr = (((HxOverrides.stringOrNull(o._hx_class_name) + "( ") + HxOverrides.stringOrNull(", ".join([x1 for x1 in fieldsStr]))) + " )")
@@ -2876,7 +2993,7 @@ class python_Boot:
                     while (_g1 < len(fields)):
                         f = (fields[_g1] if _g1 >= 0 and _g1 < len(fields) else None)
                         _g1 = (_g1 + 1)
-                        x = ((("" + ("null" if f is None else f)) + " : ") + HxOverrides.stringOrNull(python_Boot.toString1(python_Boot.simpleField(o,f),(("null" if s is None else s) + "\t"))))
+                        x = ((("" + ("null" if f is None else f)) + " : ") + HxOverrides.stringOrNull(python_Boot.toString1(python_Boot.simpleField(o, f), (("null" if s is None else s) + "\t"))))
                         _g.append(x)
                     fieldsStr = _g
                     toStr = (((("#" + HxOverrides.stringOrNull(o._hx_class_name)) + "( ") + HxOverrides.stringOrNull(", ".join([x1 for x1 in fieldsStr]))) + " )")
@@ -2888,13 +3005,13 @@ class python_Boot:
             if callable(o):
                 return "function"
             try:
-                if hasattr(o,"__repr__"):
+                if hasattr(o, "__repr__"):
                     return o.__repr__()
             except BaseException as _g:
                 None
-            if hasattr(o,"__str__"):
+            if hasattr(o, "__str__"):
                 return o.__str__([])
-            if hasattr(o,"__name__"):
+            if hasattr(o, "__name__"):
                 return o.__name__
             return "???"
         else:
@@ -2904,18 +3021,18 @@ class python_Boot:
     def fields(o):
         a = []
         if (o is not None):
-            if hasattr(o,"_hx_fields"):
+            if hasattr(o, "_hx_fields"):
                 fields = o._hx_fields
                 if (fields is not None):
                     return list(fields)
-            if isinstance(o,_hx_AnonObject):
+            if isinstance(o, _hx_AnonObject):
                 d = o.__dict__
                 keys = d.keys()
                 handler = python_Boot.unhandleKeywords
                 for k in keys:
                     if (k != '_hx_disable_getattr'):
                         a.append(handler(k))
-            elif hasattr(o,"__dict__"):
+            elif hasattr(o, "__dict__"):
                 d = o.__dict__
                 keys1 = d.keys()
                 for k in keys1:
@@ -2923,225 +3040,244 @@ class python_Boot:
         return a
 
     @staticmethod
-    def simpleField(o,field):
+    def simpleField(o, field):
         if (field is None):
             return None
-        field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field) if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
-        if hasattr(o,field1):
-            return getattr(o,field1)
+        field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field)
+                                                                              if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
+        if hasattr(o, field1):
+            return getattr(o, field1)
         else:
             return None
 
     @staticmethod
-    def hasField(o,field):
-        if isinstance(o,_hx_AnonObject):
+    def hasField(o, field):
+        if isinstance(o, _hx_AnonObject):
             return o._hx_hasattr(field)
-        return hasattr(o,(("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field) if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field)))
+        return hasattr(o, (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field) if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field)))
 
     @staticmethod
-    def field(o,field):
+    def field(o, field):
         if (field is None):
             return None
-        if isinstance(o,str):
+        if isinstance(o, str):
             field1 = field
             _hx_local_0 = len(field1)
             if (_hx_local_0 == 10):
                 if (field1 == "charCodeAt"):
-                    return python_internal_MethodClosure(o,HxString.charCodeAt)
+                    return python_internal_MethodClosure(o, HxString.charCodeAt)
                 else:
-                    field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field) if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
-                    if hasattr(o,field1):
-                        return getattr(o,field1)
+                    field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field)
+                                                                                          if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
+                    if hasattr(o, field1):
+                        return getattr(o, field1)
                     else:
                         return None
             elif (_hx_local_0 == 11):
                 if (field1 == "lastIndexOf"):
-                    return python_internal_MethodClosure(o,HxString.lastIndexOf)
+                    return python_internal_MethodClosure(o, HxString.lastIndexOf)
                 elif (field1 == "toLowerCase"):
-                    return python_internal_MethodClosure(o,HxString.toLowerCase)
+                    return python_internal_MethodClosure(o, HxString.toLowerCase)
                 elif (field1 == "toUpperCase"):
-                    return python_internal_MethodClosure(o,HxString.toUpperCase)
+                    return python_internal_MethodClosure(o, HxString.toUpperCase)
                 else:
-                    field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field) if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
-                    if hasattr(o,field1):
-                        return getattr(o,field1)
+                    field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field)
+                                                                                          if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
+                    if hasattr(o, field1):
+                        return getattr(o, field1)
                     else:
                         return None
             elif (_hx_local_0 == 9):
                 if (field1 == "substring"):
-                    return python_internal_MethodClosure(o,HxString.substring)
+                    return python_internal_MethodClosure(o, HxString.substring)
                 else:
-                    field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field) if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
-                    if hasattr(o,field1):
-                        return getattr(o,field1)
+                    field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field)
+                                                                                          if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
+                    if hasattr(o, field1):
+                        return getattr(o, field1)
                     else:
                         return None
             elif (_hx_local_0 == 5):
                 if (field1 == "split"):
-                    return python_internal_MethodClosure(o,HxString.split)
+                    return python_internal_MethodClosure(o, HxString.split)
                 else:
-                    field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field) if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
-                    if hasattr(o,field1):
-                        return getattr(o,field1)
+                    field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field)
+                                                                                          if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
+                    if hasattr(o, field1):
+                        return getattr(o, field1)
                     else:
                         return None
             elif (_hx_local_0 == 7):
                 if (field1 == "indexOf"):
-                    return python_internal_MethodClosure(o,HxString.indexOf)
+                    return python_internal_MethodClosure(o, HxString.indexOf)
                 else:
-                    field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field) if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
-                    if hasattr(o,field1):
-                        return getattr(o,field1)
+                    field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field)
+                                                                                          if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
+                    if hasattr(o, field1):
+                        return getattr(o, field1)
                     else:
                         return None
             elif (_hx_local_0 == 8):
                 if (field1 == "toString"):
-                    return python_internal_MethodClosure(o,HxString.toString)
+                    return python_internal_MethodClosure(o, HxString.toString)
                 else:
-                    field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field) if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
-                    if hasattr(o,field1):
-                        return getattr(o,field1)
+                    field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field)
+                                                                                          if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
+                    if hasattr(o, field1):
+                        return getattr(o, field1)
                     else:
                         return None
             elif (_hx_local_0 == 6):
                 if (field1 == "charAt"):
-                    return python_internal_MethodClosure(o,HxString.charAt)
+                    return python_internal_MethodClosure(o, HxString.charAt)
                 elif (field1 == "length"):
                     return len(o)
                 elif (field1 == "substr"):
-                    return python_internal_MethodClosure(o,HxString.substr)
+                    return python_internal_MethodClosure(o, HxString.substr)
                 else:
-                    field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field) if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
-                    if hasattr(o,field1):
-                        return getattr(o,field1)
+                    field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field)
+                                                                                          if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
+                    if hasattr(o, field1):
+                        return getattr(o, field1)
                     else:
                         return None
             else:
-                field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field) if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
-                if hasattr(o,field1):
-                    return getattr(o,field1)
+                field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field)
+                                                                                      if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
+                if hasattr(o, field1):
+                    return getattr(o, field1)
                 else:
                     return None
-        elif isinstance(o,list):
+        elif isinstance(o, list):
             field1 = field
             _hx_local_1 = len(field1)
             if (_hx_local_1 == 11):
                 if (field1 == "lastIndexOf"):
-                    return python_internal_MethodClosure(o,python_internal_ArrayImpl.lastIndexOf)
+                    return python_internal_MethodClosure(o, python_internal_ArrayImpl.lastIndexOf)
                 else:
-                    field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field) if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
-                    if hasattr(o,field1):
-                        return getattr(o,field1)
+                    field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field)
+                                                                                          if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
+                    if hasattr(o, field1):
+                        return getattr(o, field1)
                     else:
                         return None
             elif (_hx_local_1 == 4):
                 if (field1 == "copy"):
-                    return python_internal_MethodClosure(o,python_internal_ArrayImpl.copy)
+                    return python_internal_MethodClosure(o, python_internal_ArrayImpl.copy)
                 elif (field1 == "join"):
-                    return python_internal_MethodClosure(o,python_internal_ArrayImpl.join)
+                    return python_internal_MethodClosure(o, python_internal_ArrayImpl.join)
                 elif (field1 == "push"):
-                    return python_internal_MethodClosure(o,python_internal_ArrayImpl.push)
+                    return python_internal_MethodClosure(o, python_internal_ArrayImpl.push)
                 elif (field1 == "sort"):
-                    return python_internal_MethodClosure(o,python_internal_ArrayImpl.sort)
+                    return python_internal_MethodClosure(o, python_internal_ArrayImpl.sort)
                 else:
-                    field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field) if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
-                    if hasattr(o,field1):
-                        return getattr(o,field1)
+                    field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field)
+                                                                                          if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
+                    if hasattr(o, field1):
+                        return getattr(o, field1)
                     else:
                         return None
             elif (_hx_local_1 == 5):
                 if (field1 == "shift"):
-                    return python_internal_MethodClosure(o,python_internal_ArrayImpl.shift)
+                    return python_internal_MethodClosure(o, python_internal_ArrayImpl.shift)
                 elif (field1 == "slice"):
-                    return python_internal_MethodClosure(o,python_internal_ArrayImpl.slice)
+                    return python_internal_MethodClosure(o, python_internal_ArrayImpl.slice)
                 else:
-                    field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field) if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
-                    if hasattr(o,field1):
-                        return getattr(o,field1)
+                    field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field)
+                                                                                          if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
+                    if hasattr(o, field1):
+                        return getattr(o, field1)
                     else:
                         return None
             elif (_hx_local_1 == 7):
                 if (field1 == "indexOf"):
-                    return python_internal_MethodClosure(o,python_internal_ArrayImpl.indexOf)
+                    return python_internal_MethodClosure(o, python_internal_ArrayImpl.indexOf)
                 elif (field1 == "reverse"):
-                    return python_internal_MethodClosure(o,python_internal_ArrayImpl.reverse)
+                    return python_internal_MethodClosure(o, python_internal_ArrayImpl.reverse)
                 elif (field1 == "unshift"):
-                    return python_internal_MethodClosure(o,python_internal_ArrayImpl.unshift)
+                    return python_internal_MethodClosure(o, python_internal_ArrayImpl.unshift)
                 else:
-                    field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field) if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
-                    if hasattr(o,field1):
-                        return getattr(o,field1)
+                    field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field)
+                                                                                          if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
+                    if hasattr(o, field1):
+                        return getattr(o, field1)
                     else:
                         return None
             elif (_hx_local_1 == 3):
                 if (field1 == "map"):
-                    return python_internal_MethodClosure(o,python_internal_ArrayImpl.map)
+                    return python_internal_MethodClosure(o, python_internal_ArrayImpl.map)
                 elif (field1 == "pop"):
-                    return python_internal_MethodClosure(o,python_internal_ArrayImpl.pop)
+                    return python_internal_MethodClosure(o, python_internal_ArrayImpl.pop)
                 else:
-                    field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field) if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
-                    if hasattr(o,field1):
-                        return getattr(o,field1)
+                    field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field)
+                                                                                          if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
+                    if hasattr(o, field1):
+                        return getattr(o, field1)
                     else:
                         return None
             elif (_hx_local_1 == 8):
                 if (field1 == "contains"):
-                    return python_internal_MethodClosure(o,python_internal_ArrayImpl.contains)
+                    return python_internal_MethodClosure(o, python_internal_ArrayImpl.contains)
                 elif (field1 == "iterator"):
-                    return python_internal_MethodClosure(o,python_internal_ArrayImpl.iterator)
+                    return python_internal_MethodClosure(o, python_internal_ArrayImpl.iterator)
                 elif (field1 == "toString"):
-                    return python_internal_MethodClosure(o,python_internal_ArrayImpl.toString)
+                    return python_internal_MethodClosure(o, python_internal_ArrayImpl.toString)
                 else:
-                    field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field) if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
-                    if hasattr(o,field1):
-                        return getattr(o,field1)
+                    field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field)
+                                                                                          if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
+                    if hasattr(o, field1):
+                        return getattr(o, field1)
                     else:
                         return None
             elif (_hx_local_1 == 16):
                 if (field1 == "keyValueIterator"):
-                    return python_internal_MethodClosure(o,python_internal_ArrayImpl.keyValueIterator)
+                    return python_internal_MethodClosure(o, python_internal_ArrayImpl.keyValueIterator)
                 else:
-                    field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field) if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
-                    if hasattr(o,field1):
-                        return getattr(o,field1)
+                    field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field)
+                                                                                          if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
+                    if hasattr(o, field1):
+                        return getattr(o, field1)
                     else:
                         return None
             elif (_hx_local_1 == 6):
                 if (field1 == "concat"):
-                    return python_internal_MethodClosure(o,python_internal_ArrayImpl.concat)
+                    return python_internal_MethodClosure(o, python_internal_ArrayImpl.concat)
                 elif (field1 == "filter"):
-                    return python_internal_MethodClosure(o,python_internal_ArrayImpl.filter)
+                    return python_internal_MethodClosure(o, python_internal_ArrayImpl.filter)
                 elif (field1 == "insert"):
-                    return python_internal_MethodClosure(o,python_internal_ArrayImpl.insert)
+                    return python_internal_MethodClosure(o, python_internal_ArrayImpl.insert)
                 elif (field1 == "length"):
                     return len(o)
                 elif (field1 == "remove"):
-                    return python_internal_MethodClosure(o,python_internal_ArrayImpl.remove)
+                    return python_internal_MethodClosure(o, python_internal_ArrayImpl.remove)
                 elif (field1 == "splice"):
-                    return python_internal_MethodClosure(o,python_internal_ArrayImpl.splice)
+                    return python_internal_MethodClosure(o, python_internal_ArrayImpl.splice)
                 else:
-                    field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field) if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
-                    if hasattr(o,field1):
-                        return getattr(o,field1)
+                    field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field)
+                                                                                          if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
+                    if hasattr(o, field1):
+                        return getattr(o, field1)
                     else:
                         return None
             else:
-                field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field) if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
-                if hasattr(o,field1):
-                    return getattr(o,field1)
+                field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field)
+                                                                                      if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
+                if hasattr(o, field1):
+                    return getattr(o, field1)
                 else:
                     return None
         else:
-            field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field) if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
-            if hasattr(o,field1):
-                return getattr(o,field1)
+            field1 = (("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field)
+                                                                                  if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field))
+            if hasattr(o, field1):
+                return getattr(o, field1)
             else:
                 return None
 
     @staticmethod
     def getInstanceFields(c):
-        f = (list(c._hx_fields) if (hasattr(c,"_hx_fields")) else [])
-        if hasattr(c,"_hx_methods"):
+        f = (list(c._hx_fields) if (hasattr(c, "_hx_fields")) else [])
+        if hasattr(c, "_hx_methods"):
             f = (f + c._hx_methods)
         sc = python_Boot.getSuperClass(c)
         if (sc is None):
@@ -3162,7 +3298,7 @@ class python_Boot:
         if (c is None):
             return None
         try:
-            if hasattr(c,"_hx_super"):
+            if hasattr(c, "_hx_super"):
                 return c._hx_super
             return None
         except BaseException as _g:
@@ -3171,7 +3307,7 @@ class python_Boot:
 
     @staticmethod
     def getClassFields(c):
-        if hasattr(c,"_hx_statics"):
+        if hasattr(c, "_hx_statics"):
             x = c._hx_statics
             return list(x)
         else:
@@ -3179,11 +3315,13 @@ class python_Boot:
 
     @staticmethod
     def unhandleKeywords(name):
-        if (HxString.substr(name,0,python_Boot.prefixLength) == "_hx_"):
-            real = HxString.substr(name,python_Boot.prefixLength,None)
+        if (HxString.substr(name, 0, python_Boot.prefixLength) == "_hx_"):
+            real = HxString.substr(name, python_Boot.prefixLength, None)
             if (real in python_Boot.keywords):
                 return real
         return name
+
+
 python_Boot._hx_class = python_Boot
 _hx_classes["python.Boot"] = python_Boot
 
@@ -3197,6 +3335,8 @@ class python__KwArgs_KwArgs_Impl_:
     def fromT(d):
         this1 = python_Lib.anonAsDict(d)
         return this1
+
+
 python__KwArgs_KwArgs_Impl_._hx_class = python__KwArgs_KwArgs_Impl_
 _hx_classes["python._KwArgs.KwArgs_Impl_"] = python__KwArgs_KwArgs_Impl_
 
@@ -3208,17 +3348,19 @@ class python_Lib:
 
     @staticmethod
     def anonToDict(o):
-        if isinstance(o,_hx_AnonObject):
+        if isinstance(o, _hx_AnonObject):
             return o.__dict__.copy()
         else:
             return None
 
     @staticmethod
     def anonAsDict(o):
-        if isinstance(o,_hx_AnonObject):
+        if isinstance(o, _hx_AnonObject):
             return o.__dict__
         else:
             return None
+
+
 python_Lib._hx_class = python_Lib
 _hx_classes["python.Lib"] = python_Lib
 
@@ -3226,10 +3368,11 @@ _hx_classes["python.Lib"] = python_Lib
 class python_internal_ArrayImpl:
     _hx_class_name = "python.internal.ArrayImpl"
     __slots__ = ()
-    _hx_statics = ["concat", "copy", "iterator", "keyValueIterator", "indexOf", "lastIndexOf", "join", "toString", "pop", "push", "unshift", "remove", "contains", "shift", "slice", "sort", "splice", "map", "filter", "insert", "reverse", "_get", "_set"]
+    _hx_statics = ["concat", "copy", "iterator", "keyValueIterator", "indexOf", "lastIndexOf", "join", "toString", "pop", "push",
+                   "unshift", "remove", "contains", "shift", "slice", "sort", "splice", "map", "filter", "insert", "reverse", "_get", "_set"]
 
     @staticmethod
-    def concat(a1,a2):
+    def concat(a1, a2):
         return (a1 + a2)
 
     @staticmethod
@@ -3245,7 +3388,7 @@ class python_internal_ArrayImpl:
         return haxe_iterators_ArrayKeyValueIterator(x)
 
     @staticmethod
-    def indexOf(a,x,fromIndex = None):
+    def indexOf(a, x, fromIndex=None):
         _hx_len = len(a)
         l = (0 if ((fromIndex is None)) else ((_hx_len + fromIndex) if ((fromIndex < 0)) else fromIndex))
         if (l < 0):
@@ -3255,12 +3398,12 @@ class python_internal_ArrayImpl:
         while (_g < _g1):
             i = _g
             _g = (_g + 1)
-            if HxOverrides.eq(a[i],x):
+            if HxOverrides.eq(a[i], x):
                 return i
         return -1
 
     @staticmethod
-    def lastIndexOf(a,x,fromIndex = None):
+    def lastIndexOf(a, x, fromIndex=None):
         _hx_len = len(a)
         l = (_hx_len if ((fromIndex is None)) else (((_hx_len + fromIndex) + 1) if ((fromIndex < 0)) else (fromIndex + 1)))
         if (l > _hx_len):
@@ -3270,17 +3413,17 @@ class python_internal_ArrayImpl:
             tmp = l
             if (not ((tmp > -1))):
                 break
-            if HxOverrides.eq(a[l],x):
+            if HxOverrides.eq(a[l], x):
                 return l
         return -1
 
     @staticmethod
-    def join(x,sep):
-        return sep.join([python_Boot.toString1(x1,'') for x1 in x])
+    def join(x, sep):
+        return sep.join([python_Boot.toString1(x1, '') for x1 in x])
 
     @staticmethod
     def toString(x):
-        return (("[" + HxOverrides.stringOrNull(",".join([python_Boot.toString1(x1,'') for x1 in x]))) + "]")
+        return (("[" + HxOverrides.stringOrNull(",".join([python_Boot.toString1(x1, '') for x1 in x]))) + "]")
 
     @staticmethod
     def pop(x):
@@ -3290,16 +3433,16 @@ class python_internal_ArrayImpl:
             return x.pop()
 
     @staticmethod
-    def push(x,e):
+    def push(x, e):
         x.append(e)
         return len(x)
 
     @staticmethod
-    def unshift(x,e):
+    def unshift(x, e):
         x.insert(0, e)
 
     @staticmethod
-    def remove(x,e):
+    def remove(x, e):
         try:
             x.remove(e)
             return True
@@ -3308,7 +3451,7 @@ class python_internal_ArrayImpl:
             return False
 
     @staticmethod
-    def contains(x,e):
+    def contains(x, e):
         return (e in x)
 
     @staticmethod
@@ -3318,15 +3461,15 @@ class python_internal_ArrayImpl:
         return x.pop(0)
 
     @staticmethod
-    def slice(x,pos,end = None):
+    def slice(x, pos, end=None):
         return x[pos:end]
 
     @staticmethod
-    def sort(x,f):
-        x.sort(key= python_lib_Functools.cmp_to_key(f))
+    def sort(x, f):
+        x.sort(key=python_lib_Functools.cmp_to_key(f))
 
     @staticmethod
-    def splice(x,pos,_hx_len):
+    def splice(x, pos, _hx_len):
         if (pos < 0):
             pos = (len(x) + pos)
         if (pos < 0):
@@ -3336,15 +3479,15 @@ class python_internal_ArrayImpl:
         return res
 
     @staticmethod
-    def map(x,f):
-        return list(map(f,x))
+    def map(x, f):
+        return list(map(f, x))
 
     @staticmethod
-    def filter(x,f):
-        return list(filter(f,x))
+    def filter(x, f):
+        return list(filter(f, x))
 
     @staticmethod
-    def insert(a,pos,x):
+    def insert(a, pos, x):
         a.insert(pos, x)
 
     @staticmethod
@@ -3352,14 +3495,14 @@ class python_internal_ArrayImpl:
         a.reverse()
 
     @staticmethod
-    def _get(x,idx):
+    def _get(x, idx):
         if ((idx > -1) and ((idx < len(x)))):
             return x[idx]
         else:
             return None
 
     @staticmethod
-    def _set(x,idx,v):
+    def _set(x, idx, v):
         l = len(x)
         while (l < idx):
             x.append(None)
@@ -3369,6 +3512,8 @@ class python_internal_ArrayImpl:
         else:
             x[idx] = v
         return v
+
+
 python_internal_ArrayImpl._hx_class = python_internal_ArrayImpl
 _hx_classes["python.internal.ArrayImpl"] = python_internal_ArrayImpl
 
@@ -3380,13 +3525,13 @@ class HxOverrides:
 
     @staticmethod
     def iterator(x):
-        if isinstance(x,list):
+        if isinstance(x, list):
             return haxe_iterators_ArrayIterator(x)
         return x.iterator()
 
     @staticmethod
-    def eq(a,b):
-        if (isinstance(a,list) or isinstance(b,list)):
+    def eq(a, b):
+        if (isinstance(a, list) or isinstance(b, list)):
             return a is b
         return (a == b)
 
@@ -3398,13 +3543,13 @@ class HxOverrides:
             return s
 
     @staticmethod
-    def map(x,f):
-        if isinstance(x,list):
-            return list(map(f,x))
+    def map(x, f):
+        if isinstance(x, list):
+            return list(map(f, x))
         return x.map(f)
 
     @staticmethod
-    def modf(a,b):
+    def modf(a, b):
         if (b == 0.0):
             return float('nan')
         elif (a < 0):
@@ -3418,7 +3563,7 @@ class HxOverrides:
             return a % b
 
     @staticmethod
-    def mod(a,b):
+    def mod(a, b):
         if (a < 0):
             if (b < 0):
                 return -(-a % (-b))
@@ -3430,17 +3575,19 @@ class HxOverrides:
             return a % b
 
     @staticmethod
-    def mapKwArgs(a,v):
+    def mapKwArgs(a, v):
         a1 = _hx_AnonObject(python_Lib.anonToDict(a))
         k = python_HaxeIterator(iter(v.keys()))
         while k.hasNext():
             k1 = k.next()
             val = v.get(k1)
             if a1._hx_hasattr(k1):
-                x = getattr(a1,k1)
-                setattr(a1,val,x)
-                delattr(a1,k1)
+                x = getattr(a1, k1)
+                setattr(a1, val, x)
+                delattr(a1, k1)
         return a1
+
+
 HxOverrides._hx_class = HxOverrides
 _hx_classes["HxOverrides"] = HxOverrides
 
@@ -3451,17 +3598,19 @@ class python_internal_MethodClosure:
     _hx_fields = ["obj", "func"]
     _hx_methods = ["__call__"]
 
-    def __init__(self,obj,func):
+    def __init__(self, obj, func):
         self.obj = obj
         self.func = func
 
-    def __call__(self,*args):
-        return self.func(self.obj,*args)
+    def __call__(self, *args):
+        return self.func(self.obj, *args)
 
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o.obj = None
         _hx_o.func = None
+
+
 python_internal_MethodClosure._hx_class = python_internal_MethodClosure
 _hx_classes["python.internal.MethodClosure"] = python_internal_MethodClosure
 
@@ -3472,28 +3621,28 @@ class HxString:
     _hx_statics = ["split", "charCodeAt", "charAt", "lastIndexOf", "toUpperCase", "toLowerCase", "indexOf", "indexOfImpl", "toString", "substring", "substr"]
 
     @staticmethod
-    def split(s,d):
+    def split(s, d):
         if (d == ""):
             return list(s)
         else:
             return s.split(d)
 
     @staticmethod
-    def charCodeAt(s,index):
+    def charCodeAt(s, index):
         if ((((s is None) or ((len(s) == 0))) or ((index < 0))) or ((index >= len(s)))):
             return None
         else:
             return ord(s[index])
 
     @staticmethod
-    def charAt(s,index):
+    def charAt(s, index):
         if ((index < 0) or ((index >= len(s)))):
             return ""
         else:
             return s[index]
 
     @staticmethod
-    def lastIndexOf(s,_hx_str,startIndex = None):
+    def lastIndexOf(s, _hx_str, startIndex=None):
         if (startIndex is None):
             return s.rfind(_hx_str, 0, len(s))
         elif (_hx_str == ""):
@@ -3508,7 +3657,7 @@ class HxString:
                 return startIndex
         else:
             i = s.rfind(_hx_str, 0, (startIndex + 1))
-            startLeft = (max(0,((startIndex + 1) - len(_hx_str))) if ((i == -1)) else (i + 1))
+            startLeft = (max(0, ((startIndex + 1) - len(_hx_str))) if ((i == -1)) else (i + 1))
             check = s.find(_hx_str, startLeft, len(s))
             if ((check > i) and ((check <= startIndex))):
                 return check
@@ -3524,14 +3673,14 @@ class HxString:
         return s.lower()
 
     @staticmethod
-    def indexOf(s,_hx_str,startIndex = None):
+    def indexOf(s, _hx_str, startIndex=None):
         if (startIndex is None):
             return s.find(_hx_str)
         else:
-            return HxString.indexOfImpl(s,_hx_str,startIndex)
+            return HxString.indexOfImpl(s, _hx_str, startIndex)
 
     @staticmethod
-    def indexOfImpl(s,_hx_str,startIndex):
+    def indexOfImpl(s, _hx_str, startIndex):
         if (_hx_str == ""):
             length = len(s)
             if (startIndex < 0):
@@ -3549,7 +3698,7 @@ class HxString:
         return s
 
     @staticmethod
-    def substring(s,startIndex,endIndex = None):
+    def substring(s, startIndex, endIndex=None):
         if (startIndex < 0):
             startIndex = 0
         if (endIndex is None):
@@ -3563,7 +3712,7 @@ class HxString:
                 return s[startIndex:endIndex]
 
     @staticmethod
-    def substr(s,startIndex,_hx_len = None):
+    def substr(s, startIndex, _hx_len=None):
         if (_hx_len is None):
             return s[startIndex:]
         else:
@@ -3574,6 +3723,8 @@ class HxString:
                 if (startIndex < 0):
                     startIndex = 0
             return s[startIndex:(startIndex + _hx_len)]
+
+
 HxString._hx_class = HxString
 _hx_classes["HxString"] = HxString
 
@@ -3586,6 +3737,8 @@ class verb_Verb:
     @staticmethod
     def main():
         print("verb 2.1.0")
+
+
 verb_Verb._hx_class = verb_Verb
 _hx_classes["verb.Verb"] = verb_Verb
 
@@ -3596,7 +3749,7 @@ class verb_core_ArrayExtensions:
     _hx_statics = ["alloc", "reversed", "last", "first", "spliceAndInsert", "left", "right", "rightWithPivot", "unique"]
 
     @staticmethod
-    def alloc(a,n):
+    def alloc(a, n):
         if (n < 0):
             return
         while (len(a) < n):
@@ -3617,7 +3770,7 @@ class verb_core_ArrayExtensions:
         return (a[0] if 0 < len(a) else None)
 
     @staticmethod
-    def spliceAndInsert(a,start,end,ele):
+    def spliceAndInsert(a, start, end, ele):
         pos = start
         if (pos < 0):
             pos = (len(a) + pos)
@@ -3649,7 +3802,7 @@ class verb_core_ArrayExtensions:
         return arr[(_hx_len - 1):None]
 
     @staticmethod
-    def unique(arr,comp):
+    def unique(arr, comp):
         if (len(arr) == 0):
             return []
         uniques = [(None if ((len(arr) == 0)) else arr.pop())]
@@ -3660,12 +3813,14 @@ class verb_core_ArrayExtensions:
             while (_g < len(uniques)):
                 unique = (uniques[_g] if _g >= 0 and _g < len(uniques) else None)
                 _g = (_g + 1)
-                if comp(ele,unique):
+                if comp(ele, unique):
                     isUnique = False
                     break
             if isUnique:
                 uniques.append(ele)
         return uniques
+
+
 verb_core_ArrayExtensions._hx_class = verb_core_ArrayExtensions
 _hx_classes["verb.core.ArrayExtensions"] = verb_core_ArrayExtensions
 
@@ -3676,15 +3831,15 @@ class verb_core_Binomial:
     _hx_statics = ["memo", "get", "get_no_memo", "memo_exists", "get_memo", "memoize"]
 
     @staticmethod
-    def get(n,k):
+    def get(n, k):
         if (k == 0.0):
             return 1.0
         if ((n == 0) or ((k > n))):
             return 0.0
         if (k > ((n - k))):
             k = (n - k)
-        if verb_core_Binomial.memo_exists(n,k):
-            return verb_core_Binomial.get_memo(n,k)
+        if verb_core_Binomial.memo_exists(n, k):
+            return verb_core_Binomial.get_memo(n, k)
         r = 1
         n_o = n
         _g = 1
@@ -3692,19 +3847,19 @@ class verb_core_Binomial:
         while (_g < _g1):
             d = _g
             _g = (_g + 1)
-            if verb_core_Binomial.memo_exists(n_o,d):
+            if verb_core_Binomial.memo_exists(n_o, d):
                 n = (n - 1)
-                r = verb_core_Binomial.get_memo(n_o,d)
+                r = verb_core_Binomial.get_memo(n_o, d)
                 continue
             r1 = n
             n = (n - 1)
             r = (r * r1)
             r = (r / d)
-            verb_core_Binomial.memoize(n_o,d,r)
+            verb_core_Binomial.memoize(n_o, d, r)
         return r
 
     @staticmethod
-    def get_no_memo(n,k):
+    def get_no_memo(n, k):
         if (k == 0):
             return 1
         if ((n == 0) or ((k > n))):
@@ -3725,21 +3880,23 @@ class verb_core_Binomial:
         return r
 
     @staticmethod
-    def memo_exists(n,k):
+    def memo_exists(n, k):
         if (n in verb_core_Binomial.memo.h):
-            return (k in verb_core_Binomial.memo.h.get(n,None).h)
+            return (k in verb_core_Binomial.memo.h.get(n, None).h)
         else:
             return False
 
     @staticmethod
-    def get_memo(n,k):
-        return verb_core_Binomial.memo.h.get(n,None).h.get(k,None)
+    def get_memo(n, k):
+        return verb_core_Binomial.memo.h.get(n, None).h.get(k, None)
 
     @staticmethod
-    def memoize(n,k,val):
+    def memoize(n, k, val):
         if (not (n in verb_core_Binomial.memo.h)):
-            verb_core_Binomial.memo.set(n,haxe_ds_IntMap())
-        verb_core_Binomial.memo.h.get(n,None).set(k,val)
+            verb_core_Binomial.memo.set(n, haxe_ds_IntMap())
+        verb_core_Binomial.memo.h.get(n, None).set(k, val)
+
+
 verb_core_Binomial._hx_class = verb_core_Binomial
 _hx_classes["verb.core.Binomial"] = verb_core_Binomial
 
@@ -3751,7 +3908,7 @@ class verb_core_BoundingBox:
     _hx_methods = ["fromPoint", "add", "addRange", "contains", "intersects", "clear", "getLongestAxis", "getAxisLength", "intersect"]
     _hx_statics = ["intervalsOverlap"]
 
-    def __init__(self,pts = None):
+    def __init__(self, pts=None):
         self.max = None
         self.min = None
         self.dim = 3
@@ -3759,10 +3916,10 @@ class verb_core_BoundingBox:
         if (pts is not None):
             self.addRange(pts)
 
-    def fromPoint(self,pt):
+    def fromPoint(self, pt):
         return verb_core_BoundingBox([pt])
 
-    def add(self,point):
+    def add(self, point):
         if (not self.initialized):
             self.dim = len(point)
             self.min = point[0:None]
@@ -3780,7 +3937,7 @@ class verb_core_BoundingBox:
                 python_internal_ArrayImpl._set(self.min, i, (point[i] if i >= 0 and i < len(point) else None))
         return self
 
-    def addRange(self,points):
+    def addRange(self, points):
         l = len(points)
         _g = 0
         _g1 = l
@@ -3790,14 +3947,14 @@ class verb_core_BoundingBox:
             self.add((points[i] if i >= 0 and i < len(points) else None))
         return self
 
-    def contains(self,point,tol = None):
+    def contains(self, point, tol=None):
         if (tol is None):
             tol = -1
         if (not self.initialized):
             return False
-        return self.intersects(verb_core_BoundingBox([point]),tol)
+        return self.intersects(verb_core_BoundingBox([point]), tol)
 
-    def intersects(self,bb,tol = None):
+    def intersects(self, bb, tol=None):
         if (tol is None):
             tol = -1
         if ((not self.initialized) or (not bb.initialized)):
@@ -3811,7 +3968,7 @@ class verb_core_BoundingBox:
         while (_g < _g1):
             i = _g
             _g = (_g + 1)
-            if (not verb_core_BoundingBox.intervalsOverlap((a1[i] if i >= 0 and i < len(a1) else None),(a2[i] if i >= 0 and i < len(a2) else None),(b1[i] if i >= 0 and i < len(b1) else None),(b2[i] if i >= 0 and i < len(b2) else None),tol)):
+            if (not verb_core_BoundingBox.intervalsOverlap((a1[i] if i >= 0 and i < len(a1) else None), (a2[i] if i >= 0 and i < len(a2) else None), (b1[i] if i >= 0 and i < len(b1) else None), (b2[i] if i >= 0 and i < len(b2) else None), tol)):
                 return False
         return True
 
@@ -3833,19 +3990,19 @@ class verb_core_BoundingBox:
                 id = i
         return id
 
-    def getAxisLength(self,i):
+    def getAxisLength(self, i):
         if ((i < 0) or ((i > ((self.dim - 1))))):
             return 0.0
-        return Reflect.field(Math,"fabs")(((self.min[i] if i >= 0 and i < len(self.min) else None) - (self.max[i] if i >= 0 and i < len(self.max) else None)))
+        return Reflect.field(Math, "fabs")(((self.min[i] if i >= 0 and i < len(self.min) else None) - (self.max[i] if i >= 0 and i < len(self.max) else None)))
 
-    def intersect(self,bb,tol):
+    def intersect(self, bb, tol):
         if (not self.initialized):
             return None
         a1 = self.min
         a2 = self.max
         b1 = bb.min
         b2 = bb.max
-        if (not self.intersects(bb,tol)):
+        if (not self.intersects(bb, tol)):
             return None
         maxbb = []
         minbb = []
@@ -3856,23 +4013,23 @@ class verb_core_BoundingBox:
             _g = (_g + 1)
             a = (a2[i] if i >= 0 and i < len(a2) else None)
             b = (b2[i] if i >= 0 and i < len(b2) else None)
-            x = (a if (python_lib_Math.isnan(a)) else (b if (python_lib_Math.isnan(b)) else min(a,b)))
+            x = (a if (python_lib_Math.isnan(a)) else (b if (python_lib_Math.isnan(b)) else min(a, b)))
             maxbb.append(x)
             a3 = (a1[i] if i >= 0 and i < len(a1) else None)
             b3 = (b1[i] if i >= 0 and i < len(b1) else None)
-            x1 = (a3 if (python_lib_Math.isnan(a3)) else (b3 if (python_lib_Math.isnan(b3)) else max(a3,b3)))
+            x1 = (a3 if (python_lib_Math.isnan(a3)) else (b3 if (python_lib_Math.isnan(b3)) else max(a3, b3)))
             minbb.append(x1)
         return verb_core_BoundingBox([minbb, maxbb])
 
     @staticmethod
-    def intervalsOverlap(a1,a2,b1,b2,tol = None):
+    def intervalsOverlap(a1, a2, b1, b2, tol=None):
         if (tol is None):
             tol = -1
         tol1 = (verb_core_Constants.TOLERANCE if ((tol < -0.5)) else tol)
-        x1 = (((a1 if (python_lib_Math.isnan(a1)) else (a2 if (python_lib_Math.isnan(a2)) else min(a1,a2)))) - tol1)
-        x2 = (((a1 if (python_lib_Math.isnan(a1)) else (a2 if (python_lib_Math.isnan(a2)) else max(a1,a2)))) + tol1)
-        y1 = (((b1 if (python_lib_Math.isnan(b1)) else (b2 if (python_lib_Math.isnan(b2)) else min(b1,b2)))) - tol1)
-        y2 = (((b1 if (python_lib_Math.isnan(b1)) else (b2 if (python_lib_Math.isnan(b2)) else max(b1,b2)))) + tol1)
+        x1 = (((a1 if (python_lib_Math.isnan(a1)) else (a2 if (python_lib_Math.isnan(a2)) else min(a1, a2)))) - tol1)
+        x2 = (((a1 if (python_lib_Math.isnan(a1)) else (a2 if (python_lib_Math.isnan(a2)) else max(a1, a2)))) + tol1)
+        y1 = (((b1 if (python_lib_Math.isnan(b1)) else (b2 if (python_lib_Math.isnan(b2)) else min(b1, b2)))) - tol1)
+        y2 = (((b1 if (python_lib_Math.isnan(b1)) else (b2 if (python_lib_Math.isnan(b2)) else max(b1, b2)))) + tol1)
         if (not (((((x1 >= y1) and ((x1 <= y2))) or (((x2 >= y1) and ((x2 <= y2))))) or (((y1 >= x1) and ((y1 <= x2))))))):
             if (y2 >= x1):
                 return (y2 <= x2)
@@ -3887,6 +4044,8 @@ class verb_core_BoundingBox:
         _hx_o.dim = None
         _hx_o.min = None
         _hx_o.max = None
+
+
 verb_core_BoundingBox._hx_class = verb_core_BoundingBox
 _hx_classes["verb.core.BoundingBox"] = verb_core_BoundingBox
 
@@ -3895,6 +4054,8 @@ class verb_core_Constants:
     _hx_class_name = "verb.core.Constants"
     __slots__ = ()
     _hx_statics = ["TOLERANCE", "EPSILON", "VERSION"]
+
+
 verb_core_Constants._hx_class = verb_core_Constants
 _hx_classes["verb.core.Constants"] = verb_core_Constants
 
@@ -3910,7 +4071,9 @@ class verb_core_SerializableBase:
         return serializer.toString()
 
     @staticmethod
-    def _hx_empty_init(_hx_o):        pass
+    def _hx_empty_init(_hx_o): pass
+
+
 verb_core_SerializableBase._hx_class = verb_core_SerializableBase
 _hx_classes["verb.core.SerializableBase"] = verb_core_SerializableBase
 
@@ -3924,8 +4087,7 @@ class verb_core_Plane(verb_core_SerializableBase):
     _hx_interfaces = []
     _hx_super = verb_core_SerializableBase
 
-
-    def __init__(self,origin,normal):
+    def __init__(self, origin, normal):
         self.origin = origin
         self.normal = normal
 
@@ -3933,6 +4095,8 @@ class verb_core_Plane(verb_core_SerializableBase):
     def _hx_empty_init(_hx_o):
         _hx_o.normal = None
         _hx_o.origin = None
+
+
 verb_core_Plane._hx_class = verb_core_Plane
 _hx_classes["verb.core.Plane"] = verb_core_Plane
 
@@ -3946,8 +4110,7 @@ class verb_core_Ray(verb_core_SerializableBase):
     _hx_interfaces = []
     _hx_super = verb_core_SerializableBase
 
-
-    def __init__(self,origin,dir):
+    def __init__(self, origin, dir):
         self.origin = origin
         self.dir = dir
 
@@ -3955,6 +4118,8 @@ class verb_core_Ray(verb_core_SerializableBase):
     def _hx_empty_init(_hx_o):
         _hx_o.dir = None
         _hx_o.origin = None
+
+
 verb_core_Ray._hx_class = verb_core_Ray
 _hx_classes["verb.core.Ray"] = verb_core_Ray
 
@@ -3968,8 +4133,7 @@ class verb_core_NurbsCurveData(verb_core_SerializableBase):
     _hx_interfaces = []
     _hx_super = verb_core_SerializableBase
 
-
-    def __init__(self,degree,knots,controlPoints):
+    def __init__(self, degree, knots, controlPoints):
         self.degree = degree
         self.controlPoints = controlPoints
         self.knots = knots
@@ -3979,6 +4143,8 @@ class verb_core_NurbsCurveData(verb_core_SerializableBase):
         _hx_o.degree = None
         _hx_o.controlPoints = None
         _hx_o.knots = None
+
+
 verb_core_NurbsCurveData._hx_class = verb_core_NurbsCurveData
 _hx_classes["verb.core.NurbsCurveData"] = verb_core_NurbsCurveData
 
@@ -3992,8 +4158,7 @@ class verb_core_NurbsSurfaceData(verb_core_SerializableBase):
     _hx_interfaces = []
     _hx_super = verb_core_SerializableBase
 
-
-    def __init__(self,degreeU,degreeV,knotsU,knotsV,controlPoints):
+    def __init__(self, degreeU, degreeV, knotsU, knotsV, controlPoints):
         self.degreeU = degreeU
         self.degreeV = degreeV
         self.knotsU = knotsU
@@ -4007,6 +4172,8 @@ class verb_core_NurbsSurfaceData(verb_core_SerializableBase):
         _hx_o.knotsU = None
         _hx_o.knotsV = None
         _hx_o.controlPoints = None
+
+
 verb_core_NurbsSurfaceData._hx_class = verb_core_NurbsSurfaceData
 _hx_classes["verb.core.NurbsSurfaceData"] = verb_core_NurbsSurfaceData
 
@@ -4020,8 +4187,7 @@ class verb_core_MeshData(verb_core_SerializableBase):
     _hx_interfaces = []
     _hx_super = verb_core_SerializableBase
 
-
-    def __init__(self,faces,points,normals,uvs):
+    def __init__(self, faces, points, normals, uvs):
         self.faces = faces
         self.points = points
         self.normals = normals
@@ -4029,7 +4195,7 @@ class verb_core_MeshData(verb_core_SerializableBase):
 
     @staticmethod
     def empty():
-        return verb_core_MeshData([],[],[],[])
+        return verb_core_MeshData([], [], [], [])
 
     @staticmethod
     def _hx_empty_init(_hx_o):
@@ -4037,6 +4203,8 @@ class verb_core_MeshData(verb_core_SerializableBase):
         _hx_o.points = None
         _hx_o.normals = None
         _hx_o.uvs = None
+
+
 verb_core_MeshData._hx_class = verb_core_MeshData
 _hx_classes["verb.core.MeshData"] = verb_core_MeshData
 
@@ -4050,8 +4218,7 @@ class verb_core_PolylineData(verb_core_SerializableBase):
     _hx_interfaces = []
     _hx_super = verb_core_SerializableBase
 
-
-    def __init__(self,points,params):
+    def __init__(self, points, params):
         self.points = points
         self.params = params
 
@@ -4059,6 +4226,8 @@ class verb_core_PolylineData(verb_core_SerializableBase):
     def _hx_empty_init(_hx_o):
         _hx_o.points = None
         _hx_o.params = None
+
+
 verb_core_PolylineData._hx_class = verb_core_PolylineData
 _hx_classes["verb.core.PolylineData"] = verb_core_PolylineData
 
@@ -4072,8 +4241,7 @@ class verb_core_VolumeData(verb_core_SerializableBase):
     _hx_interfaces = []
     _hx_super = verb_core_SerializableBase
 
-
-    def __init__(self,degreeU,degreeV,degreeW,knotsU,knotsV,knotsW,controlPoints):
+    def __init__(self, degreeU, degreeV, degreeW, knotsU, knotsV, knotsW, controlPoints):
         self.degreeU = degreeU
         self.degreeV = degreeV
         self.degreeW = degreeW
@@ -4091,6 +4259,8 @@ class verb_core_VolumeData(verb_core_SerializableBase):
         _hx_o.knotsV = None
         _hx_o.knotsW = None
         _hx_o.controlPoints = None
+
+
 verb_core_VolumeData._hx_class = verb_core_VolumeData
 _hx_classes["verb.core.VolumeData"] = verb_core_VolumeData
 
@@ -4100,7 +4270,7 @@ class verb_core_Pair:
     __slots__ = ("item0", "item1")
     _hx_fields = ["item0", "item1"]
 
-    def __init__(self,item1,item2):
+    def __init__(self, item1, item2):
         self.item0 = item1
         self.item1 = item2
 
@@ -4108,6 +4278,8 @@ class verb_core_Pair:
     def _hx_empty_init(_hx_o):
         _hx_o.item0 = None
         _hx_o.item1 = None
+
+
 verb_core_Pair._hx_class = verb_core_Pair
 _hx_classes["verb.core.Pair"] = verb_core_Pair
 
@@ -4117,7 +4289,7 @@ class verb_core_Interval:
     __slots__ = ("min", "max")
     _hx_fields = ["min", "max"]
 
-    def __init__(self,_hx_min,_hx_max):
+    def __init__(self, _hx_min, _hx_max):
         self.min = _hx_min
         self.max = _hx_max
 
@@ -4125,6 +4297,8 @@ class verb_core_Interval:
     def _hx_empty_init(_hx_o):
         _hx_o.min = None
         _hx_o.max = None
+
+
 verb_core_Interval._hx_class = verb_core_Interval
 _hx_classes["verb.core.Interval"] = verb_core_Interval
 
@@ -4134,7 +4308,7 @@ class verb_core_CurveCurveIntersection:
     __slots__ = ("point0", "point1", "u0", "u1")
     _hx_fields = ["point0", "point1", "u0", "u1"]
 
-    def __init__(self,point0,point1,u0,u1):
+    def __init__(self, point0, point1, u0, u1):
         self.point0 = point0
         self.point1 = point1
         self.u0 = u0
@@ -4146,6 +4320,8 @@ class verb_core_CurveCurveIntersection:
         _hx_o.point1 = None
         _hx_o.u0 = None
         _hx_o.u1 = None
+
+
 verb_core_CurveCurveIntersection._hx_class = verb_core_CurveCurveIntersection
 _hx_classes["verb.core.CurveCurveIntersection"] = verb_core_CurveCurveIntersection
 
@@ -4155,7 +4331,7 @@ class verb_core_CurveSurfaceIntersection:
     __slots__ = ("u", "uv", "curvePoint", "surfacePoint")
     _hx_fields = ["u", "uv", "curvePoint", "surfacePoint"]
 
-    def __init__(self,u,uv,curvePoint,surfacePoint):
+    def __init__(self, u, uv, curvePoint, surfacePoint):
         self.u = u
         self.uv = uv
         self.curvePoint = curvePoint
@@ -4167,6 +4343,8 @@ class verb_core_CurveSurfaceIntersection:
         _hx_o.uv = None
         _hx_o.curvePoint = None
         _hx_o.surfacePoint = None
+
+
 verb_core_CurveSurfaceIntersection._hx_class = verb_core_CurveSurfaceIntersection
 _hx_classes["verb.core.CurveSurfaceIntersection"] = verb_core_CurveSurfaceIntersection
 
@@ -4176,7 +4354,7 @@ class verb_core_MeshIntersectionPoint:
     __slots__ = ("uv0", "uv1", "point", "faceIndex0", "faceIndex1", "opp", "adj", "visited")
     _hx_fields = ["uv0", "uv1", "point", "faceIndex0", "faceIndex1", "opp", "adj", "visited"]
 
-    def __init__(self,uv0,uv1,point,faceIndex0,faceIndex1):
+    def __init__(self, uv0, uv1, point, faceIndex0, faceIndex1):
         self.faceIndex1 = None
         self.faceIndex0 = None
         self.visited = False
@@ -4196,6 +4374,8 @@ class verb_core_MeshIntersectionPoint:
         _hx_o.opp = None
         _hx_o.adj = None
         _hx_o.visited = None
+
+
 verb_core_MeshIntersectionPoint._hx_class = verb_core_MeshIntersectionPoint
 _hx_classes["verb.core.MeshIntersectionPoint"] = verb_core_MeshIntersectionPoint
 
@@ -4205,7 +4385,7 @@ class verb_core_PolylineMeshIntersection:
     __slots__ = ("point", "u", "uv", "polylineIndex", "faceIndex")
     _hx_fields = ["point", "u", "uv", "polylineIndex", "faceIndex"]
 
-    def __init__(self,point,u,uv,polylineIndex,faceIndex):
+    def __init__(self, point, u, uv, polylineIndex, faceIndex):
         self.point = point
         self.u = u
         self.uv = uv
@@ -4219,6 +4399,8 @@ class verb_core_PolylineMeshIntersection:
         _hx_o.uv = None
         _hx_o.polylineIndex = None
         _hx_o.faceIndex = None
+
+
 verb_core_PolylineMeshIntersection._hx_class = verb_core_PolylineMeshIntersection
 _hx_classes["verb.core.PolylineMeshIntersection"] = verb_core_PolylineMeshIntersection
 
@@ -4228,7 +4410,7 @@ class verb_core_SurfaceSurfaceIntersectionPoint:
     __slots__ = ("uv0", "uv1", "point", "dist")
     _hx_fields = ["uv0", "uv1", "point", "dist"]
 
-    def __init__(self,uv0,uv1,point,dist):
+    def __init__(self, uv0, uv1, point, dist):
         self.uv0 = uv0
         self.uv1 = uv1
         self.point = point
@@ -4240,6 +4422,8 @@ class verb_core_SurfaceSurfaceIntersectionPoint:
         _hx_o.uv1 = None
         _hx_o.point = None
         _hx_o.dist = None
+
+
 verb_core_SurfaceSurfaceIntersectionPoint._hx_class = verb_core_SurfaceSurfaceIntersectionPoint
 _hx_classes["verb.core.SurfaceSurfaceIntersectionPoint"] = verb_core_SurfaceSurfaceIntersectionPoint
 
@@ -4249,7 +4433,7 @@ class verb_core_TriSegmentIntersection:
     __slots__ = ("point", "s", "t", "p")
     _hx_fields = ["point", "s", "t", "p"]
 
-    def __init__(self,point,s,t,r):
+    def __init__(self, point, s, t, r):
         self.point = point
         self.s = s
         self.t = t
@@ -4261,6 +4445,8 @@ class verb_core_TriSegmentIntersection:
         _hx_o.s = None
         _hx_o.t = None
         _hx_o.p = None
+
+
 verb_core_TriSegmentIntersection._hx_class = verb_core_TriSegmentIntersection
 _hx_classes["verb.core.TriSegmentIntersection"] = verb_core_TriSegmentIntersection
 
@@ -4270,7 +4456,7 @@ class verb_core_CurveTriPoint:
     __slots__ = ("u", "uv", "point")
     _hx_fields = ["u", "uv", "point"]
 
-    def __init__(self,u,point,uv):
+    def __init__(self, u, point, uv):
         self.u = u
         self.point = point
         self.uv = uv
@@ -4280,6 +4466,8 @@ class verb_core_CurveTriPoint:
         _hx_o.u = None
         _hx_o.uv = None
         _hx_o.point = None
+
+
 verb_core_CurveTriPoint._hx_class = verb_core_CurveTriPoint
 _hx_classes["verb.core.CurveTriPoint"] = verb_core_CurveTriPoint
 
@@ -4290,7 +4478,7 @@ class verb_core_SurfacePoint:
     _hx_fields = ["uv", "point", "normal", "id", "degen"]
     _hx_statics = ["fromUv"]
 
-    def __init__(self,point,normal,uv,id = None,degen = None):
+    def __init__(self, point, normal, uv, id=None, degen=None):
         if (id is None):
             id = -1
         if (degen is None):
@@ -4302,8 +4490,8 @@ class verb_core_SurfacePoint:
         self.degen = degen
 
     @staticmethod
-    def fromUv(u,v):
-        return verb_core_SurfacePoint(None,None,[u, v])
+    def fromUv(u, v):
+        return verb_core_SurfacePoint(None, None, [u, v])
 
     @staticmethod
     def _hx_empty_init(_hx_o):
@@ -4312,6 +4500,8 @@ class verb_core_SurfacePoint:
         _hx_o.normal = None
         _hx_o.id = None
         _hx_o.degen = None
+
+
 verb_core_SurfacePoint._hx_class = verb_core_SurfacePoint
 _hx_classes["verb.core.SurfacePoint"] = verb_core_SurfacePoint
 
@@ -4321,7 +4511,7 @@ class verb_core_CurvePoint:
     __slots__ = ("u", "pt")
     _hx_fields = ["u", "pt"]
 
-    def __init__(self,u,pt):
+    def __init__(self, u, pt):
         self.u = u
         self.pt = pt
 
@@ -4329,6 +4519,8 @@ class verb_core_CurvePoint:
     def _hx_empty_init(_hx_o):
         _hx_o.u = None
         _hx_o.pt = None
+
+
 verb_core_CurvePoint._hx_class = verb_core_CurvePoint
 _hx_classes["verb.core.CurvePoint"] = verb_core_CurvePoint
 
@@ -4339,21 +4531,22 @@ class verb_core_KdTree:
     _hx_fields = ["points", "distanceFunction", "dim", "root"]
     _hx_methods = ["buildTree", "nearest"]
 
-    def __init__(self,points,distanceFunction):
+    def __init__(self, points, distanceFunction):
         self.root = None
         self.dim = 3
         self.points = points
         self.distanceFunction = distanceFunction
         self.dim = len((points[0] if 0 < len(points) else None).point)
-        self.root = self.buildTree(points,0,None)
+        self.root = self.buildTree(points, 0, None)
 
-    def buildTree(self,points,depth,parent):
+    def buildTree(self, points, depth, parent):
         dim = HxOverrides.mod(depth, self.dim)
         if (len(points) == 0):
             return None
         if (len(points) == 1):
-            return verb_core_KdNode((points[0] if 0 < len(points) else None),dim,parent)
-        def _hx_local_0(a,b):
+            return verb_core_KdNode((points[0] if 0 < len(points) else None), dim, parent)
+
+        def _hx_local_0(a, b):
             diff = ((a.point[dim] if dim >= 0 and dim < len(a.point) else None) - (b.point[dim] if dim >= 0 and dim < len(b.point) else None))
             if (diff == 0.0):
                 return 0
@@ -4361,23 +4554,25 @@ class verb_core_KdTree:
                 return 1
             else:
                 return -1
-        points.sort(key= python_lib_Functools.cmp_to_key(_hx_local_0))
+        points.sort(key=python_lib_Functools.cmp_to_key(_hx_local_0))
         median = Math.floor((len(points) / 2))
-        node = verb_core_KdNode((points[median] if median >= 0 and median < len(points) else None),dim,parent)
-        node.left = self.buildTree(points[0:median],(depth + 1),node)
-        node.right = self.buildTree(points[(median + 1):None],(depth + 1),node)
+        node = verb_core_KdNode((points[median] if median >= 0 and median < len(points) else None), dim, parent)
+        node.left = self.buildTree(points[0:median], (depth + 1), node)
+        node.right = self.buildTree(points[(median + 1):None], (depth + 1), node)
         return node
 
-    def nearest(self,point,maxNodes,maxDistance):
+    def nearest(self, point, maxNodes, maxDistance):
         _gthis = self
+
         def _hx_local_0(e):
             return -e.item1
         bestNodes = verb_core_BinaryHeap(_hx_local_0)
         nearestSearch = None
+
         def _hx_local_2(node):
             bestChild = None
             dimension = node.dimension
-            ownDistance = _gthis.distanceFunction(point,node.kdPoint.point)
+            ownDistance = _gthis.distanceFunction(point, node.kdPoint.point)
             _g = []
             _g1 = 0
             _g2 = _gthis.dim
@@ -4388,8 +4583,9 @@ class verb_core_KdTree:
             linearPoint = _g
             otherChild = None
             i = None
-            def _hx_local_1(node,distance):
-                bestNodes.push(verb_core_Pair(node,distance))
+
+            def _hx_local_1(node, distance):
+                bestNodes.push(verb_core_Pair(node, distance))
                 if (bestNodes.size() > maxNodes):
                     bestNodes.pop()
             saveNode = _hx_local_1
@@ -4402,10 +4598,10 @@ class verb_core_KdTree:
                     python_internal_ArrayImpl._set(linearPoint, i, (point[i] if i >= 0 and i < len(point) else None))
                 else:
                     python_internal_ArrayImpl._set(linearPoint, i, python_internal_ArrayImpl._get(node.kdPoint.point, i))
-            linearDistance = _gthis.distanceFunction(linearPoint,node.kdPoint.point)
+            linearDistance = _gthis.distanceFunction(linearPoint, node.kdPoint.point)
             if ((node.right is None) and ((node.left is None))):
                 if ((bestNodes.size() < maxNodes) or ((ownDistance < bestNodes.peek().item1))):
-                    saveNode(node,ownDistance)
+                    saveNode(node, ownDistance)
                 return
             if (node.right is None):
                 bestChild = node.left
@@ -4417,8 +4613,8 @@ class verb_core_KdTree:
                 bestChild = node.right
             nearestSearch(bestChild)
             if ((bestNodes.size() < maxNodes) or ((ownDistance < bestNodes.peek().item1))):
-                saveNode(node,ownDistance)
-            if ((bestNodes.size() < maxNodes) or ((Reflect.field(Math,"fabs")(linearDistance) < bestNodes.peek().item1))):
+                saveNode(node, ownDistance)
+            if ((bestNodes.size() < maxNodes) or ((Reflect.field(Math, "fabs")(linearDistance) < bestNodes.peek().item1))):
                 if (bestChild == node.left):
                     otherChild = node.right
                 else:
@@ -4431,7 +4627,7 @@ class verb_core_KdTree:
         while (_g < _g1):
             i = _g
             _g = (_g + 1)
-            bestNodes.push(verb_core_Pair(None,maxDistance))
+            bestNodes.push(verb_core_Pair(None, maxDistance))
         nearestSearch(self.root)
         result = []
         _g = 0
@@ -4440,7 +4636,8 @@ class verb_core_KdTree:
             i = _g
             _g = (_g + 1)
             if ((bestNodes.content[i] if i >= 0 and i < len(bestNodes.content) else None).item0 is not None):
-                x = verb_core_Pair((bestNodes.content[i] if i >= 0 and i < len(bestNodes.content) else None).item0.kdPoint,(bestNodes.content[i] if i >= 0 and i < len(bestNodes.content) else None).item1)
+                x = verb_core_Pair((bestNodes.content[i] if i >= 0 and i < len(bestNodes.content) else None).item0.kdPoint,
+                                   (bestNodes.content[i] if i >= 0 and i < len(bestNodes.content) else None).item1)
                 result.append(x)
         return result
 
@@ -4450,6 +4647,8 @@ class verb_core_KdTree:
         _hx_o.distanceFunction = None
         _hx_o.dim = None
         _hx_o.root = None
+
+
 verb_core_KdTree._hx_class = verb_core_KdTree
 _hx_classes["verb.core.KdTree"] = verb_core_KdTree
 
@@ -4460,11 +4659,11 @@ class verb_core_BinaryHeap:
     _hx_fields = ["content", "scoreFunction"]
     _hx_methods = ["push", "pop", "peek", "remove", "size", "bubbleUp", "sinkDown"]
 
-    def __init__(self,scoreFunction):
+    def __init__(self, scoreFunction):
         self.content = []
         self.scoreFunction = scoreFunction
 
-    def push(self,element):
+    def push(self, element):
         _this = self.content
         _this.append(element)
         self.bubbleUp((len(self.content) - 1))
@@ -4481,7 +4680,7 @@ class verb_core_BinaryHeap:
     def peek(self):
         return (self.content[0] if 0 < len(self.content) else None)
 
-    def remove(self,node):
+    def remove(self, node):
         _hx_len = len(self.content)
         _g = 0
         _g1 = _hx_len
@@ -4503,7 +4702,7 @@ class verb_core_BinaryHeap:
     def size(self):
         return len(self.content)
 
-    def bubbleUp(self,n):
+    def bubbleUp(self, n):
         element = (self.content[n] if n >= 0 and n < len(self.content) else None)
         while (n > 0):
             parentN = (Math.floor((((n + 1.0)) / 2)) - 1)
@@ -4515,7 +4714,7 @@ class verb_core_BinaryHeap:
             else:
                 break
 
-    def sinkDown(self,n):
+    def sinkDown(self, n):
         length = len(self.content)
         element = (self.content[n] if n >= 0 and n < len(self.content) else None)
         elemScore = self.scoreFunction(element)
@@ -4545,6 +4744,8 @@ class verb_core_BinaryHeap:
     def _hx_empty_init(_hx_o):
         _hx_o.content = None
         _hx_o.scoreFunction = None
+
+
 verb_core_BinaryHeap._hx_class = verb_core_BinaryHeap
 _hx_classes["verb.core.BinaryHeap"] = verb_core_BinaryHeap
 
@@ -4554,7 +4755,7 @@ class verb_core_KdPoint:
     __slots__ = ("point", "obj")
     _hx_fields = ["point", "obj"]
 
-    def __init__(self,point,obj):
+    def __init__(self, point, obj):
         self.point = point
         self.obj = obj
 
@@ -4562,6 +4763,8 @@ class verb_core_KdPoint:
     def _hx_empty_init(_hx_o):
         _hx_o.point = None
         _hx_o.obj = None
+
+
 verb_core_KdPoint._hx_class = verb_core_KdPoint
 _hx_classes["verb.core.KdPoint"] = verb_core_KdPoint
 
@@ -4571,7 +4774,7 @@ class verb_core_KdNode:
     __slots__ = ("kdPoint", "left", "right", "parent", "dimension")
     _hx_fields = ["kdPoint", "left", "right", "parent", "dimension"]
 
-    def __init__(self,kdPoint,dimension,parent):
+    def __init__(self, kdPoint, dimension, parent):
         self.kdPoint = kdPoint
         self.left = None
         self.right = None
@@ -4585,6 +4788,8 @@ class verb_core_KdNode:
         _hx_o.right = None
         _hx_o.parent = None
         _hx_o.dimension = None
+
+
 verb_core_KdNode._hx_class = verb_core_KdNode
 _hx_classes["verb.core.KdNode"] = verb_core_KdNode
 
@@ -4593,6 +4798,8 @@ class verb_eval_IBoundingBoxTree:
     _hx_class_name = "verb.eval.IBoundingBoxTree"
     __slots__ = ()
     _hx_methods = ["boundingBox", "split", "yield", "indivisible", "empty"]
+
+
 verb_eval_IBoundingBoxTree._hx_class = verb_eval_IBoundingBoxTree
 _hx_classes["verb.eval.IBoundingBoxTree"] = verb_eval_IBoundingBoxTree
 
@@ -4604,7 +4811,7 @@ class verb_core_LazyCurveBoundingBoxTree:
     _hx_methods = ["split", "boundingBox", "yield", "indivisible", "empty"]
     _hx_interfaces = [verb_eval_IBoundingBoxTree]
 
-    def __init__(self,curve,knotTol = None):
+    def __init__(self, curve, knotTol=None):
         self._boundingBox = None
         self._curve = curve
         if (knotTol is None):
@@ -4616,8 +4823,8 @@ class verb_core_LazyCurveBoundingBoxTree:
         _hx_min = verb_core_ArrayExtensions.first(self._curve.knots)
         _hx_max = verb_core_ArrayExtensions.last(self._curve.knots)
         dom = (_hx_max - _hx_min)
-        crvs = verb_eval_Divide.curveSplit(self._curve,((((_hx_max + _hx_min)) / 2.0) + (((dom * 0.1) * python_lib_Random.random()))))
-        return verb_core_Pair(verb_core_LazyCurveBoundingBoxTree((crvs[0] if 0 < len(crvs) else None),self._knotTol),verb_core_LazyCurveBoundingBoxTree((crvs[1] if 1 < len(crvs) else None),self._knotTol))
+        crvs = verb_eval_Divide.curveSplit(self._curve, ((((_hx_max + _hx_min)) / 2.0) + (((dom * 0.1) * python_lib_Random.random()))))
+        return verb_core_Pair(verb_core_LazyCurveBoundingBoxTree((crvs[0] if 0 < len(crvs) else None), self._knotTol), verb_core_LazyCurveBoundingBoxTree((crvs[1] if 1 < len(crvs) else None), self._knotTol))
 
     def boundingBox(self):
         if (self._boundingBox is None):
@@ -4627,7 +4834,7 @@ class verb_core_LazyCurveBoundingBoxTree:
     def _hx_yield(self):
         return self._curve
 
-    def indivisible(self,tolerance):
+    def indivisible(self, tolerance):
         a = self._curve.knots
         return ((verb_core_ArrayExtensions.last(a) - verb_core_ArrayExtensions.first(a)) < self._knotTol)
 
@@ -4639,6 +4846,8 @@ class verb_core_LazyCurveBoundingBoxTree:
         _hx_o._curve = None
         _hx_o._boundingBox = None
         _hx_o._knotTol = None
+
+
 verb_core_LazyCurveBoundingBoxTree._hx_class = verb_core_LazyCurveBoundingBoxTree
 _hx_classes["verb.core.LazyCurveBoundingBoxTree"] = verb_core_LazyCurveBoundingBoxTree
 
@@ -4650,7 +4859,7 @@ class verb_core_LazyMeshBoundingBoxTree:
     _hx_methods = ["split", "boundingBox", "yield", "indivisible", "empty"]
     _hx_interfaces = [verb_eval_IBoundingBoxTree]
 
-    def __init__(self,mesh,faceIndices = None):
+    def __init__(self, mesh, faceIndices=None):
         self._boundingBox = None
         self._mesh = mesh
         if (faceIndices is None):
@@ -4665,20 +4874,20 @@ class verb_core_LazyMeshBoundingBoxTree:
         self._faceIndices = faceIndices
 
     def split(self):
-        _hx_as = verb_core_Mesh.sortTrianglesOnLongestAxis(self.boundingBox(),self._mesh,self._faceIndices)
+        _hx_as = verb_core_Mesh.sortTrianglesOnLongestAxis(self.boundingBox(), self._mesh, self._faceIndices)
         l = verb_core_ArrayExtensions.left(_hx_as)
         r = verb_core_ArrayExtensions.right(_hx_as)
-        return verb_core_Pair(verb_core_LazyMeshBoundingBoxTree(self._mesh,l),verb_core_LazyMeshBoundingBoxTree(self._mesh,r))
+        return verb_core_Pair(verb_core_LazyMeshBoundingBoxTree(self._mesh, l), verb_core_LazyMeshBoundingBoxTree(self._mesh, r))
 
     def boundingBox(self):
         if (self._boundingBox is None):
-            self._boundingBox = verb_core_Mesh.makeMeshAabb(self._mesh,self._faceIndices)
+            self._boundingBox = verb_core_Mesh.makeMeshAabb(self._mesh, self._faceIndices)
         return self._boundingBox
 
     def _hx_yield(self):
         return (self._faceIndices[0] if 0 < len(self._faceIndices) else None)
 
-    def indivisible(self,tolerance):
+    def indivisible(self, tolerance):
         return (len(self._faceIndices) == 1)
 
     def empty(self):
@@ -4689,6 +4898,8 @@ class verb_core_LazyMeshBoundingBoxTree:
         _hx_o._mesh = None
         _hx_o._faceIndices = None
         _hx_o._boundingBox = None
+
+
 verb_core_LazyMeshBoundingBoxTree._hx_class = verb_core_LazyMeshBoundingBoxTree
 _hx_classes["verb.core.LazyMeshBoundingBoxTree"] = verb_core_LazyMeshBoundingBoxTree
 
@@ -4700,20 +4911,20 @@ class verb_core_LazyPolylineBoundingBoxTree:
     _hx_methods = ["split", "boundingBox", "yield", "indivisible", "empty"]
     _hx_interfaces = [verb_eval_IBoundingBoxTree]
 
-    def __init__(self,polyline,interval = None):
+    def __init__(self, polyline, interval=None):
         self._boundingBox = None
         self._polyline = polyline
         if (interval is None):
-            interval = verb_core_Interval(0,((len(polyline.points) - 1) if ((len(polyline.points) != 0)) else 0))
+            interval = verb_core_Interval(0, ((len(polyline.points) - 1) if ((len(polyline.points) != 0)) else 0))
         self._interval = interval
 
     def split(self):
         _hx_min = self._interval.min
         _hx_max = self._interval.max
         pivot = (_hx_min + Math.ceil((((_hx_max - _hx_min)) / 2)))
-        l = verb_core_Interval(_hx_min,pivot)
-        r = verb_core_Interval(pivot,_hx_max)
-        return verb_core_Pair(verb_core_LazyPolylineBoundingBoxTree(self._polyline,l),verb_core_LazyPolylineBoundingBoxTree(self._polyline,r))
+        l = verb_core_Interval(_hx_min, pivot)
+        r = verb_core_Interval(pivot, _hx_max)
+        return verb_core_Pair(verb_core_LazyPolylineBoundingBoxTree(self._polyline, l), verb_core_LazyPolylineBoundingBoxTree(self._polyline, r))
 
     def boundingBox(self):
         if (self._boundingBox is None):
@@ -4723,7 +4934,7 @@ class verb_core_LazyPolylineBoundingBoxTree:
     def _hx_yield(self):
         return self._interval.min
 
-    def indivisible(self,tolerance):
+    def indivisible(self, tolerance):
         return ((self._interval.max - self._interval.min) == 1)
 
     def empty(self):
@@ -4734,6 +4945,8 @@ class verb_core_LazyPolylineBoundingBoxTree:
         _hx_o._interval = None
         _hx_o._polyline = None
         _hx_o._boundingBox = None
+
+
 verb_core_LazyPolylineBoundingBoxTree._hx_class = verb_core_LazyPolylineBoundingBoxTree
 _hx_classes["verb.core.LazyPolylineBoundingBoxTree"] = verb_core_LazyPolylineBoundingBoxTree
 
@@ -4745,7 +4958,7 @@ class verb_core_LazySurfaceBoundingBoxTree:
     _hx_methods = ["split", "boundingBox", "yield", "indivisible", "empty"]
     _hx_interfaces = [verb_eval_IBoundingBoxTree]
 
-    def __init__(self,surface,splitV = None,knotTolU = None,knotTolV = None):
+    def __init__(self, surface, splitV=None, knotTolU=None, knotTolV=None):
         if (splitV is None):
             splitV = False
         self._boundingBox = None
@@ -4771,8 +4984,8 @@ class verb_core_LazySurfaceBoundingBoxTree:
             _hx_max = verb_core_ArrayExtensions.last(self._surface.knotsU)
         dom = (_hx_max - _hx_min)
         pivot = (((_hx_min + _hx_max)) / 2.0)
-        srfs = verb_eval_Divide.surfaceSplit(self._surface,pivot,self._splitV)
-        return verb_core_Pair(verb_core_LazySurfaceBoundingBoxTree((srfs[0] if 0 < len(srfs) else None),(not self._splitV),self._knotTolU,self._knotTolV),verb_core_LazySurfaceBoundingBoxTree((srfs[1] if 1 < len(srfs) else None),(not self._splitV),self._knotTolU,self._knotTolV))
+        srfs = verb_eval_Divide.surfaceSplit(self._surface, pivot, self._splitV)
+        return verb_core_Pair(verb_core_LazySurfaceBoundingBoxTree((srfs[0] if 0 < len(srfs) else None), (not self._splitV), self._knotTolU, self._knotTolV), verb_core_LazySurfaceBoundingBoxTree((srfs[1] if 1 < len(srfs) else None), (not self._splitV), self._knotTolU, self._knotTolV))
 
     def boundingBox(self):
         if (self._boundingBox is None):
@@ -4788,7 +5001,7 @@ class verb_core_LazySurfaceBoundingBoxTree:
     def _hx_yield(self):
         return self._surface
 
-    def indivisible(self,tolerance):
+    def indivisible(self, tolerance):
         a = self._surface.knotsV
         if ((verb_core_ArrayExtensions.last(a) - verb_core_ArrayExtensions.first(a)) < self._knotTolV):
             a = self._surface.knotsU
@@ -4806,6 +5019,8 @@ class verb_core_LazySurfaceBoundingBoxTree:
         _hx_o._splitV = None
         _hx_o._knotTolU = None
         _hx_o._knotTolV = None
+
+
 verb_core_LazySurfaceBoundingBoxTree._hx_class = verb_core_LazySurfaceBoundingBoxTree
 _hx_classes["verb.core.LazySurfaceBoundingBoxTree"] = verb_core_LazySurfaceBoundingBoxTree
 
@@ -4816,19 +5031,19 @@ class verb_core_Mat:
     _hx_statics = ["mul", "mult", "add", "div", "sub", "dot", "identity", "transpose", "solve", "LUsolve", "LU"]
 
     @staticmethod
-    def mul(a,b):
+    def mul(a, b):
         _g = []
         _g1 = 0
         _g2 = len(b)
         while (_g1 < _g2):
             i = _g1
             _g1 = (_g1 + 1)
-            x = verb_core_Vec.mul(a,(b[i] if i >= 0 and i < len(b) else None))
+            x = verb_core_Vec.mul(a, (b[i] if i >= 0 and i < len(b) else None))
             _g.append(x)
         return _g
 
     @staticmethod
-    def mult(x,y):
+    def mult(x, y):
         foo = None
         bar = None
         woo = None
@@ -4852,7 +5067,8 @@ class verb_core_Mat:
                 j = (q - 2)
                 while (j >= 1):
                     i0 = (j - 1)
-                    woo = (woo + ((((bar[j] if j >= 0 and j < len(bar) else None) * python_internal_ArrayImpl._get((y[j] if j >= 0 and j < len(y) else None), k)) + (((bar[i0] if i0 >= 0 and i0 < len(bar) else None) * python_internal_ArrayImpl._get((y[i0] if i0 >= 0 and i0 < len(y) else None), k))))))
+                    woo = (woo + ((((bar[j] if j >= 0 and j < len(bar) else None) * python_internal_ArrayImpl._get((y[j] if j >= 0 and j < len(y) else None), k)) +
+                                   (((bar[i0] if i0 >= 0 and i0 < len(bar) else None) * python_internal_ArrayImpl._get((y[i0] if i0 >= 0 and i0 < len(y) else None), k))))))
                     j = (j - 2)
                 if (j == 0):
                     woo = (woo + (((bar[0] if 0 < len(bar) else None) * python_internal_ArrayImpl._get((y[0] if 0 < len(y) else None), k))))
@@ -4863,56 +5079,56 @@ class verb_core_Mat:
         return ret
 
     @staticmethod
-    def add(a,b):
+    def add(a, b):
         _g = []
         _g1 = 0
         _g2 = len(a)
         while (_g1 < _g2):
             i = _g1
             _g1 = (_g1 + 1)
-            x = verb_core_Vec.add((a[i] if i >= 0 and i < len(a) else None),(b[i] if i >= 0 and i < len(b) else None))
+            x = verb_core_Vec.add((a[i] if i >= 0 and i < len(a) else None), (b[i] if i >= 0 and i < len(b) else None))
             _g.append(x)
         return _g
 
     @staticmethod
-    def div(a,b):
+    def div(a, b):
         _g = []
         _g1 = 0
         _g2 = len(a)
         while (_g1 < _g2):
             i = _g1
             _g1 = (_g1 + 1)
-            x = verb_core_Vec.div((a[i] if i >= 0 and i < len(a) else None),b)
+            x = verb_core_Vec.div((a[i] if i >= 0 and i < len(a) else None), b)
             _g.append(x)
         return _g
 
     @staticmethod
-    def sub(a,b):
+    def sub(a, b):
         _g = []
         _g1 = 0
         _g2 = len(a)
         while (_g1 < _g2):
             i = _g1
             _g1 = (_g1 + 1)
-            x = verb_core_Vec.sub((a[i] if i >= 0 and i < len(a) else None),(b[i] if i >= 0 and i < len(b) else None))
+            x = verb_core_Vec.sub((a[i] if i >= 0 and i < len(a) else None), (b[i] if i >= 0 and i < len(b) else None))
             _g.append(x)
         return _g
 
     @staticmethod
-    def dot(a,b):
+    def dot(a, b):
         _g = []
         _g1 = 0
         _g2 = len(a)
         while (_g1 < _g2):
             i = _g1
             _g1 = (_g1 + 1)
-            x = verb_core_Vec.dot((a[i] if i >= 0 and i < len(a) else None),b)
+            x = verb_core_Vec.dot((a[i] if i >= 0 and i < len(a) else None), b)
             _g.append(x)
         return _g
 
     @staticmethod
     def identity(n):
-        zeros = verb_core_Vec.zeros2d(n,n)
+        zeros = verb_core_Vec.zeros2d(n, n)
         _g = 0
         _g1 = n
         while (_g < _g1):
@@ -4942,11 +5158,11 @@ class verb_core_Mat:
         return _g
 
     @staticmethod
-    def solve(A,b):
-        return verb_core_Mat.LUsolve(verb_core_Mat.LU(A),b)
+    def solve(A, b):
+        return verb_core_Mat.LUsolve(verb_core_Mat.LU(A), b)
 
     @staticmethod
-    def LUsolve(LUP,b):
+    def LUsolve(LUP, b):
         j = None
         LU = LUP.LU
         n = len(LU)
@@ -4970,7 +5186,8 @@ class verb_core_Mat:
             LUi = (LU[i] if i >= 0 and i < len(LU) else None)
             j = 0
             while (j < i):
-                python_internal_ArrayImpl._set(x, i, ((x[i] if i >= 0 and i < len(x) else None) - (((x[j] if j >= 0 and j < len(x) else None) * (LUi[j] if j >= 0 and j < len(LUi) else None)))))
+                python_internal_ArrayImpl._set(x, i, ((x[i] if i >= 0 and i < len(x) else None) -
+                                                      (((x[j] if j >= 0 and j < len(x) else None) * (LUi[j] if j >= 0 and j < len(LUi) else None)))))
                 j = (j + 1)
             i = (i + 1)
         i = (n - 1)
@@ -4978,7 +5195,8 @@ class verb_core_Mat:
             LUi = (LU[i] if i >= 0 and i < len(LU) else None)
             j = (i + 1)
             while (j < n):
-                python_internal_ArrayImpl._set(x, i, ((x[i] if i >= 0 and i < len(x) else None) - (((x[j] if j >= 0 and j < len(x) else None) * (LUi[j] if j >= 0 and j < len(LUi) else None)))))
+                python_internal_ArrayImpl._set(x, i, ((x[i] if i >= 0 and i < len(x) else None) -
+                                                      (((x[j] if j >= 0 and j < len(x) else None) * (LUi[j] if j >= 0 and j < len(LUi) else None)))))
                 j = (j + 1)
             python_internal_ArrayImpl._set(x, i, ((x[i] if i >= 0 and i < len(x) else None) / (LUi[i] if i >= 0 and i < len(LUi) else None)))
             i = (i - 1)
@@ -5011,10 +5229,10 @@ class verb_core_Mat:
         while (k < n):
             Pk = k
             Ak = (A[k] if k >= 0 and k < len(A) else None)
-            _hx_max = Reflect.field(Math,"fabs")((Ak[k] if k >= 0 and k < len(Ak) else None))
+            _hx_max = Reflect.field(Math, "fabs")((Ak[k] if k >= 0 and k < len(Ak) else None))
             j = (k + 1)
             while (j < n):
-                absAjk = Reflect.field(Math,"fabs")(python_internal_ArrayImpl._get((A[j] if j >= 0 and j < len(A) else None), k))
+                absAjk = Reflect.field(Math, "fabs")(python_internal_ArrayImpl._get((A[j] if j >= 0 and j < len(A) else None), k))
                 if (_hx_max < absAjk):
                     _hx_max = absAjk
                     Pk = j
@@ -5038,15 +5256,20 @@ class verb_core_Mat:
                 Ai = (A[i] if i >= 0 and i < len(A) else None)
                 j = (k + 1)
                 while (j < n1):
-                    python_internal_ArrayImpl._set(Ai, j, ((Ai[j] if j >= 0 and j < len(Ai) else None) - (((Ai[k] if k >= 0 and k < len(Ai) else None) * (Ak[j] if j >= 0 and j < len(Ak) else None)))))
+                    python_internal_ArrayImpl._set(Ai, j, ((Ai[j] if j >= 0 and j < len(Ai) else None) -
+                                                           (((Ai[k] if k >= 0 and k < len(Ai) else None) * (Ak[j] if j >= 0 and j < len(Ak) else None)))))
                     j = (j + 1)
-                    python_internal_ArrayImpl._set(Ai, j, ((Ai[j] if j >= 0 and j < len(Ai) else None) - (((Ai[k] if k >= 0 and k < len(Ai) else None) * (Ak[j] if j >= 0 and j < len(Ak) else None)))))
+                    python_internal_ArrayImpl._set(Ai, j, ((Ai[j] if j >= 0 and j < len(Ai) else None) -
+                                                           (((Ai[k] if k >= 0 and k < len(Ai) else None) * (Ak[j] if j >= 0 and j < len(Ak) else None)))))
                     j = (j + 1)
                 if (j == n1):
-                    python_internal_ArrayImpl._set(Ai, j, ((Ai[j] if j >= 0 and j < len(Ai) else None) - (((Ai[k] if k >= 0 and k < len(Ai) else None) * (Ak[j] if j >= 0 and j < len(Ak) else None)))))
+                    python_internal_ArrayImpl._set(Ai, j, ((Ai[j] if j >= 0 and j < len(Ai) else None) -
+                                                           (((Ai[k] if k >= 0 and k < len(Ai) else None) * (Ak[j] if j >= 0 and j < len(Ak) else None)))))
                 i = (i + 1)
             k = (k + 1)
-        return verb_core__Mat_LUDecomp(A,P)
+        return verb_core__Mat_LUDecomp(A, P)
+
+
 verb_core_Mat._hx_class = verb_core_Mat
 _hx_classes["verb.core.Mat"] = verb_core_Mat
 
@@ -5056,7 +5279,7 @@ class verb_core__Mat_LUDecomp:
     __slots__ = ("LU", "P")
     _hx_fields = ["LU", "P"]
 
-    def __init__(self,lu,p):
+    def __init__(self, lu, p):
         self.LU = lu
         self.P = p
 
@@ -5064,6 +5287,8 @@ class verb_core__Mat_LUDecomp:
     def _hx_empty_init(_hx_o):
         _hx_o.LU = None
         _hx_o.P = None
+
+
 verb_core__Mat_LUDecomp._hx_class = verb_core__Mat_LUDecomp
 _hx_classes["verb.core._Mat.LUDecomp"] = verb_core__Mat_LUDecomp
 
@@ -5074,17 +5299,17 @@ class verb_core_Mesh:
     _hx_statics = ["getTriangleNorm", "makeMeshAabb", "sortTrianglesOnLongestAxis", "getMinCoordOnAxis", "getTriangleCentroid", "triangleUVFromPoint"]
 
     @staticmethod
-    def getTriangleNorm(points,tri):
+    def getTriangleNorm(points, tri):
         v0 = python_internal_ArrayImpl._get(points, (tri[0] if 0 < len(tri) else None))
         v1 = python_internal_ArrayImpl._get(points, (tri[1] if 1 < len(tri) else None))
         v2 = python_internal_ArrayImpl._get(points, (tri[2] if 2 < len(tri) else None))
-        u = verb_core_Vec.sub(v1,v0)
-        v = verb_core_Vec.sub(v2,v0)
-        n = verb_core_Vec.cross(u,v)
-        return verb_core_Vec.mul((1 / verb_core_Vec.norm(n)),n)
+        u = verb_core_Vec.sub(v1, v0)
+        v = verb_core_Vec.sub(v2, v0)
+        n = verb_core_Vec.cross(u, v)
+        return verb_core_Vec.mul((1 / verb_core_Vec.norm(n)), n)
 
     @staticmethod
-    def makeMeshAabb(mesh,faceIndices):
+    def makeMeshAabb(mesh, faceIndices):
         bb = verb_core_BoundingBox()
         _g = 0
         while (_g < len(faceIndices)):
@@ -5096,17 +5321,18 @@ class verb_core_Mesh:
         return bb
 
     @staticmethod
-    def sortTrianglesOnLongestAxis(bb,mesh,faceIndices):
+    def sortTrianglesOnLongestAxis(bb, mesh, faceIndices):
         longAxis = bb.getLongestAxis()
         minCoordFaceMap = list()
         _g = 0
         while (_g < len(faceIndices)):
             faceIndex = (faceIndices[_g] if _g >= 0 and _g < len(faceIndices) else None)
             _g = (_g + 1)
-            tri_min = verb_core_Mesh.getMinCoordOnAxis(mesh.points,(mesh.faces[faceIndex] if faceIndex >= 0 and faceIndex < len(mesh.faces) else None),longAxis)
-            x = verb_core_Pair(tri_min,faceIndex)
+            tri_min = verb_core_Mesh.getMinCoordOnAxis(mesh.points, (mesh.faces[faceIndex] if faceIndex >= 0 and faceIndex < len(mesh.faces) else None), longAxis)
+            x = verb_core_Pair(tri_min, faceIndex)
             minCoordFaceMap.append(x)
-        def _hx_local_1(a,b):
+
+        def _hx_local_1(a, b):
             a0 = a.item0
             b0 = b.item0
             if (a0 == b0):
@@ -5115,7 +5341,7 @@ class verb_core_Mesh:
                 return 1
             else:
                 return -1
-        minCoordFaceMap.sort(key= python_lib_Functools.cmp_to_key(_hx_local_1))
+        minCoordFaceMap.sort(key=python_lib_Functools.cmp_to_key(_hx_local_1))
         sortedFaceIndices = list()
         _g = 0
         _g1 = len(minCoordFaceMap)
@@ -5127,7 +5353,7 @@ class verb_core_Mesh:
         return sortedFaceIndices
 
     @staticmethod
-    def getMinCoordOnAxis(points,tri,axis):
+    def getMinCoordOnAxis(points, tri, axis):
         _hx_min = Math.POSITIVE_INFINITY
         coord = python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(points, (tri[0] if 0 < len(tri) else None)), axis)
         if (coord < _hx_min):
@@ -5141,52 +5367,61 @@ class verb_core_Mesh:
         return _hx_min
 
     @staticmethod
-    def getTriangleCentroid(points,tri):
+    def getTriangleCentroid(points, tri):
         centroid = [0.0, 0.0, 0.0]
         _hx_local_0 = centroid
         _hx_local_1 = 0
         _hx_local_2 = (_hx_local_0[_hx_local_1] if _hx_local_1 >= 0 and _hx_local_1 < len(_hx_local_0) else None)
-        python_internal_ArrayImpl._set(_hx_local_0, _hx_local_1, (_hx_local_2 + python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(points, (tri[0] if 0 < len(tri) else None)), 0)))
+        python_internal_ArrayImpl._set(_hx_local_0, _hx_local_1, (_hx_local_2 +
+                                                                  python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(points, (tri[0] if 0 < len(tri) else None)), 0)))
         (_hx_local_0[_hx_local_1] if _hx_local_1 >= 0 and _hx_local_1 < len(_hx_local_0) else None)
         _hx_local_3 = centroid
         _hx_local_4 = 1
         _hx_local_5 = (_hx_local_3[_hx_local_4] if _hx_local_4 >= 0 and _hx_local_4 < len(_hx_local_3) else None)
-        python_internal_ArrayImpl._set(_hx_local_3, _hx_local_4, (_hx_local_5 + python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(points, (tri[0] if 0 < len(tri) else None)), 1)))
+        python_internal_ArrayImpl._set(_hx_local_3, _hx_local_4, (_hx_local_5 +
+                                                                  python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(points, (tri[0] if 0 < len(tri) else None)), 1)))
         (_hx_local_3[_hx_local_4] if _hx_local_4 >= 0 and _hx_local_4 < len(_hx_local_3) else None)
         _hx_local_6 = centroid
         _hx_local_7 = 2
         _hx_local_8 = (_hx_local_6[_hx_local_7] if _hx_local_7 >= 0 and _hx_local_7 < len(_hx_local_6) else None)
-        python_internal_ArrayImpl._set(_hx_local_6, _hx_local_7, (_hx_local_8 + python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(points, (tri[0] if 0 < len(tri) else None)), 2)))
+        python_internal_ArrayImpl._set(_hx_local_6, _hx_local_7, (_hx_local_8 +
+                                                                  python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(points, (tri[0] if 0 < len(tri) else None)), 2)))
         (_hx_local_6[_hx_local_7] if _hx_local_7 >= 0 and _hx_local_7 < len(_hx_local_6) else None)
         _hx_local_9 = centroid
         _hx_local_10 = 0
         _hx_local_11 = (_hx_local_9[_hx_local_10] if _hx_local_10 >= 0 and _hx_local_10 < len(_hx_local_9) else None)
-        python_internal_ArrayImpl._set(_hx_local_9, _hx_local_10, (_hx_local_11 + python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(points, (tri[1] if 1 < len(tri) else None)), 0)))
+        python_internal_ArrayImpl._set(_hx_local_9, _hx_local_10, (_hx_local_11 +
+                                                                   python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(points, (tri[1] if 1 < len(tri) else None)), 0)))
         (_hx_local_9[_hx_local_10] if _hx_local_10 >= 0 and _hx_local_10 < len(_hx_local_9) else None)
         _hx_local_12 = centroid
         _hx_local_13 = 1
         _hx_local_14 = (_hx_local_12[_hx_local_13] if _hx_local_13 >= 0 and _hx_local_13 < len(_hx_local_12) else None)
-        python_internal_ArrayImpl._set(_hx_local_12, _hx_local_13, (_hx_local_14 + python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(points, (tri[1] if 1 < len(tri) else None)), 1)))
+        python_internal_ArrayImpl._set(_hx_local_12, _hx_local_13, (_hx_local_14 +
+                                                                    python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(points, (tri[1] if 1 < len(tri) else None)), 1)))
         (_hx_local_12[_hx_local_13] if _hx_local_13 >= 0 and _hx_local_13 < len(_hx_local_12) else None)
         _hx_local_15 = centroid
         _hx_local_16 = 2
         _hx_local_17 = (_hx_local_15[_hx_local_16] if _hx_local_16 >= 0 and _hx_local_16 < len(_hx_local_15) else None)
-        python_internal_ArrayImpl._set(_hx_local_15, _hx_local_16, (_hx_local_17 + python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(points, (tri[1] if 1 < len(tri) else None)), 2)))
+        python_internal_ArrayImpl._set(_hx_local_15, _hx_local_16, (_hx_local_17 +
+                                                                    python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(points, (tri[1] if 1 < len(tri) else None)), 2)))
         (_hx_local_15[_hx_local_16] if _hx_local_16 >= 0 and _hx_local_16 < len(_hx_local_15) else None)
         _hx_local_18 = centroid
         _hx_local_19 = 0
         _hx_local_20 = (_hx_local_18[_hx_local_19] if _hx_local_19 >= 0 and _hx_local_19 < len(_hx_local_18) else None)
-        python_internal_ArrayImpl._set(_hx_local_18, _hx_local_19, (_hx_local_20 + python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(points, (tri[2] if 2 < len(tri) else None)), 0)))
+        python_internal_ArrayImpl._set(_hx_local_18, _hx_local_19, (_hx_local_20 +
+                                                                    python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(points, (tri[2] if 2 < len(tri) else None)), 0)))
         (_hx_local_18[_hx_local_19] if _hx_local_19 >= 0 and _hx_local_19 < len(_hx_local_18) else None)
         _hx_local_21 = centroid
         _hx_local_22 = 1
         _hx_local_23 = (_hx_local_21[_hx_local_22] if _hx_local_22 >= 0 and _hx_local_22 < len(_hx_local_21) else None)
-        python_internal_ArrayImpl._set(_hx_local_21, _hx_local_22, (_hx_local_23 + python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(points, (tri[2] if 2 < len(tri) else None)), 1)))
+        python_internal_ArrayImpl._set(_hx_local_21, _hx_local_22, (_hx_local_23 +
+                                                                    python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(points, (tri[2] if 2 < len(tri) else None)), 1)))
         (_hx_local_21[_hx_local_22] if _hx_local_22 >= 0 and _hx_local_22 < len(_hx_local_21) else None)
         _hx_local_24 = centroid
         _hx_local_25 = 2
         _hx_local_26 = (_hx_local_24[_hx_local_25] if _hx_local_25 >= 0 and _hx_local_25 < len(_hx_local_24) else None)
-        python_internal_ArrayImpl._set(_hx_local_24, _hx_local_25, (_hx_local_26 + python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(points, (tri[2] if 2 < len(tri) else None)), 2)))
+        python_internal_ArrayImpl._set(_hx_local_24, _hx_local_25, (_hx_local_26 +
+                                                                    python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(points, (tri[2] if 2 < len(tri) else None)), 2)))
         (_hx_local_24[_hx_local_25] if _hx_local_25 >= 0 and _hx_local_25 < len(_hx_local_24) else None)
         _hx_local_27 = centroid
         _hx_local_28 = 0
@@ -5206,7 +5441,7 @@ class verb_core_Mesh:
         return centroid
 
     @staticmethod
-    def triangleUVFromPoint(mesh,faceIndex,f):
+    def triangleUVFromPoint(mesh, faceIndex, f):
         tri = (mesh.faces[faceIndex] if faceIndex >= 0 and faceIndex < len(mesh.faces) else None)
         p1 = python_internal_ArrayImpl._get(mesh.points, (tri[0] if 0 < len(tri) else None))
         p2 = python_internal_ArrayImpl._get(mesh.points, (tri[1] if 1 < len(tri) else None))
@@ -5214,14 +5449,16 @@ class verb_core_Mesh:
         uv1 = python_internal_ArrayImpl._get(mesh.uvs, (tri[0] if 0 < len(tri) else None))
         uv2 = python_internal_ArrayImpl._get(mesh.uvs, (tri[1] if 1 < len(tri) else None))
         uv3 = python_internal_ArrayImpl._get(mesh.uvs, (tri[2] if 2 < len(tri) else None))
-        f1 = verb_core_Vec.sub(p1,f)
-        f2 = verb_core_Vec.sub(p2,f)
-        f3 = verb_core_Vec.sub(p3,f)
-        a = verb_core_Vec.norm(verb_core_Vec.cross(verb_core_Vec.sub(p1,p2),verb_core_Vec.sub(p1,p3)))
-        a1 = (verb_core_Vec.norm(verb_core_Vec.cross(f2,f3)) / a)
-        a2 = (verb_core_Vec.norm(verb_core_Vec.cross(f3,f1)) / a)
-        a3 = (verb_core_Vec.norm(verb_core_Vec.cross(f1,f2)) / a)
-        return verb_core_Vec.add(verb_core_Vec.mul(a1,uv1),verb_core_Vec.add(verb_core_Vec.mul(a2,uv2),verb_core_Vec.mul(a3,uv3)))
+        f1 = verb_core_Vec.sub(p1, f)
+        f2 = verb_core_Vec.sub(p2, f)
+        f3 = verb_core_Vec.sub(p3, f)
+        a = verb_core_Vec.norm(verb_core_Vec.cross(verb_core_Vec.sub(p1, p2), verb_core_Vec.sub(p1, p3)))
+        a1 = (verb_core_Vec.norm(verb_core_Vec.cross(f2, f3)) / a)
+        a2 = (verb_core_Vec.norm(verb_core_Vec.cross(f3, f1)) / a)
+        a3 = (verb_core_Vec.norm(verb_core_Vec.cross(f1, f2)) / a)
+        return verb_core_Vec.add(verb_core_Vec.mul(a1, uv1), verb_core_Vec.add(verb_core_Vec.mul(a2, uv2), verb_core_Vec.mul(a3, uv3)))
+
+
 verb_core_Mesh._hx_class = verb_core_Mesh
 _hx_classes["verb.core.Mesh"] = verb_core_Mesh
 
@@ -5233,7 +5470,7 @@ class verb_core_MeshBoundingBoxTree:
     _hx_methods = ["split", "boundingBox", "yield", "indivisible", "empty"]
     _hx_interfaces = [verb_eval_IBoundingBoxTree]
 
-    def __init__(self,mesh,faceIndices = None):
+    def __init__(self, mesh, faceIndices=None):
         self._children = None
         self._empty = False
         self._face = -1
@@ -5246,17 +5483,17 @@ class verb_core_MeshBoundingBoxTree:
                 _g1 = (_g1 + 1)
                 _g.append(i)
             faceIndices = _g
-        self._boundingBox = verb_core_Mesh.makeMeshAabb(mesh,faceIndices)
+        self._boundingBox = verb_core_Mesh.makeMeshAabb(mesh, faceIndices)
         if (len(faceIndices) < 1):
             self._empty = True
             return
         elif (len(faceIndices) < 2):
             self._face = (faceIndices[0] if 0 < len(faceIndices) else None)
             return
-        _hx_as = verb_core_Mesh.sortTrianglesOnLongestAxis(self._boundingBox,mesh,faceIndices)
+        _hx_as = verb_core_Mesh.sortTrianglesOnLongestAxis(self._boundingBox, mesh, faceIndices)
         l = verb_core_ArrayExtensions.left(_hx_as)
         r = verb_core_ArrayExtensions.right(_hx_as)
-        self._children = verb_core_Pair(verb_core_MeshBoundingBoxTree(mesh,l),verb_core_MeshBoundingBoxTree(mesh,r))
+        self._children = verb_core_Pair(verb_core_MeshBoundingBoxTree(mesh, l), verb_core_MeshBoundingBoxTree(mesh, r))
 
     def split(self):
         return self._children
@@ -5267,7 +5504,7 @@ class verb_core_MeshBoundingBoxTree:
     def _hx_yield(self):
         return self._face
 
-    def indivisible(self,tolerance):
+    def indivisible(self, tolerance):
         return (self._children is None)
 
     def empty(self):
@@ -5279,6 +5516,8 @@ class verb_core_MeshBoundingBoxTree:
         _hx_o._boundingBox = None
         _hx_o._face = None
         _hx_o._empty = None
+
+
 verb_core_MeshBoundingBoxTree._hx_class = verb_core_MeshBoundingBoxTree
 _hx_classes["verb.core.MeshBoundingBoxTree"] = verb_core_MeshBoundingBoxTree
 
@@ -5289,12 +5528,12 @@ class verb_core_Minimizer:
     _hx_statics = ["uncmin", "numericalGradient", "tensor"]
 
     @staticmethod
-    def uncmin(f,x0,tol = None,gradient = None,maxit = None):
+    def uncmin(f, x0, tol=None, gradient=None, maxit=None):
         if (tol is None):
             tol = 1e-8
         if (gradient is None):
             def _hx_local_0(x):
-                return verb_core_Minimizer.numericalGradient(f,x)
+                return verb_core_Minimizer.numericalGradient(f, x)
             gradient = _hx_local_0
         if (maxit is None):
             maxit = 1000
@@ -5307,7 +5546,7 @@ class verb_core_Minimizer:
             raise haxe_Exception.thrown("uncmin: f(x0) is a NaN!")
         b = verb_core_Constants.EPSILON
         if (not python_lib_Math.isnan(tol)):
-            tol = (b if (python_lib_Math.isnan(b)) else max(tol,b))
+            tol = (b if (python_lib_Math.isnan(b)) else max(tol, b))
         step = None
         g1 = None
         H1 = verb_core_Mat.identity(n)
@@ -5330,7 +5569,7 @@ class verb_core_Minimizer:
             if (not verb_core_Vec.all(verb_core_Vec.finite(g0))):
                 msg = "Gradient has Infinity or NaN"
                 break
-            step = verb_core_Vec.neg(verb_core_Mat.dot(H1,g0))
+            step = verb_core_Vec.neg(verb_core_Mat.dot(H1, g0))
             if (not verb_core_Vec.all(verb_core_Vec.finite(step))):
                 msg = "Search direction has Infinity or NaN"
                 break
@@ -5339,13 +5578,13 @@ class verb_core_Minimizer:
                 msg = "Newton step smaller than tol"
                 break
             t = 1.0
-            df0 = verb_core_Vec.dot(g0,step)
+            df0 = verb_core_Vec.dot(g0, step)
             x1 = x0
             while (it < maxit):
                 if ((t * nstep) < tol):
                     break
-                s = verb_core_Vec.mul(t,step)
-                x1 = verb_core_Vec.add(x0,s)
+                s = verb_core_Vec.mul(t, step)
+                x1 = verb_core_Vec.add(x0, s)
                 f1 = f(x1)
                 if (((f1 - f0) >= (((0.1 * t) * df0))) or python_lib_Math.isnan(f1)):
                     t = (t * 0.5)
@@ -5359,18 +5598,19 @@ class verb_core_Minimizer:
                 msg = "maxit reached during line search"
                 break
             g1 = gradient(x1)
-            y = verb_core_Vec.sub(g1,g0)
-            ys = verb_core_Vec.dot(y,s)
-            Hy = verb_core_Mat.dot(H1,y)
-            H1 = verb_core_Mat.sub(verb_core_Mat.add(H1,verb_core_Mat.mul((((ys + verb_core_Vec.dot(y,Hy))) / ((ys * ys))),verb_core_Minimizer.tensor(s,s))),verb_core_Mat.div(verb_core_Mat.add(verb_core_Minimizer.tensor(Hy,s),verb_core_Minimizer.tensor(s,Hy)),ys))
+            y = verb_core_Vec.sub(g1, g0)
+            ys = verb_core_Vec.dot(y, s)
+            Hy = verb_core_Mat.dot(H1, y)
+            H1 = verb_core_Mat.sub(verb_core_Mat.add(H1, verb_core_Mat.mul((((ys + verb_core_Vec.dot(y, Hy))) / ((ys * ys))), verb_core_Minimizer.tensor(s, s))),
+                                   verb_core_Mat.div(verb_core_Mat.add(verb_core_Minimizer.tensor(Hy, s), verb_core_Minimizer.tensor(s, Hy)), ys))
             x0 = x1
             f0 = f1
             g0 = g1
             it = (it + 1)
-        return verb_core_MinimizationResult(x0,f0,g0,H1,it,msg)
+        return verb_core_MinimizationResult(x0, f0, g0, H1, it, msg)
 
     @staticmethod
-    def numericalGradient(f,x):
+    def numericalGradient(f, x):
         n = len(x)
         f0 = f(x)
         if (f0 == Math.NaN):
@@ -5396,7 +5636,7 @@ class verb_core_Minimizer:
             i = _g
             _g = (_g + 1)
             a = (1e-6 * f0)
-            h = (a if (python_lib_Math.isnan(a)) else (1e-8 if (python_lib_Math.isnan(1e-8)) else max(a,1e-8)))
+            h = (a if (python_lib_Math.isnan(a)) else (1e-8 if (python_lib_Math.isnan(1e-8)) else max(a, 1e-8)))
             while True:
                 it = (it + 1)
                 if (it > 20):
@@ -5415,10 +5655,12 @@ class verb_core_Minimizer:
                 t2 = ((x[i] if i >= 0 and i < len(x) else None) + h)
                 d1 = (((f1 - f0)) / h)
                 d2 = (((f0 - f2)) / h)
-                N = verb_core_Vec.max([Reflect.field(Math,"fabs")((J[i] if i >= 0 and i < len(J) else None)), Reflect.field(Math,"fabs")(f0), Reflect.field(Math,"fabs")(f1), Reflect.field(Math,"fabs")(f2), Reflect.field(Math,"fabs")(t0), Reflect.field(Math,"fabs")(t1), Reflect.field(Math,"fabs")(t2), 1e-8])
-                a1 = (verb_core_Vec.max([Reflect.field(Math,"fabs")((d1 - (J[i] if i >= 0 and i < len(J) else None))), Reflect.field(Math,"fabs")((d2 - (J[i] if i >= 0 and i < len(J) else None))), Reflect.field(Math,"fabs")((d1 - d2))]) / N)
+                N = verb_core_Vec.max([Reflect.field(Math, "fabs")((J[i] if i >= 0 and i < len(J) else None)), Reflect.field(Math, "fabs")(f0), Reflect.field(Math, "fabs")(
+                    f1), Reflect.field(Math, "fabs")(f2), Reflect.field(Math, "fabs")(t0), Reflect.field(Math, "fabs")(t1), Reflect.field(Math, "fabs")(t2), 1e-8])
+                a1 = (verb_core_Vec.max([Reflect.field(Math, "fabs")((d1 - (J[i] if i >= 0 and i < len(J) else None))),
+                                         Reflect.field(Math, "fabs")((d2 - (J[i] if i >= 0 and i < len(J) else None))), Reflect.field(Math, "fabs")((d1 - d2))]) / N)
                 b = (h / N)
-                errest = (a1 if (python_lib_Math.isnan(a1)) else (b if (python_lib_Math.isnan(b)) else min(a1,b)))
+                errest = (a1 if (python_lib_Math.isnan(a1)) else (b if (python_lib_Math.isnan(b)) else min(a1, b)))
                 if (errest > eps):
                     h = (h / 16)
                 else:
@@ -5426,7 +5668,7 @@ class verb_core_Minimizer:
         return J
 
     @staticmethod
-    def tensor(x,y):
+    def tensor(x, y):
         m = len(x)
         n = len(y)
         A = []
@@ -5452,6 +5694,8 @@ class verb_core_Minimizer:
             python_internal_ArrayImpl._set(A, i, Ai)
             i = (i - 1)
         return A
+
+
 verb_core_Minimizer._hx_class = verb_core_Minimizer
 _hx_classes["verb.core.Minimizer"] = verb_core_Minimizer
 
@@ -5461,7 +5705,7 @@ class verb_core_MinimizationResult:
     __slots__ = ("solution", "value", "gradient", "invHessian", "iterations", "message")
     _hx_fields = ["solution", "value", "gradient", "invHessian", "iterations", "message"]
 
-    def __init__(self,solution,value,gradient,invHessian,iterations,message):
+    def __init__(self, solution, value, gradient, invHessian, iterations, message):
         self.solution = solution
         self.value = value
         self.gradient = gradient
@@ -5477,6 +5721,8 @@ class verb_core_MinimizationResult:
         _hx_o.invHessian = None
         _hx_o.iterations = None
         _hx_o.message = None
+
+
 verb_core_MinimizationResult._hx_class = verb_core_MinimizationResult
 _hx_classes["verb.core.MinimizationResult"] = verb_core_MinimizationResult
 
@@ -5485,6 +5731,8 @@ class verb_core_ISerializable:
     _hx_class_name = "verb.core.ISerializable"
     __slots__ = ()
     _hx_methods = ["serialize"]
+
+
 verb_core_ISerializable._hx_class = verb_core_ISerializable
 _hx_classes["verb.core.ISerializable"] = verb_core_ISerializable
 
@@ -5499,6 +5747,8 @@ class verb_core_Deserializer:
         unserializer = haxe_Unserializer(s)
         r = unserializer.unserialize()
         return r
+
+
 verb_core_Deserializer._hx_class = verb_core_Deserializer
 _hx_classes["verb.core.Deserializer"] = verb_core_Deserializer
 
@@ -5509,51 +5759,53 @@ class verb_core_Trig:
     _hx_statics = ["isPointInPlane", "distToSegment", "rayClosestPoint", "distToRay", "threePointsAreFlat", "segmentClosestPoint"]
 
     @staticmethod
-    def isPointInPlane(pt,p,tol):
-        v = verb_core_Vec.dot(verb_core_Vec.sub(pt,p.origin),p.normal)
-        return (Reflect.field(Math,"fabs")(v) < tol)
+    def isPointInPlane(pt, p, tol):
+        v = verb_core_Vec.dot(verb_core_Vec.sub(pt, p.origin), p.normal)
+        return (Reflect.field(Math, "fabs")(v) < tol)
 
     @staticmethod
-    def distToSegment(a,b,c):
-        res = verb_core_Trig.segmentClosestPoint(b,a,c,0.0,1.0)
-        return verb_core_Vec.dist(b,res.pt)
+    def distToSegment(a, b, c):
+        res = verb_core_Trig.segmentClosestPoint(b, a, c, 0.0, 1.0)
+        return verb_core_Vec.dist(b, res.pt)
 
     @staticmethod
-    def rayClosestPoint(pt,o,r):
-        o2pt = verb_core_Vec.sub(pt,o)
-        do2ptr = verb_core_Vec.dot(o2pt,r)
-        proj = verb_core_Vec.add(o,verb_core_Vec.mul(do2ptr,r))
+    def rayClosestPoint(pt, o, r):
+        o2pt = verb_core_Vec.sub(pt, o)
+        do2ptr = verb_core_Vec.dot(o2pt, r)
+        proj = verb_core_Vec.add(o, verb_core_Vec.mul(do2ptr, r))
         return proj
 
     @staticmethod
-    def distToRay(pt,o,r):
-        d = verb_core_Trig.rayClosestPoint(pt,o,r)
-        dif = verb_core_Vec.sub(d,pt)
+    def distToRay(pt, o, r):
+        d = verb_core_Trig.rayClosestPoint(pt, o, r)
+        dif = verb_core_Vec.sub(d, pt)
         return verb_core_Vec.norm(dif)
 
     @staticmethod
-    def threePointsAreFlat(p1,p2,p3,tol):
-        p2mp1 = verb_core_Vec.sub(p2,p1)
-        p3mp1 = verb_core_Vec.sub(p3,p1)
-        norm = verb_core_Vec.cross(p2mp1,p3mp1)
-        area = verb_core_Vec.dot(norm,norm)
+    def threePointsAreFlat(p1, p2, p3, tol):
+        p2mp1 = verb_core_Vec.sub(p2, p1)
+        p3mp1 = verb_core_Vec.sub(p3, p1)
+        norm = verb_core_Vec.cross(p2mp1, p3mp1)
+        area = verb_core_Vec.dot(norm, norm)
         return (area < tol)
 
     @staticmethod
-    def segmentClosestPoint(pt,segpt0,segpt1,u0,u1):
-        dif = verb_core_Vec.sub(segpt1,segpt0)
+    def segmentClosestPoint(pt, segpt0, segpt1, u0, u1):
+        dif = verb_core_Vec.sub(segpt1, segpt0)
         l = verb_core_Vec.norm(dif)
         if (l < verb_core_Constants.EPSILON):
             return _hx_AnonObject({'u': u0, 'pt': segpt0})
         o = segpt0
-        r = verb_core_Vec.mul((1 / l),dif)
-        o2pt = verb_core_Vec.sub(pt,o)
-        do2ptr = verb_core_Vec.dot(o2pt,r)
+        r = verb_core_Vec.mul((1 / l), dif)
+        o2pt = verb_core_Vec.sub(pt, o)
+        do2ptr = verb_core_Vec.dot(o2pt, r)
         if (do2ptr < 0):
             return _hx_AnonObject({'u': u0, 'pt': segpt0})
         elif (do2ptr > l):
             return _hx_AnonObject({'u': u1, 'pt': segpt1})
-        return _hx_AnonObject({'u': (u0 + (((((u1 - u0)) * do2ptr) / l))), 'pt': verb_core_Vec.add(o,verb_core_Vec.mul(do2ptr,r))})
+        return _hx_AnonObject({'u': (u0 + (((((u1 - u0)) * do2ptr) / l))), 'pt': verb_core_Vec.add(o, verb_core_Vec.mul(do2ptr, r))})
+
+
 verb_core_Trig._hx_class = verb_core_Trig
 _hx_classes["verb.core.Trig"] = verb_core_Trig
 
@@ -5561,24 +5813,25 @@ _hx_classes["verb.core.Trig"] = verb_core_Trig
 class verb_core_Vec:
     _hx_class_name = "verb.core.Vec"
     __slots__ = ()
-    _hx_statics = ["angleBetween", "positiveAngleBetween", "signedAngleBetween", "angleBetweenNormalized2d", "domain", "range", "span", "neg", "min", "max", "all", "finite", "onRay", "lerp", "normalized", "cross", "dist", "distSquared", "sum", "addAll", "addAllMutate", "addMulMutate", "subMulMutate", "addMutate", "subMutate", "mulMutate", "norm", "normSquared", "rep", "zeros1d", "zeros2d", "zeros3d", "dot", "add", "mul", "div", "sub", "isZero", "sortedSetUnion", "sortedSetSub"]
+    _hx_statics = ["angleBetween", "positiveAngleBetween", "signedAngleBetween", "angleBetweenNormalized2d", "domain", "range", "span", "neg", "min", "max", "all", "finite", "onRay", "lerp", "normalized", "cross", "dist", "distSquared", "sum",
+                   "addAll", "addAllMutate", "addMulMutate", "subMulMutate", "addMutate", "subMutate", "mulMutate", "norm", "normSquared", "rep", "zeros1d", "zeros2d", "zeros3d", "dot", "add", "mul", "div", "sub", "isZero", "sortedSetUnion", "sortedSetSub"]
 
     @staticmethod
-    def angleBetween(a,b):
-        return Math.acos((verb_core_Vec.dot(a,b) / ((verb_core_Vec.norm(a) * verb_core_Vec.norm(b)))))
+    def angleBetween(a, b):
+        return Math.acos((verb_core_Vec.dot(a, b) / ((verb_core_Vec.norm(a) * verb_core_Vec.norm(b)))))
 
     @staticmethod
-    def positiveAngleBetween(a,b,n):
-        nab = verb_core_Vec.cross(a,b)
+    def positiveAngleBetween(a, b, n):
+        nab = verb_core_Vec.cross(a, b)
         al = verb_core_Vec.norm(a)
         bl = verb_core_Vec.norm(b)
         abl = (al * bl)
-        adb = verb_core_Vec.dot(a,b)
+        adb = verb_core_Vec.dot(a, b)
         sina = (verb_core_Vec.norm(nab) / abl)
         cosa = (adb / abl)
-        w = Math.atan2(sina,cosa)
-        s = verb_core_Vec.dot(n,nab)
-        if (Reflect.field(Math,"fabs")(s) < verb_core_Constants.EPSILON):
+        w = Math.atan2(sina, cosa)
+        s = verb_core_Vec.dot(n, nab)
+        if (Reflect.field(Math, "fabs")(s) < verb_core_Constants.EPSILON):
             return w
         if (s > 0):
             return w
@@ -5586,25 +5839,25 @@ class verb_core_Vec:
             return -w
 
     @staticmethod
-    def signedAngleBetween(a,b,n):
-        nab = verb_core_Vec.cross(a,b)
+    def signedAngleBetween(a, b, n):
+        nab = verb_core_Vec.cross(a, b)
         al = verb_core_Vec.norm(a)
         bl = verb_core_Vec.norm(b)
         abl = (al * bl)
-        adb = verb_core_Vec.dot(a,b)
+        adb = verb_core_Vec.dot(a, b)
         sina = (verb_core_Vec.norm(nab) / abl)
         cosa = (adb / abl)
-        w = Math.atan2(sina,cosa)
-        s = verb_core_Vec.dot(n,nab)
+        w = Math.atan2(sina, cosa)
+        s = verb_core_Vec.dot(n, nab)
         if (s > 0.0):
             return w
         else:
             return ((2 * Math.PI) - w)
 
     @staticmethod
-    def angleBetweenNormalized2d(a,b):
+    def angleBetweenNormalized2d(a, b):
         perpDot = (((a[0] if 0 < len(a) else None) * (b[1] if 1 < len(b) else None)) - (((a[1] if 1 < len(a) else None) * (b[0] if 0 < len(b) else None))))
-        return Math.atan2(perpDot,verb_core_Vec.dot(a,b))
+        return Math.atan2(perpDot, verb_core_Vec.dot(a, b))
 
     @staticmethod
     def domain(a):
@@ -5624,7 +5877,7 @@ class verb_core_Vec:
         return l
 
     @staticmethod
-    def span(_hx_min,_hx_max,step):
+    def span(_hx_min, _hx_max, step):
         if (step is None):
             return []
         if (step < verb_core_Constants.EPSILON):
@@ -5645,44 +5898,44 @@ class verb_core_Vec:
         def _hx_local_1():
             def _hx_local_0(x):
                 return -x
-            return list(map(_hx_local_0,arr))
+            return list(map(_hx_local_0, arr))
         return _hx_local_1()
 
     @staticmethod
     def min(arr):
         def _hx_local_1():
-            def _hx_local_0(x,a):
+            def _hx_local_0(x, a):
                 if python_lib_Math.isnan(x):
                     return x
                 elif python_lib_Math.isnan(a):
                     return a
                 else:
-                    return min(x,a)
-            return Lambda.fold(arr,_hx_local_0,Math.POSITIVE_INFINITY)
+                    return min(x, a)
+            return Lambda.fold(arr, _hx_local_0, Math.POSITIVE_INFINITY)
         return _hx_local_1()
 
     @staticmethod
     def max(arr):
         def _hx_local_1():
-            def _hx_local_0(x,a):
+            def _hx_local_0(x, a):
                 if python_lib_Math.isnan(x):
                     return x
                 elif python_lib_Math.isnan(a):
                     return a
                 else:
-                    return max(x,a)
-            return Lambda.fold(arr,_hx_local_0,Math.NEGATIVE_INFINITY)
+                    return max(x, a)
+            return Lambda.fold(arr, _hx_local_0, Math.NEGATIVE_INFINITY)
         return _hx_local_1()
 
     @staticmethod
     def all(arr):
         def _hx_local_1():
-            def _hx_local_0(x,a):
+            def _hx_local_0(x, a):
                 if a:
                     return x
                 else:
                     return False
-            return Lambda.fold(arr,_hx_local_0,True)
+            return Lambda.fold(arr, _hx_local_0, True)
         return _hx_local_1()
 
     @staticmethod
@@ -5693,39 +5946,39 @@ class verb_core_Vec:
                     return (not python_lib_Math.isnan(x))
                 else:
                     return False
-            return list(map(_hx_local_0,arr))
+            return list(map(_hx_local_0, arr))
         return _hx_local_1()
 
     @staticmethod
-    def onRay(origin,dir,u):
-        return verb_core_Vec.add(origin,verb_core_Vec.mul(u,dir))
+    def onRay(origin, dir, u):
+        return verb_core_Vec.add(origin, verb_core_Vec.mul(u, dir))
 
     @staticmethod
-    def lerp(i,u,v):
-        return verb_core_Vec.add(verb_core_Vec.mul(i,u),verb_core_Vec.mul((1.0 - i),v))
+    def lerp(i, u, v):
+        return verb_core_Vec.add(verb_core_Vec.mul(i, u), verb_core_Vec.mul((1.0 - i), v))
 
     @staticmethod
     def normalized(arr):
-        return verb_core_Vec.div(arr,verb_core_Vec.norm(arr))
+        return verb_core_Vec.div(arr, verb_core_Vec.norm(arr))
 
     @staticmethod
-    def cross(u,v):
+    def cross(u, v):
         return [(((u[1] if 1 < len(u) else None) * (v[2] if 2 < len(v) else None)) - (((u[2] if 2 < len(u) else None) * (v[1] if 1 < len(v) else None)))), (((u[2] if 2 < len(u) else None) * (v[0] if 0 < len(v) else None)) - (((u[0] if 0 < len(u) else None) * (v[2] if 2 < len(v) else None)))), (((u[0] if 0 < len(u) else None) * (v[1] if 1 < len(v) else None)) - (((u[1] if 1 < len(u) else None) * (v[0] if 0 < len(v) else None))))]
 
     @staticmethod
-    def dist(a,b):
-        return verb_core_Vec.norm(verb_core_Vec.sub(a,b))
+    def dist(a, b):
+        return verb_core_Vec.norm(verb_core_Vec.sub(a, b))
 
     @staticmethod
-    def distSquared(a,b):
-        return verb_core_Vec.normSquared(verb_core_Vec.sub(a,b))
+    def distSquared(a, b):
+        return verb_core_Vec.normSquared(verb_core_Vec.sub(a, b))
 
     @staticmethod
     def sum(a):
         def _hx_local_1():
-            def _hx_local_0(x,a):
+            def _hx_local_0(x, a):
                 return (a + x)
-            return Lambda.fold(a,_hx_local_0,0)
+            return Lambda.fold(a, _hx_local_0, 0)
         return _hx_local_1()
 
     @staticmethod
@@ -5734,10 +5987,11 @@ class verb_core_Vec:
         if (not i.hasNext()):
             return None
         f = len(i.next())
+
         def _hx_local_1():
-            def _hx_local_0(x,a):
-                return verb_core_Vec.add(a,x)
-            return Lambda.fold(a,_hx_local_0,verb_core_Vec.rep(f,0.0))
+            def _hx_local_0(x, a):
+                return verb_core_Vec.add(a, x)
+            return Lambda.fold(a, _hx_local_0, verb_core_Vec.rep(f, 0.0))
         return _hx_local_1()
 
     @staticmethod
@@ -5748,10 +6002,10 @@ class verb_core_Vec:
         while (_g < _g1):
             i = _g
             _g = (_g + 1)
-            verb_core_Vec.addMutate(f,(a[i] if i >= 0 and i < len(a) else None))
+            verb_core_Vec.addMutate(f, (a[i] if i >= 0 and i < len(a) else None))
 
     @staticmethod
-    def addMulMutate(a,s,b):
+    def addMulMutate(a, s, b):
         _g = 0
         _g1 = len(a)
         while (_g < _g1):
@@ -5760,7 +6014,7 @@ class verb_core_Vec:
             python_internal_ArrayImpl._set(a, i, ((a[i] if i >= 0 and i < len(a) else None) + ((s * (b[i] if i >= 0 and i < len(b) else None)))))
 
     @staticmethod
-    def subMulMutate(a,s,b):
+    def subMulMutate(a, s, b):
         _g = 0
         _g1 = len(a)
         while (_g < _g1):
@@ -5769,7 +6023,7 @@ class verb_core_Vec:
             python_internal_ArrayImpl._set(a, i, ((a[i] if i >= 0 and i < len(a) else None) - ((s * (b[i] if i >= 0 and i < len(b) else None)))))
 
     @staticmethod
-    def addMutate(a,b):
+    def addMutate(a, b):
         _g = 0
         _g1 = len(a)
         while (_g < _g1):
@@ -5778,7 +6032,7 @@ class verb_core_Vec:
             python_internal_ArrayImpl._set(a, i, ((a[i] if i >= 0 and i < len(a) else None) + (b[i] if i >= 0 and i < len(b) else None)))
 
     @staticmethod
-    def subMutate(a,b):
+    def subMutate(a, b):
         _g = 0
         _g1 = len(a)
         while (_g < _g1):
@@ -5787,7 +6041,7 @@ class verb_core_Vec:
             python_internal_ArrayImpl._set(a, i, ((a[i] if i >= 0 and i < len(a) else None) - (b[i] if i >= 0 and i < len(b) else None)))
 
     @staticmethod
-    def mulMutate(a,b):
+    def mulMutate(a, b):
         _g = 0
         _g1 = len(b)
         while (_g < _g1):
@@ -5809,13 +6063,13 @@ class verb_core_Vec:
     @staticmethod
     def normSquared(a):
         def _hx_local_1():
-            def _hx_local_0(x,a):
+            def _hx_local_0(x, a):
                 return (a + ((x * x)))
-            return Lambda.fold(a,_hx_local_0,0)
+            return Lambda.fold(a, _hx_local_0, 0)
         return _hx_local_1()
 
     @staticmethod
-    def rep(num,ele):
+    def rep(num, ele):
         _g = []
         _g1 = 0
         _g2 = num
@@ -5837,7 +6091,7 @@ class verb_core_Vec:
         return _g
 
     @staticmethod
-    def zeros2d(rows,cols):
+    def zeros2d(rows, cols):
         _g = []
         _g1 = 0
         _g2 = rows
@@ -5849,19 +6103,19 @@ class verb_core_Vec:
         return _g
 
     @staticmethod
-    def zeros3d(rows,cols,depth):
+    def zeros3d(rows, cols, depth):
         _g = []
         _g1 = 0
         _g2 = rows
         while (_g1 < _g2):
             i = _g1
             _g1 = (_g1 + 1)
-            x = verb_core_Vec.zeros2d(cols,depth)
+            x = verb_core_Vec.zeros2d(cols, depth)
             _g.append(x)
         return _g
 
     @staticmethod
-    def dot(a,b):
+    def dot(a, b):
         sum = 0
         _g = 0
         _g1 = len(a)
@@ -5872,7 +6126,7 @@ class verb_core_Vec:
         return sum
 
     @staticmethod
-    def add(a,b):
+    def add(a, b):
         _g = []
         _g1 = 0
         _g2 = len(a)
@@ -5883,7 +6137,7 @@ class verb_core_Vec:
         return _g
 
     @staticmethod
-    def mul(a,b):
+    def mul(a, b):
         _g = []
         _g1 = 0
         _g2 = len(b)
@@ -5894,7 +6148,7 @@ class verb_core_Vec:
         return _g
 
     @staticmethod
-    def div(a,b):
+    def div(a, b):
         _g = []
         _g1 = 0
         _g2 = len(a)
@@ -5905,7 +6159,7 @@ class verb_core_Vec:
         return _g
 
     @staticmethod
-    def sub(a,b):
+    def sub(a, b):
         _g = []
         _g1 = 0
         _g2 = len(a)
@@ -5922,12 +6176,12 @@ class verb_core_Vec:
         while (_g < _g1):
             i = _g
             _g = (_g + 1)
-            if (Reflect.field(Math,"fabs")((vec[i] if i >= 0 and i < len(vec) else None)) > verb_core_Constants.TOLERANCE):
+            if (Reflect.field(Math, "fabs")((vec[i] if i >= 0 and i < len(vec) else None)) > verb_core_Constants.TOLERANCE):
                 return False
         return True
 
     @staticmethod
-    def sortedSetUnion(a,b):
+    def sortedSetUnion(a, b):
         merged = []
         ai = 0
         bi = 0
@@ -5941,7 +6195,7 @@ class verb_core_Vec:
                 ai = (ai + 1)
                 continue
             diff = ((a[ai] if ai >= 0 and ai < len(a) else None) - (b[bi] if bi >= 0 and bi < len(b) else None))
-            if (Reflect.field(Math,"fabs")(diff) < verb_core_Constants.EPSILON):
+            if (Reflect.field(Math, "fabs")(diff) < verb_core_Constants.EPSILON):
                 merged.append((a[ai] if ai >= 0 and ai < len(a) else None))
                 ai = (ai + 1)
                 bi = (bi + 1)
@@ -5955,7 +6209,7 @@ class verb_core_Vec:
         return merged
 
     @staticmethod
-    def sortedSetSub(a,b):
+    def sortedSetSub(a, b):
         result = []
         ai = 0
         bi = 0
@@ -5964,13 +6218,15 @@ class verb_core_Vec:
                 result.append((a[ai] if ai >= 0 and ai < len(a) else None))
                 ai = (ai + 1)
                 continue
-            if (Reflect.field(Math,"fabs")(((a[ai] if ai >= 0 and ai < len(a) else None) - (b[bi] if bi >= 0 and bi < len(b) else None))) < verb_core_Constants.EPSILON):
+            if (Reflect.field(Math, "fabs")(((a[ai] if ai >= 0 and ai < len(a) else None) - (b[bi] if bi >= 0 and bi < len(b) else None))) < verb_core_Constants.EPSILON):
                 ai = (ai + 1)
                 bi = (bi + 1)
                 continue
             result.append((a[ai] if ai >= 0 and ai < len(a) else None))
             ai = (ai + 1)
         return result
+
+
 verb_core_Vec._hx_class = verb_core_Vec
 _hx_classes["verb.core.Vec"] = verb_core_Vec
 
@@ -5978,24 +6234,25 @@ _hx_classes["verb.core.Vec"] = verb_core_Vec
 class verb_eval_Analyze:
     _hx_class_name = "verb.eval.Analyze"
     __slots__ = ()
-    _hx_statics = ["knotMultiplicities", "isRationalSurfaceClosed", "rationalSurfaceClosestPoint", "rationalSurfaceClosestParam", "rationalCurveClosestPoint", "rationalCurveClosestParam", "rationalCurveParamAtArcLength", "rationalBezierCurveParamAtArcLength", "rationalCurveArcLength", "rationalBezierCurveArcLength", "Tvalues", "Cvalues"]
+    _hx_statics = ["knotMultiplicities", "isRationalSurfaceClosed", "rationalSurfaceClosestPoint", "rationalSurfaceClosestParam", "rationalCurveClosestPoint",
+                   "rationalCurveClosestParam", "rationalCurveParamAtArcLength", "rationalBezierCurveParamAtArcLength", "rationalCurveArcLength", "rationalBezierCurveArcLength", "Tvalues", "Cvalues"]
 
     @staticmethod
     def knotMultiplicities(knots):
-        mults = [verb_eval_KnotMultiplicity((knots[0] if 0 < len(knots) else None),0)]
+        mults = [verb_eval_KnotMultiplicity((knots[0] if 0 < len(knots) else None), 0)]
         curr = (mults[0] if 0 < len(mults) else None)
         _g = 0
         while (_g < len(knots)):
             knot = (knots[_g] if _g >= 0 and _g < len(knots) else None)
             _g = (_g + 1)
-            if (Reflect.field(Math,"fabs")((knot - curr.knot)) > verb_core_Constants.EPSILON):
-                curr = verb_eval_KnotMultiplicity(knot,0)
+            if (Reflect.field(Math, "fabs")((knot - curr.knot)) > verb_core_Constants.EPSILON):
+                curr = verb_eval_KnotMultiplicity(knot, 0)
                 mults.append(curr)
             curr.inc()
         return mults
 
     @staticmethod
-    def isRationalSurfaceClosed(surface,uDir = None):
+    def isRationalSurfaceClosed(surface, uDir=None):
         if (uDir is None):
             uDir = True
         cpts = (surface.controlPoints if uDir else verb_core_Mat.transpose(surface.controlPoints))
@@ -6004,18 +6261,19 @@ class verb_eval_Analyze:
         while (_g < _g1):
             i = _g
             _g = (_g + 1)
-            test = (verb_core_Vec.dist(python_internal_ArrayImpl._get(verb_core_ArrayExtensions.first(cpts), i),python_internal_ArrayImpl._get(verb_core_ArrayExtensions.last(cpts), i)) < verb_core_Constants.EPSILON)
+            test = (verb_core_Vec.dist(python_internal_ArrayImpl._get(verb_core_ArrayExtensions.first(cpts), i),
+                                       python_internal_ArrayImpl._get(verb_core_ArrayExtensions.last(cpts), i)) < verb_core_Constants.EPSILON)
             if (not test):
                 return False
         return True
 
     @staticmethod
-    def rationalSurfaceClosestPoint(surface,p):
-        uv = verb_eval_Analyze.rationalSurfaceClosestParam(surface,p)
-        return verb_eval_Eval.rationalSurfacePoint(surface,(uv[0] if 0 < len(uv) else None),(uv[1] if 1 < len(uv) else None))
+    def rationalSurfaceClosestPoint(surface, p):
+        uv = verb_eval_Analyze.rationalSurfaceClosestParam(surface, p)
+        return verb_eval_Eval.rationalSurfacePoint(surface, (uv[0] if 0 < len(uv) else None), (uv[1] if 1 < len(uv) else None))
 
     @staticmethod
-    def rationalSurfaceClosestParam(surface,p):
+    def rationalSurfaceClosestParam(surface, p):
         maxits = 5
         i = 0
         e = None
@@ -6027,9 +6285,9 @@ class verb_eval_Analyze:
         minv = (surface.knotsV[0] if 0 < len(surface.knotsV) else None)
         maxv = verb_core_ArrayExtensions.last(surface.knotsV)
         closedu = verb_eval_Analyze.isRationalSurfaceClosed(surface)
-        closedv = verb_eval_Analyze.isRationalSurfaceClosed(surface,False)
+        closedv = verb_eval_Analyze.isRationalSurfaceClosed(surface, False)
         cuv = None
-        tess = verb_eval_Tess.rationalSurfaceAdaptive(surface,verb_eval_AdaptiveRefinementOptions())
+        tess = verb_eval_Tess.rationalSurfaceAdaptive(surface, verb_eval_AdaptiveRefinementOptions())
         dmin = Math.POSITIVE_INFINITY
         _g = 0
         _g1 = len(tess.points)
@@ -6037,38 +6295,40 @@ class verb_eval_Analyze:
             i1 = _g
             _g = (_g + 1)
             x = (tess.points[i1] if i1 >= 0 and i1 < len(tess.points) else None)
-            d = verb_core_Vec.normSquared(verb_core_Vec.sub(p,x))
+            d = verb_core_Vec.normSquared(verb_core_Vec.sub(p, x))
             if (d < dmin):
                 dmin = d
                 cuv = (tess.uvs[i1] if i1 >= 0 and i1 < len(tess.uvs) else None)
+
         def _hx_local_0(uv):
-            return verb_eval_Eval.rationalSurfaceDerivatives(surface,(uv[0] if 0 < len(uv) else None),(uv[1] if 1 < len(uv) else None),2)
+            return verb_eval_Eval.rationalSurfaceDerivatives(surface, (uv[0] if 0 < len(uv) else None), (uv[1] if 1 < len(uv) else None), 2)
         f = _hx_local_0
-        def _hx_local_1(uv,e,r):
+
+        def _hx_local_1(uv, e, r):
             Su = python_internal_ArrayImpl._get((e[1] if 1 < len(e) else None), 0)
             Sv = python_internal_ArrayImpl._get((e[0] if 0 < len(e) else None), 1)
             Suu = python_internal_ArrayImpl._get((e[2] if 2 < len(e) else None), 0)
             Svv = python_internal_ArrayImpl._get((e[0] if 0 < len(e) else None), 2)
             Suv = python_internal_ArrayImpl._get((e[1] if 1 < len(e) else None), 1)
             Svu = python_internal_ArrayImpl._get((e[1] if 1 < len(e) else None), 1)
-            f = verb_core_Vec.dot(Su,r)
-            g = verb_core_Vec.dot(Sv,r)
+            f = verb_core_Vec.dot(Su, r)
+            g = verb_core_Vec.dot(Sv, r)
             k = [-f, -g]
-            J00 = (verb_core_Vec.dot(Su,Su) + verb_core_Vec.dot(Suu,r))
-            J01 = (verb_core_Vec.dot(Su,Sv) + verb_core_Vec.dot(Suv,r))
-            J10 = (verb_core_Vec.dot(Su,Sv) + verb_core_Vec.dot(Svu,r))
-            J11 = (verb_core_Vec.dot(Sv,Sv) + verb_core_Vec.dot(Svv,r))
+            J00 = (verb_core_Vec.dot(Su, Su) + verb_core_Vec.dot(Suu, r))
+            J01 = (verb_core_Vec.dot(Su, Sv) + verb_core_Vec.dot(Suv, r))
+            J10 = (verb_core_Vec.dot(Su, Sv) + verb_core_Vec.dot(Svu, r))
+            J11 = (verb_core_Vec.dot(Sv, Sv) + verb_core_Vec.dot(Svv, r))
             J = [[J00, J01], [J10, J11]]
-            d = verb_core_Mat.solve(J,k)
-            return verb_core_Vec.add(d,uv)
+            d = verb_core_Mat.solve(J, k)
+            return verb_core_Vec.add(d, uv)
         n = _hx_local_1
         while (i < maxits):
             e = f(cuv)
-            dif = verb_core_Vec.sub(python_internal_ArrayImpl._get((e[0] if 0 < len(e) else None), 0),p)
+            dif = verb_core_Vec.sub(python_internal_ArrayImpl._get((e[0] if 0 < len(e) else None), 0), p)
             c1v = verb_core_Vec.norm(dif)
-            c2an = verb_core_Vec.dot(python_internal_ArrayImpl._get((e[1] if 1 < len(e) else None), 0),dif)
+            c2an = verb_core_Vec.dot(python_internal_ArrayImpl._get((e[1] if 1 < len(e) else None), 0), dif)
             c2ad = (verb_core_Vec.norm(python_internal_ArrayImpl._get((e[1] if 1 < len(e) else None), 0)) * c1v)
-            c2bn = verb_core_Vec.dot(python_internal_ArrayImpl._get((e[0] if 0 < len(e) else None), 1),dif)
+            c2bn = verb_core_Vec.dot(python_internal_ArrayImpl._get((e[0] if 0 < len(e) else None), 1), dif)
             c2bd = (verb_core_Vec.norm(python_internal_ArrayImpl._get((e[0] if 0 < len(e) else None), 1)) * c1v)
             c2av = (c2an / c2ad)
             c2bv = (c2bn / c2bd)
@@ -6077,17 +6337,23 @@ class verb_eval_Analyze:
             c2b = (c2bv < eps2)
             if ((c1 and c2a) and c2b):
                 return cuv
-            ct = n(cuv,e,dif)
+            ct = n(cuv, e, dif)
             if ((ct[0] if 0 < len(ct) else None) < minu):
-                ct = ([(maxu - (((ct[0] if 0 < len(ct) else None) - minu))), (ct[1] if 1 < len(ct) else None)] if closedu else [(minu + verb_core_Constants.EPSILON), (ct[1] if 1 < len(ct) else None)])
+                ct = ([(maxu - (((ct[0] if 0 < len(ct) else None) - minu))), (ct[1] if 1 < len(ct) else None)]
+                      if closedu else [(minu + verb_core_Constants.EPSILON), (ct[1] if 1 < len(ct) else None)])
             elif ((ct[0] if 0 < len(ct) else None) > maxu):
-                ct = ([(minu + (((ct[0] if 0 < len(ct) else None) - maxu))), (ct[1] if 1 < len(ct) else None)] if closedu else [(maxu - verb_core_Constants.EPSILON), (ct[1] if 1 < len(ct) else None)])
+                ct = ([(minu + (((ct[0] if 0 < len(ct) else None) - maxu))), (ct[1] if 1 < len(ct) else None)]
+                      if closedu else [(maxu - verb_core_Constants.EPSILON), (ct[1] if 1 < len(ct) else None)])
             if ((ct[1] if 1 < len(ct) else None) < minv):
-                ct = ([(ct[0] if 0 < len(ct) else None), (maxv - (((ct[1] if 1 < len(ct) else None) - minv)))] if closedv else [(ct[0] if 0 < len(ct) else None), (minv + verb_core_Constants.EPSILON)])
+                ct = ([(ct[0] if 0 < len(ct) else None), (maxv - (((ct[1] if 1 < len(ct) else None) - minv)))]
+                      if closedv else [(ct[0] if 0 < len(ct) else None), (minv + verb_core_Constants.EPSILON)])
             elif ((ct[1] if 1 < len(ct) else None) > maxv):
-                ct = ([(ct[0] if 0 < len(ct) else None), (minv + (((ct[0] if 0 < len(ct) else None) - maxv)))] if closedv else [(ct[0] if 0 < len(ct) else None), (maxv - verb_core_Constants.EPSILON)])
-            c3v0 = verb_core_Vec.norm(verb_core_Vec.mul(((ct[0] if 0 < len(ct) else None) - (cuv[0] if 0 < len(cuv) else None)),python_internal_ArrayImpl._get((e[1] if 1 < len(e) else None), 0)))
-            c3v1 = verb_core_Vec.norm(verb_core_Vec.mul(((ct[1] if 1 < len(ct) else None) - (cuv[1] if 1 < len(cuv) else None)),python_internal_ArrayImpl._get((e[0] if 0 < len(e) else None), 1)))
+                ct = ([(ct[0] if 0 < len(ct) else None), (minv + (((ct[0] if 0 < len(ct) else None) - maxv)))]
+                      if closedv else [(ct[0] if 0 < len(ct) else None), (maxv - verb_core_Constants.EPSILON)])
+            c3v0 = verb_core_Vec.norm(verb_core_Vec.mul(((ct[0] if 0 < len(ct) else None) - (cuv[0] if 0 < len(cuv) else None)),
+                                                        python_internal_ArrayImpl._get((e[1] if 1 < len(e) else None), 0)))
+            c3v1 = verb_core_Vec.norm(verb_core_Vec.mul(((ct[1] if 1 < len(ct) else None) - (cuv[1] if 1 < len(cuv) else None)),
+                                                        python_internal_ArrayImpl._get((e[0] if 0 < len(e) else None), 1)))
             if ((c3v0 + c3v1) < eps1):
                 return cuv
             cuv = ct
@@ -6095,14 +6361,14 @@ class verb_eval_Analyze:
         return cuv
 
     @staticmethod
-    def rationalCurveClosestPoint(curve,p):
-        return verb_eval_Eval.rationalCurvePoint(curve,verb_eval_Analyze.rationalCurveClosestParam(curve,p))
+    def rationalCurveClosestPoint(curve, p):
+        return verb_eval_Eval.rationalCurvePoint(curve, verb_eval_Analyze.rationalCurveClosestParam(curve, p))
 
     @staticmethod
-    def rationalCurveClosestParam(curve,p):
+    def rationalCurveClosestParam(curve, p):
         _hx_min = Math.POSITIVE_INFINITY
         u = 0.0
-        pts = verb_eval_Tess.rationalCurveRegularSample(curve,(len(curve.controlPoints) * curve.degree),True)
+        pts = verb_eval_Tess.rationalCurveRegularSample(curve, (len(curve.controlPoints) * curve.degree), True)
         _g = 0
         _g1 = (len(pts) - 1)
         while (_g < _g1):
@@ -6112,8 +6378,8 @@ class verb_eval_Analyze:
             u1 = python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(pts, (i + 1)), 0)
             p0 = (pts[i] if i >= 0 and i < len(pts) else None)[1:None]
             p1 = python_internal_ArrayImpl._get(pts, (i + 1))[1:None]
-            proj = verb_core_Trig.segmentClosestPoint(p,p0,p1,u0,u1)
-            d = verb_core_Vec.norm(verb_core_Vec.sub(p,proj.pt))
+            proj = verb_core_Trig.segmentClosestPoint(p, p0, p1, u0, u1)
+            d = verb_core_Vec.norm(verb_core_Vec.sub(p, proj.pt))
             if (d < _hx_min):
                 _hx_min = d
                 u = proj.u
@@ -6125,35 +6391,38 @@ class verb_eval_Analyze:
         dif = None
         minu = (curve.knots[0] if 0 < len(curve.knots) else None)
         maxu = verb_core_ArrayExtensions.last(curve.knots)
-        closed = (verb_core_Vec.normSquared(verb_core_Vec.sub((curve.controlPoints[0] if 0 < len(curve.controlPoints) else None),verb_core_ArrayExtensions.last(curve.controlPoints))) < verb_core_Constants.EPSILON)
+        closed = (verb_core_Vec.normSquared(verb_core_Vec.sub((curve.controlPoints[0] if 0 < len(
+            curve.controlPoints) else None), verb_core_ArrayExtensions.last(curve.controlPoints))) < verb_core_Constants.EPSILON)
         cu = u
+
         def _hx_local_0(u):
-            return verb_eval_Eval.rationalCurveDerivatives(curve,u,2)
+            return verb_eval_Eval.rationalCurveDerivatives(curve, u, 2)
         f = _hx_local_0
-        def _hx_local_1(u,e,d):
-            f = verb_core_Vec.dot((e[1] if 1 < len(e) else None),d)
-            s0 = verb_core_Vec.dot((e[2] if 2 < len(e) else None),d)
-            s1 = verb_core_Vec.dot((e[1] if 1 < len(e) else None),(e[1] if 1 < len(e) else None))
+
+        def _hx_local_1(u, e, d):
+            f = verb_core_Vec.dot((e[1] if 1 < len(e) else None), d)
+            s0 = verb_core_Vec.dot((e[2] if 2 < len(e) else None), d)
+            s1 = verb_core_Vec.dot((e[1] if 1 < len(e) else None), (e[1] if 1 < len(e) else None))
             df = (s0 + s1)
             return (u - ((f / df)))
         n = _hx_local_1
         while (i < maxits):
             e = f(cu)
-            dif = verb_core_Vec.sub((e[0] if 0 < len(e) else None),p)
+            dif = verb_core_Vec.sub((e[0] if 0 < len(e) else None), p)
             c1v = verb_core_Vec.norm(dif)
-            c2n = verb_core_Vec.dot((e[1] if 1 < len(e) else None),dif)
+            c2n = verb_core_Vec.dot((e[1] if 1 < len(e) else None), dif)
             c2d = (verb_core_Vec.norm((e[1] if 1 < len(e) else None)) * c1v)
             c2v = (c2n / c2d)
             c1 = (c1v < eps1)
-            c2 = (Reflect.field(Math,"fabs")(c2v) < eps2)
+            c2 = (Reflect.field(Math, "fabs")(c2v) < eps2)
             if (c1 and c2):
                 return cu
-            ct = n(cu,e,dif)
+            ct = n(cu, e, dif)
             if (ct < minu):
                 ct = ((maxu - ((ct - minu))) if closed else minu)
             elif (ct > maxu):
                 ct = ((minu + ((ct - maxu))) if closed else maxu)
-            c3v = verb_core_Vec.norm(verb_core_Vec.mul((ct - cu),(e[1] if 1 < len(e) else None)))
+            c3v = verb_core_Vec.norm(verb_core_Vec.mul((ct - cu), (e[1] if 1 < len(e) else None)))
             if (c3v < eps1):
                 return cu
             cu = ct
@@ -6161,7 +6430,7 @@ class verb_eval_Analyze:
         return cu
 
     @staticmethod
-    def rationalCurveParamAtArcLength(curve,_hx_len,tol = None,beziers = None,bezierLengths = None):
+    def rationalCurveParamAtArcLength(curve, _hx_len, tol=None, beziers=None, bezierLengths=None):
         if (tol is None):
             tol = 1e-3
         if (_hx_len < verb_core_Constants.EPSILON):
@@ -6172,15 +6441,16 @@ class verb_eval_Analyze:
         cl = -verb_core_Constants.EPSILON
         bezier_lengths = (bezierLengths if ((bezierLengths is not None)) else [])
         while ((cl < _hx_len) and ((i < len(crvs)))):
-            python_internal_ArrayImpl._set(bezier_lengths, i, ((bezier_lengths[i] if i >= 0 and i < len(bezier_lengths) else None) if ((i < len(bezier_lengths))) else verb_eval_Analyze.rationalBezierCurveArcLength(curve)))
+            python_internal_ArrayImpl._set(bezier_lengths, i, ((bezier_lengths[i] if i >= 0 and i < len(bezier_lengths) else None) if (
+                (i < len(bezier_lengths))) else verb_eval_Analyze.rationalBezierCurveArcLength(curve)))
             cl = (cl + (bezier_lengths[i] if i >= 0 and i < len(bezier_lengths) else None))
             if (_hx_len < ((cl + verb_core_Constants.EPSILON))):
-                return verb_eval_Analyze.rationalBezierCurveParamAtArcLength(curve,_hx_len,tol,(bezier_lengths[i] if i >= 0 and i < len(bezier_lengths) else None))
+                return verb_eval_Analyze.rationalBezierCurveParamAtArcLength(curve, _hx_len, tol, (bezier_lengths[i] if i >= 0 and i < len(bezier_lengths) else None))
             i = (i + 1)
         return -1
 
     @staticmethod
-    def rationalBezierCurveParamAtArcLength(curve,_hx_len,tol = None,totalLength = None):
+    def rationalBezierCurveParamAtArcLength(curve, _hx_len, tol=None, totalLength=None):
         if (_hx_len < 0):
             return (curve.knots[0] if 0 < len(curve.knots) else None)
         totalLen = (totalLength if ((totalLength is not None)) else verb_eval_Analyze.rationalBezierCurveArcLength(curve))
@@ -6195,7 +6465,7 @@ class verb_eval_Analyze:
         tol1 = (tol if ((tol is not None)) else (verb_core_Constants.TOLERANCE * 2))
         while ((end_l - start_l) > tol1):
             mid_p = (((start_p + end_p)) / 2)
-            mid_l = verb_eval_Analyze.rationalBezierCurveArcLength(curve,mid_p)
+            mid_l = verb_eval_Analyze.rationalBezierCurveArcLength(curve, mid_p)
             if (mid_l > _hx_len):
                 end_p = mid_p
                 end_l = mid_l
@@ -6205,7 +6475,7 @@ class verb_eval_Analyze:
         return (((start_p + end_p)) / 2)
 
     @staticmethod
-    def rationalCurveArcLength(curve,u = None,gaussDegIncrease = None):
+    def rationalCurveArcLength(curve, u=None, gaussDegIncrease=None):
         if (gaussDegIncrease is None):
             gaussDegIncrease = 16
         if (u is None):
@@ -6216,15 +6486,15 @@ class verb_eval_Analyze:
         sum = 0.0
         while ((i < len(crvs)) and ((((cc.knots[0] if 0 < len(cc.knots) else None) + verb_core_Constants.EPSILON) < u))):
             a = verb_core_ArrayExtensions.last(cc.knots)
-            param = (a if (python_lib_Math.isnan(a)) else (u if (python_lib_Math.isnan(u)) else min(a,u)))
-            sum = (sum + verb_eval_Analyze.rationalBezierCurveArcLength(cc,param,gaussDegIncrease))
+            param = (a if (python_lib_Math.isnan(a)) else (u if (python_lib_Math.isnan(u)) else min(a, u)))
+            sum = (sum + verb_eval_Analyze.rationalBezierCurveArcLength(cc, param, gaussDegIncrease))
             i = (i + 1)
             cc1 = i
             cc = (crvs[cc1] if cc1 >= 0 and cc1 < len(crvs) else None)
         return sum
 
     @staticmethod
-    def rationalBezierCurveArcLength(curve,u = None,gaussDegIncrease = None):
+    def rationalBezierCurveArcLength(curve, u=None, gaussDegIncrease=None):
         if (gaussDegIncrease is None):
             gaussDegIncrease = 16
         u1 = (verb_core_ArrayExtensions.last(curve.knots) if ((u is None)) else u)
@@ -6238,10 +6508,14 @@ class verb_eval_Analyze:
         while (_g < _g1):
             i = _g
             _g = (_g + 1)
-            cu = (((z * python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(verb_eval_Analyze.Tvalues, gaussDeg), i)) + z) + (curve.knots[0] if 0 < len(curve.knots) else None))
-            tan = verb_eval_Eval.rationalCurveDerivatives(curve,cu,1)
-            sum = (sum + ((python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(verb_eval_Analyze.Cvalues, gaussDeg), i) * verb_core_Vec.norm((tan[1] if 1 < len(tan) else None)))))
+            cu = (((z * python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(verb_eval_Analyze.Tvalues, gaussDeg), i)) + z) +
+                  (curve.knots[0] if 0 < len(curve.knots) else None))
+            tan = verb_eval_Eval.rationalCurveDerivatives(curve, cu, 1)
+            sum = (sum + ((python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(verb_eval_Analyze.Cvalues, gaussDeg), i)
+                           * verb_core_Vec.norm((tan[1] if 1 < len(tan) else None)))))
         return (z * sum)
+
+
 verb_eval_Analyze._hx_class = verb_eval_Analyze
 _hx_classes["verb.eval.Analyze"] = verb_eval_Analyze
 
@@ -6252,7 +6526,7 @@ class verb_eval_KnotMultiplicity:
     _hx_fields = ["knot", "mult"]
     _hx_methods = ["inc"]
 
-    def __init__(self,knot,mult):
+    def __init__(self, knot, mult):
         self.knot = knot
         self.mult = mult
 
@@ -6266,6 +6540,8 @@ class verb_eval_KnotMultiplicity:
     def _hx_empty_init(_hx_o):
         _hx_o.knot = None
         _hx_o.mult = None
+
+
 verb_eval_KnotMultiplicity._hx_class = verb_eval_KnotMultiplicity
 _hx_classes["verb.eval.KnotMultiplicity"] = verb_eval_KnotMultiplicity
 
@@ -6276,7 +6552,7 @@ class verb_eval_Check:
     _hx_statics = ["isValidKnotVector", "isNonDecreasing", "isValidNurbsCurveData", "isValidNurbsSurfaceData"]
 
     @staticmethod
-    def isValidKnotVector(vec,degree):
+    def isValidKnotVector(vec, degree):
         if (len(vec) == 0):
             return False
         if (len(vec) < ((((degree + 1)) * 2))):
@@ -6287,7 +6563,7 @@ class verb_eval_Check:
         while (_g < _g1):
             i = _g
             _g = (_g + 1)
-            if (Reflect.field(Math,"fabs")(((vec[i] if i >= 0 and i < len(vec) else None) - rep)) > verb_core_Constants.EPSILON):
+            if (Reflect.field(Math, "fabs")(((vec[i] if i >= 0 and i < len(vec) else None) - rep)) > verb_core_Constants.EPSILON):
                 return False
         rep = verb_core_ArrayExtensions.last(vec)
         _g = ((len(vec) - degree) - 1)
@@ -6295,7 +6571,7 @@ class verb_eval_Check:
         while (_g < _g1):
             i = _g
             _g = (_g + 1)
-            if (Reflect.field(Math,"fabs")(((vec[i] if i >= 0 and i < len(vec) else None) - rep)) > verb_core_Constants.EPSILON):
+            if (Reflect.field(Math, "fabs")(((vec[i] if i >= 0 and i < len(vec) else None) - rep)) > verb_core_Constants.EPSILON):
                 return False
         return verb_eval_Check.isNonDecreasing(vec)
 
@@ -6324,7 +6600,7 @@ class verb_eval_Check:
             raise haxe_Exception.thrown("Knots cannot be null!")
         if (len(data.knots) != (((len(data.controlPoints) + data.degree) + 1))):
             raise haxe_Exception.thrown("controlPoints.length + degree + 1 must equal knots.length!")
-        if (not verb_eval_Check.isValidKnotVector(data.knots,data.degree)):
+        if (not verb_eval_Check.isValidKnotVector(data.knots, data.degree)):
             raise haxe_Exception.thrown("Invalid knot vector format!  Should begin with degree + 1 repeats and end with degree + 1 repeats!")
         return data
 
@@ -6348,9 +6624,11 @@ class verb_eval_Check:
             raise haxe_Exception.thrown("controlPointsU.length + degreeU + 1 must equal knotsU.length!")
         if (len(data.knotsV) != (((len((data.controlPoints[0] if 0 < len(data.controlPoints) else None)) + data.degreeV) + 1))):
             raise haxe_Exception.thrown("controlPointsV.length + degreeV + 1 must equal knotsV.length!")
-        if ((not verb_eval_Check.isValidKnotVector(data.knotsU,data.degreeU)) or (not verb_eval_Check.isValidKnotVector(data.knotsV,data.degreeV))):
+        if ((not verb_eval_Check.isValidKnotVector(data.knotsU, data.degreeU)) or (not verb_eval_Check.isValidKnotVector(data.knotsV, data.degreeV))):
             raise haxe_Exception.thrown("Invalid knot vector format!  Should begin with degree + 1 repeats and end with degree + 1 repeats!")
         return data
+
+
 verb_eval_Check._hx_class = verb_eval_Check
 _hx_classes["verb.eval.Check"] = verb_eval_Check
 
@@ -6361,7 +6639,7 @@ class verb_eval_Divide:
     _hx_statics = ["surfaceSplit", "curveSplit", "rationalCurveByEqualArcLength", "rationalCurveByArcLength"]
 
     @staticmethod
-    def surfaceSplit(surface,u,useV = None):
+    def surfaceSplit(surface, u, useV=None):
         if (useV is None):
             useV = False
         knots = None
@@ -6385,13 +6663,13 @@ class verb_eval_Divide:
         knots_to_insert = _g
         newpts0 = list()
         newpts1 = list()
-        s = verb_eval_Eval.knotSpan(degree,u,knots)
+        s = verb_eval_Eval.knotSpan(degree, u, knots)
         res = None
         _g = 0
         while (_g < len(controlPoints)):
             cps = (controlPoints[_g] if _g >= 0 and _g < len(controlPoints) else None)
             _g = (_g + 1)
-            res = verb_eval_Modify.curveKnotRefine(verb_core_NurbsCurveData(degree,knots,cps),knots_to_insert)
+            res = verb_eval_Modify.curveKnotRefine(verb_core_NurbsCurveData(degree, knots, cps), knots_to_insert)
             x = res.controlPoints[0:(s + 1)]
             newpts0.append(x)
             x1 = res.controlPoints[(s + 1):None]
@@ -6401,11 +6679,11 @@ class verb_eval_Divide:
         if (not useV):
             newpts0 = verb_core_Mat.transpose(newpts0)
             newpts1 = verb_core_Mat.transpose(newpts1)
-            return [verb_core_NurbsSurfaceData(degree,surface.degreeV,knots0,list(surface.knotsV),newpts0), verb_core_NurbsSurfaceData(degree,surface.degreeV,knots1,list(surface.knotsV),newpts1)]
-        return [verb_core_NurbsSurfaceData(surface.degreeU,degree,list(surface.knotsU),knots0,newpts0), verb_core_NurbsSurfaceData(surface.degreeU,degree,list(surface.knotsU),knots1,newpts1)]
+            return [verb_core_NurbsSurfaceData(degree, surface.degreeV, knots0, list(surface.knotsV), newpts0), verb_core_NurbsSurfaceData(degree, surface.degreeV, knots1, list(surface.knotsV), newpts1)]
+        return [verb_core_NurbsSurfaceData(surface.degreeU, degree, list(surface.knotsU), knots0, newpts0), verb_core_NurbsSurfaceData(surface.degreeU, degree, list(surface.knotsU), knots1, newpts1)]
 
     @staticmethod
-    def curveSplit(curve,u):
+    def curveSplit(curve, u):
         degree = curve.degree
         controlPoints = curve.controlPoints
         knots = curve.knots
@@ -6417,28 +6695,29 @@ class verb_eval_Divide:
             _g1 = (_g1 + 1)
             _g.append(u)
         knots_to_insert = _g
-        res = verb_eval_Modify.curveKnotRefine(curve,knots_to_insert)
-        s = verb_eval_Eval.knotSpan(degree,u,knots)
+        res = verb_eval_Modify.curveKnotRefine(curve, knots_to_insert)
+        s = verb_eval_Eval.knotSpan(degree, u, knots)
         knots0 = res.knots[0:((s + degree) + 2)]
         knots1 = res.knots[(s + 1):None]
         cpts0 = res.controlPoints[0:(s + 1)]
         cpts1 = res.controlPoints[(s + 1):None]
-        return [verb_core_NurbsCurveData(degree,knots0,cpts0), verb_core_NurbsCurveData(degree,knots1,cpts1)]
+        return [verb_core_NurbsCurveData(degree, knots0, cpts0), verb_core_NurbsCurveData(degree, knots1, cpts1)]
 
     @staticmethod
-    def rationalCurveByEqualArcLength(curve,num):
+    def rationalCurveByEqualArcLength(curve, num):
         tlen = verb_eval_Analyze.rationalCurveArcLength(curve)
         inc = (tlen / num)
-        return verb_eval_Divide.rationalCurveByArcLength(curve,inc)
+        return verb_eval_Divide.rationalCurveByArcLength(curve, inc)
 
     @staticmethod
-    def rationalCurveByArcLength(curve,l):
+    def rationalCurveByArcLength(curve, l):
         crvs = verb_eval_Modify.decomposeCurveIntoBeziers(curve)
+
         def _hx_local_0(x):
             return verb_eval_Analyze.rationalBezierCurveArcLength(x)
-        crvlens = list(map(_hx_local_0,crvs))
+        crvlens = list(map(_hx_local_0, crvs))
         totlen = verb_core_Vec.sum(crvlens)
-        pts = [verb_eval_CurveLengthSample((curve.knots[0] if 0 < len(curve.knots) else None),0.0)]
+        pts = [verb_eval_CurveLengthSample((curve.knots[0] if 0 < len(curve.knots) else None), 0.0)]
         if (l > totlen):
             return pts
         inc = l
@@ -6450,13 +6729,16 @@ class verb_eval_Divide:
         while (i < len(crvs)):
             runsum = (runsum + (crvlens[i] if i >= 0 and i < len(crvlens) else None))
             while (lc < ((runsum + verb_core_Constants.EPSILON))):
-                u = verb_eval_Analyze.rationalBezierCurveParamAtArcLength((crvs[i] if i >= 0 and i < len(crvs) else None),(lc - runsum1),verb_core_Constants.TOLERANCE,(crvlens[i] if i >= 0 and i < len(crvlens) else None))
-                x = verb_eval_CurveLengthSample(u,lc)
+                u = verb_eval_Analyze.rationalBezierCurveParamAtArcLength((crvs[i] if i >= 0 and i < len(
+                    crvs) else None), (lc - runsum1), verb_core_Constants.TOLERANCE, (crvlens[i] if i >= 0 and i < len(crvlens) else None))
+                x = verb_eval_CurveLengthSample(u, lc)
                 pts.append(x)
                 lc = (lc + inc)
             runsum1 = (runsum1 + (crvlens[i] if i >= 0 and i < len(crvlens) else None))
             i = (i + 1)
         return pts
+
+
 verb_eval_Divide._hx_class = verb_eval_Divide
 _hx_classes["verb.eval.Divide"] = verb_eval_Divide
 
@@ -6466,7 +6748,7 @@ class verb_eval_CurveLengthSample:
     __slots__ = ("u", "len")
     _hx_fields = ["u", "len"]
 
-    def __init__(self,u,_hx_len):
+    def __init__(self, u, _hx_len):
         self.u = u
         self.len = _hx_len
 
@@ -6474,6 +6756,8 @@ class verb_eval_CurveLengthSample:
     def _hx_empty_init(_hx_o):
         _hx_o.u = None
         _hx_o.len = None
+
+
 verb_eval_CurveLengthSample._hx_class = verb_eval_CurveLengthSample
 _hx_classes["verb.eval.CurveLengthSample"] = verb_eval_CurveLengthSample
 
@@ -6481,23 +6765,24 @@ _hx_classes["verb.eval.CurveLengthSample"] = verb_eval_CurveLengthSample
 class verb_eval_Eval:
     _hx_class_name = "verb.eval.Eval"
     __slots__ = ()
-    _hx_statics = ["rationalCurveTangent", "rationalSurfaceNormal", "rationalSurfaceDerivatives", "rationalSurfacePoint", "rationalCurveDerivatives", "rationalCurvePoint", "surfaceDerivatives", "surfaceDerivativesGivenNM", "surfacePoint", "surfacePointGivenNM", "curveRegularSamplePoints", "curveRegularSamplePoints2", "rationalSurfaceRegularSampleDerivatives", "surfaceRegularSampleDerivatives", "rationalSurfaceRegularSamplePoints", "surfaceRegularSamplePoints", "regularlySpacedBasisFunctions", "regularlySpacedDerivativeBasisFunctions", "surfacePointGivenBasesKnotSpans", "surfaceDerivativesGivenBasesKnotSpans", "curveDerivatives", "curveDerivativesGivenN", "curvePoint", "areValidRelations", "curvePointGivenN", "volumePoint", "volumePointGivenNML", "derivativeBasisFunctions", "derivativeBasisFunctionsGivenNI", "basisFunctions", "basisFunctionsGivenKnotSpanIndex", "knotSpan", "knotSpanGivenN", "dehomogenize", "rational1d", "rational2d", "weight1d", "weight2d", "dehomogenize1d", "dehomogenize2d", "homogenize1d", "homogenize2d"]
+    _hx_statics = ["rationalCurveTangent", "rationalSurfaceNormal", "rationalSurfaceDerivatives", "rationalSurfacePoint", "rationalCurveDerivatives", "rationalCurvePoint", "surfaceDerivatives", "surfaceDerivativesGivenNM", "surfacePoint", "surfacePointGivenNM", "curveRegularSamplePoints", "curveRegularSamplePoints2", "rationalSurfaceRegularSampleDerivatives", "surfaceRegularSampleDerivatives", "rationalSurfaceRegularSamplePoints", "surfaceRegularSamplePoints", "regularlySpacedBasisFunctions", "regularlySpacedDerivativeBasisFunctions",
+                   "surfacePointGivenBasesKnotSpans", "surfaceDerivativesGivenBasesKnotSpans", "curveDerivatives", "curveDerivativesGivenN", "curvePoint", "areValidRelations", "curvePointGivenN", "volumePoint", "volumePointGivenNML", "derivativeBasisFunctions", "derivativeBasisFunctionsGivenNI", "basisFunctions", "basisFunctionsGivenKnotSpanIndex", "knotSpan", "knotSpanGivenN", "dehomogenize", "rational1d", "rational2d", "weight1d", "weight2d", "dehomogenize1d", "dehomogenize2d", "homogenize1d", "homogenize2d"]
 
     @staticmethod
-    def rationalCurveTangent(curve,u):
-        derivs = verb_eval_Eval.rationalCurveDerivatives(curve,u,1)
+    def rationalCurveTangent(curve, u):
+        derivs = verb_eval_Eval.rationalCurveDerivatives(curve, u, 1)
         return (derivs[1] if 1 < len(derivs) else None)
 
     @staticmethod
-    def rationalSurfaceNormal(surface,u,v):
-        derivs = verb_eval_Eval.rationalSurfaceDerivatives(surface,u,v,1)
-        return verb_core_Vec.cross(python_internal_ArrayImpl._get((derivs[1] if 1 < len(derivs) else None), 0),python_internal_ArrayImpl._get((derivs[0] if 0 < len(derivs) else None), 1))
+    def rationalSurfaceNormal(surface, u, v):
+        derivs = verb_eval_Eval.rationalSurfaceDerivatives(surface, u, v, 1)
+        return verb_core_Vec.cross(python_internal_ArrayImpl._get((derivs[1] if 1 < len(derivs) else None), 0), python_internal_ArrayImpl._get((derivs[0] if 0 < len(derivs) else None), 1))
 
     @staticmethod
-    def rationalSurfaceDerivatives(surface,u,v,numDerivs = None):
+    def rationalSurfaceDerivatives(surface, u, v, numDerivs=None):
         if (numDerivs is None):
             numDerivs = 1
-        ders = verb_eval_Eval.surfaceDerivatives(surface,u,v,numDerivs)
+        ders = verb_eval_Eval.surfaceDerivatives(surface, u, v, numDerivs)
         Aders = verb_eval_Eval.rational2d(ders)
         wders = verb_eval_Eval.weight2d(ders)
         SKL = list()
@@ -6520,35 +6805,38 @@ class verb_eval_Eval:
                 while (_g4 < _g5):
                     j = _g4
                     _g4 = (_g4 + 1)
-                    verb_core_Vec.subMulMutate(v,(verb_core_Binomial.get(l,j) * python_internal_ArrayImpl._get((wders[0] if 0 < len(wders) else None), j)),python_internal_ArrayImpl._get((SKL[k] if k >= 0 and k < len(SKL) else None), (l - j)))
+                    verb_core_Vec.subMulMutate(v, (verb_core_Binomial.get(
+                        l, j) * python_internal_ArrayImpl._get((wders[0] if 0 < len(wders) else None), j)), python_internal_ArrayImpl._get((SKL[k] if k >= 0 and k < len(SKL) else None), (l - j)))
                 _g6 = 1
                 _g7 = (k + 1)
                 while (_g6 < _g7):
                     i = _g6
                     _g6 = (_g6 + 1)
-                    verb_core_Vec.subMulMutate(v,(verb_core_Binomial.get(k,i) * python_internal_ArrayImpl._get((wders[i] if i >= 0 and i < len(wders) else None), 0)),python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(SKL, (k - i)), l))
+                    verb_core_Vec.subMulMutate(v, (verb_core_Binomial.get(
+                        k, i) * python_internal_ArrayImpl._get((wders[i] if i >= 0 and i < len(wders) else None), 0)), python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(SKL, (k - i)), l))
                     v2 = verb_core_Vec.zeros1d(dim)
                     _g8 = 1
                     _g9 = (l + 1)
                     while (_g8 < _g9):
                         j1 = _g8
                         _g8 = (_g8 + 1)
-                        verb_core_Vec.addMulMutate(v2,(verb_core_Binomial.get(l,j1) * python_internal_ArrayImpl._get((wders[i] if i >= 0 and i < len(wders) else None), j1)),python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(SKL, (k - i)), (l - j1)))
-                    verb_core_Vec.subMulMutate(v,verb_core_Binomial.get(k,i),v2)
-                verb_core_Vec.mulMutate((1 / python_internal_ArrayImpl._get((wders[0] if 0 < len(wders) else None), 0)),v)
+                        verb_core_Vec.addMulMutate(v2, (verb_core_Binomial.get(
+                            l, j1) * python_internal_ArrayImpl._get((wders[i] if i >= 0 and i < len(wders) else None), j1)), python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(SKL, (k - i)), (l - j1)))
+                    verb_core_Vec.subMulMutate(v, verb_core_Binomial.get(k, i), v2)
+                verb_core_Vec.mulMutate((1 / python_internal_ArrayImpl._get((wders[0] if 0 < len(wders) else None), 0)), v)
                 _this = (SKL[k] if k >= 0 and k < len(SKL) else None)
                 _this.append(v)
         return SKL
 
     @staticmethod
-    def rationalSurfacePoint(surface,u,v):
-        return verb_eval_Eval.dehomogenize(verb_eval_Eval.surfacePoint(surface,u,v))
+    def rationalSurfacePoint(surface, u, v):
+        return verb_eval_Eval.dehomogenize(verb_eval_Eval.surfacePoint(surface, u, v))
 
     @staticmethod
-    def rationalCurveDerivatives(curve,u,numDerivs = None):
+    def rationalCurveDerivatives(curve, u, numDerivs=None):
         if (numDerivs is None):
             numDerivs = 1
-        ders = verb_eval_Eval.curveDerivatives(curve,u,numDerivs)
+        ders = verb_eval_Eval.curveDerivatives(curve, u, numDerivs)
         Aders = verb_eval_Eval.rational1d(ders)
         wders = verb_eval_Eval.weight1d(ders)
         k = 0
@@ -6565,39 +6853,39 @@ class verb_eval_Eval:
             while (_g2 < _g3):
                 i = _g2
                 _g2 = (_g2 + 1)
-                verb_core_Vec.subMulMutate(v,(verb_core_Binomial.get(k,i) * (wders[i] if i >= 0 and i < len(wders) else None)),python_internal_ArrayImpl._get(CK, (k - i)))
-            verb_core_Vec.mulMutate((1 / (wders[0] if 0 < len(wders) else None)),v)
+                verb_core_Vec.subMulMutate(v, (verb_core_Binomial.get(k, i) * (wders[i] if i >= 0 and i < len(wders) else None)), python_internal_ArrayImpl._get(CK, (k - i)))
+            verb_core_Vec.mulMutate((1 / (wders[0] if 0 < len(wders) else None)), v)
             CK.append(v)
         return CK
 
     @staticmethod
-    def rationalCurvePoint(curve,u):
-        return verb_eval_Eval.dehomogenize(verb_eval_Eval.curvePoint(curve,u))
+    def rationalCurvePoint(curve, u):
+        return verb_eval_Eval.dehomogenize(verb_eval_Eval.curvePoint(curve, u))
 
     @staticmethod
-    def surfaceDerivatives(surface,u,v,numDerivs):
+    def surfaceDerivatives(surface, u, v, numDerivs):
         n = ((len(surface.knotsU) - surface.degreeU) - 2)
         m = ((len(surface.knotsV) - surface.degreeV) - 2)
-        return verb_eval_Eval.surfaceDerivativesGivenNM(n,m,surface,u,v,numDerivs)
+        return verb_eval_Eval.surfaceDerivativesGivenNM(n, m, surface, u, v, numDerivs)
 
     @staticmethod
-    def surfaceDerivativesGivenNM(n,m,surface,u,v,numDerivs):
+    def surfaceDerivativesGivenNM(n, m, surface, u, v, numDerivs):
         degreeU = surface.degreeU
         degreeV = surface.degreeV
         controlPoints = surface.controlPoints
         knotsU = surface.knotsU
         knotsV = surface.knotsV
-        if ((not verb_eval_Eval.areValidRelations(degreeU,len(controlPoints),len(knotsU))) or (not verb_eval_Eval.areValidRelations(degreeV,len((controlPoints[0] if 0 < len(controlPoints) else None)),len(knotsV)))):
+        if ((not verb_eval_Eval.areValidRelations(degreeU, len(controlPoints), len(knotsU))) or (not verb_eval_Eval.areValidRelations(degreeV, len((controlPoints[0] if 0 < len(controlPoints) else None)), len(knotsV)))):
             raise haxe_Exception.thrown("Invalid relations between control points, knot vector, and n")
         dim = len(python_internal_ArrayImpl._get((controlPoints[0] if 0 < len(controlPoints) else None), 0))
         du = (numDerivs if ((numDerivs < degreeU)) else degreeU)
         dv = (numDerivs if ((numDerivs < degreeV)) else degreeV)
-        SKL = verb_core_Vec.zeros3d((numDerivs + 1),(numDerivs + 1),dim)
-        knotSpan_index_u = verb_eval_Eval.knotSpanGivenN(n,degreeU,u,knotsU)
-        knotSpan_index_v = verb_eval_Eval.knotSpanGivenN(m,degreeV,v,knotsV)
-        uders = verb_eval_Eval.derivativeBasisFunctionsGivenNI(knotSpan_index_u,u,degreeU,n,knotsU)
-        vders = verb_eval_Eval.derivativeBasisFunctionsGivenNI(knotSpan_index_v,v,degreeV,m,knotsV)
-        temp = verb_core_Vec.zeros2d((degreeV + 1),dim)
+        SKL = verb_core_Vec.zeros3d((numDerivs + 1), (numDerivs + 1), dim)
+        knotSpan_index_u = verb_eval_Eval.knotSpanGivenN(n, degreeU, u, knotsU)
+        knotSpan_index_v = verb_eval_Eval.knotSpanGivenN(m, degreeV, v, knotsV)
+        uders = verb_eval_Eval.derivativeBasisFunctionsGivenNI(knotSpan_index_u, u, degreeU, n, knotsU)
+        vders = verb_eval_Eval.derivativeBasisFunctionsGivenNI(knotSpan_index_v, v, degreeV, m, knotsV)
+        temp = verb_core_Vec.zeros2d((degreeV + 1), dim)
         dd = 0
         _g = 0
         _g1 = (du + 1)
@@ -6615,7 +6903,8 @@ class verb_eval_Eval:
                 while (_g4 < _g5):
                     r = _g4
                     _g4 = (_g4 + 1)
-                    verb_core_Vec.addMulMutate((temp[s] if s >= 0 and s < len(temp) else None),python_internal_ArrayImpl._get((uders[k] if k >= 0 and k < len(uders) else None), r),python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(controlPoints, ((knotSpan_index_u - degreeU) + r)), ((knotSpan_index_v - degreeV) + s)))
+                    verb_core_Vec.addMulMutate((temp[s] if s >= 0 and s < len(temp) else None), python_internal_ArrayImpl._get((uders[k] if k >= 0 and k < len(
+                        uders) else None), r), python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(controlPoints, ((knotSpan_index_u - degreeU) + r)), ((knotSpan_index_v - degreeV) + s)))
             nk = (numDerivs - k)
             dd = (nk if ((nk < dv)) else dv)
             _g6 = 0
@@ -6629,29 +6918,30 @@ class verb_eval_Eval:
                 while (_g8 < _g9):
                     s1 = _g8
                     _g8 = (_g8 + 1)
-                    verb_core_Vec.addMulMutate(python_internal_ArrayImpl._get((SKL[k] if k >= 0 and k < len(SKL) else None), l),python_internal_ArrayImpl._get((vders[l] if l >= 0 and l < len(vders) else None), s1),(temp[s1] if s1 >= 0 and s1 < len(temp) else None))
+                    verb_core_Vec.addMulMutate(python_internal_ArrayImpl._get((SKL[k] if k >= 0 and k < len(SKL) else None), l), python_internal_ArrayImpl._get(
+                        (vders[l] if l >= 0 and l < len(vders) else None), s1), (temp[s1] if s1 >= 0 and s1 < len(temp) else None))
         return SKL
 
     @staticmethod
-    def surfacePoint(surface,u,v):
+    def surfacePoint(surface, u, v):
         n = ((len(surface.knotsU) - surface.degreeU) - 2)
         m = ((len(surface.knotsV) - surface.degreeV) - 2)
-        return verb_eval_Eval.surfacePointGivenNM(n,m,surface,u,v)
+        return verb_eval_Eval.surfacePointGivenNM(n, m, surface, u, v)
 
     @staticmethod
-    def surfacePointGivenNM(n,m,surface,u,v):
+    def surfacePointGivenNM(n, m, surface, u, v):
         degreeU = surface.degreeU
         degreeV = surface.degreeV
         controlPoints = surface.controlPoints
         knotsU = surface.knotsU
         knotsV = surface.knotsV
-        if ((not verb_eval_Eval.areValidRelations(degreeU,len(controlPoints),len(knotsU))) or (not verb_eval_Eval.areValidRelations(degreeV,len((controlPoints[0] if 0 < len(controlPoints) else None)),len(knotsV)))):
+        if ((not verb_eval_Eval.areValidRelations(degreeU, len(controlPoints), len(knotsU))) or (not verb_eval_Eval.areValidRelations(degreeV, len((controlPoints[0] if 0 < len(controlPoints) else None)), len(knotsV)))):
             raise haxe_Exception.thrown("Invalid relations between control points, knot vector, and n")
         dim = len(python_internal_ArrayImpl._get((controlPoints[0] if 0 < len(controlPoints) else None), 0))
-        knotSpan_index_u = verb_eval_Eval.knotSpanGivenN(n,degreeU,u,knotsU)
-        knotSpan_index_v = verb_eval_Eval.knotSpanGivenN(m,degreeV,v,knotsV)
-        u_basis_vals = verb_eval_Eval.basisFunctionsGivenKnotSpanIndex(knotSpan_index_u,u,degreeU,knotsU)
-        v_basis_vals = verb_eval_Eval.basisFunctionsGivenKnotSpanIndex(knotSpan_index_v,v,degreeV,knotsV)
+        knotSpan_index_u = verb_eval_Eval.knotSpanGivenN(n, degreeU, u, knotsU)
+        knotSpan_index_v = verb_eval_Eval.knotSpanGivenN(m, degreeV, v, knotsV)
+        u_basis_vals = verb_eval_Eval.basisFunctionsGivenKnotSpanIndex(knotSpan_index_u, u, degreeU, knotsU)
+        v_basis_vals = verb_eval_Eval.basisFunctionsGivenKnotSpanIndex(knotSpan_index_v, v, degreeV, knotsV)
         uind = (knotSpan_index_u - degreeU)
         vind = knotSpan_index_v
         position = verb_core_Vec.zeros1d(dim)
@@ -6668,22 +6958,23 @@ class verb_eval_Eval:
             while (_g2 < _g3):
                 k = _g2
                 _g2 = (_g2 + 1)
-                verb_core_Vec.addMulMutate(temp,(u_basis_vals[k] if k >= 0 and k < len(u_basis_vals) else None),python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(controlPoints, (uind + k)), vind))
-            verb_core_Vec.addMulMutate(position,(v_basis_vals[l] if l >= 0 and l < len(v_basis_vals) else None),temp)
+                verb_core_Vec.addMulMutate(temp, (u_basis_vals[k] if k >= 0 and k < len(u_basis_vals) else None),
+                                           python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(controlPoints, (uind + k)), vind))
+            verb_core_Vec.addMulMutate(position, (v_basis_vals[l] if l >= 0 and l < len(v_basis_vals) else None), temp)
         return position
 
     @staticmethod
-    def curveRegularSamplePoints(crv,divs):
-        derivs = verb_eval_Eval.curveDerivatives(crv,(crv.knots[0] if 0 < len(crv.knots) else None),crv.degree)
+    def curveRegularSamplePoints(crv, divs):
+        derivs = verb_eval_Eval.curveDerivatives(crv, (crv.knots[0] if 0 < len(crv.knots) else None), crv.degree)
         t = (1.0 / divs)
         temp = (t * t)
         f = (derivs[0] if 0 < len(derivs) else None)
-        fd = verb_core_Vec.mul(t,(derivs[1] if 1 < len(derivs) else None))
-        fdd_per2 = verb_core_Vec.mul((temp * 0.5),(derivs[2] if 2 < len(derivs) else None))
-        fddd_per2 = verb_core_Vec.mul(((temp * t) * 0.5),(derivs[3] if 3 < len(derivs) else None))
-        fdd = verb_core_Vec.add(fdd_per2,fdd_per2)
-        fddd = verb_core_Vec.add(fddd_per2,fddd_per2)
-        fddd_per6 = verb_core_Vec.mul(0.33333333333333331,fddd_per2)
+        fd = verb_core_Vec.mul(t, (derivs[1] if 1 < len(derivs) else None))
+        fdd_per2 = verb_core_Vec.mul((temp * 0.5), (derivs[2] if 2 < len(derivs) else None))
+        fddd_per2 = verb_core_Vec.mul(((temp * t) * 0.5), (derivs[3] if 3 < len(derivs) else None))
+        fdd = verb_core_Vec.add(fdd_per2, fdd_per2)
+        fddd = verb_core_Vec.add(fddd_per2, fddd_per2)
+        fddd_per6 = verb_core_Vec.mul(0.33333333333333331, fddd_per2)
         pts = []
         _g = 0
         _g1 = (divs + 1)
@@ -6699,17 +6990,17 @@ class verb_eval_Eval:
         return pts
 
     @staticmethod
-    def curveRegularSamplePoints2(crv,divs):
-        derivs = verb_eval_Eval.curveDerivatives(crv,(crv.knots[0] if 0 < len(crv.knots) else None),crv.degree)
+    def curveRegularSamplePoints2(crv, divs):
+        derivs = verb_eval_Eval.curveDerivatives(crv, (crv.knots[0] if 0 < len(crv.knots) else None), crv.degree)
         t = (1.0 / divs)
         temp = (t * t)
         f = (derivs[0] if 0 < len(derivs) else None)
-        fd = verb_core_Vec.mul(t,(derivs[1] if 1 < len(derivs) else None))
-        fdd_per2 = verb_core_Vec.mul((temp * 0.5),(derivs[2] if 2 < len(derivs) else None))
-        fddd_per2 = verb_core_Vec.mul(((temp * t) * 0.5),(derivs[3] if 3 < len(derivs) else None))
-        fdd = verb_core_Vec.add(fdd_per2,fdd_per2)
-        fddd = verb_core_Vec.add(fddd_per2,fddd_per2)
-        fddd_per6 = verb_core_Vec.mul(0.33333333333333331,fddd_per2)
+        fd = verb_core_Vec.mul(t, (derivs[1] if 1 < len(derivs) else None))
+        fdd_per2 = verb_core_Vec.mul((temp * 0.5), (derivs[2] if 2 < len(derivs) else None))
+        fddd_per2 = verb_core_Vec.mul(((temp * t) * 0.5), (derivs[3] if 3 < len(derivs) else None))
+        fdd = verb_core_Vec.add(fdd_per2, fdd_per2)
+        fddd = verb_core_Vec.add(fddd_per2, fddd_per2)
+        fddd_per6 = verb_core_Vec.mul(0.33333333333333331, fddd_per2)
         pts = []
         _g = 0
         _g1 = (divs + 1)
@@ -6725,8 +7016,8 @@ class verb_eval_Eval:
         return pts
 
     @staticmethod
-    def rationalSurfaceRegularSampleDerivatives(surface,divsU,divsV,numDerivs):
-        allders = verb_eval_Eval.surfaceRegularSampleDerivatives(surface,divsU,divsV,numDerivs)
+    def rationalSurfaceRegularSampleDerivatives(surface, divsU, divsV, numDerivs):
+        allders = verb_eval_Eval.surfaceRegularSampleDerivatives(surface, divsU, divsV, numDerivs)
         allratders = []
         divsU1 = (divsU + 1)
         divsV1 = (divsV + 1)
@@ -6766,29 +7057,32 @@ class verb_eval_Eval:
                         while (_g8 < _g9):
                             j1 = _g8
                             _g8 = (_g8 + 1)
-                            verb_core_Vec.subMulMutate(v,(verb_core_Binomial.get(l,j1) * python_internal_ArrayImpl._get((wders[0] if 0 < len(wders) else None), j1)),python_internal_ArrayImpl._get((SKL[k] if k >= 0 and k < len(SKL) else None), (l - j1)))
+                            verb_core_Vec.subMulMutate(v, (verb_core_Binomial.get(
+                                l, j1) * python_internal_ArrayImpl._get((wders[0] if 0 < len(wders) else None), j1)), python_internal_ArrayImpl._get((SKL[k] if k >= 0 and k < len(SKL) else None), (l - j1)))
                         _g10 = 1
                         _g11 = (k + 1)
                         while (_g10 < _g11):
                             i1 = _g10
                             _g10 = (_g10 + 1)
-                            verb_core_Vec.subMulMutate(v,(verb_core_Binomial.get(k,i1) * python_internal_ArrayImpl._get((wders[i1] if i1 >= 0 and i1 < len(wders) else None), 0)),python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(SKL, (k - i1)), l))
+                            verb_core_Vec.subMulMutate(v, (verb_core_Binomial.get(
+                                k, i1) * python_internal_ArrayImpl._get((wders[i1] if i1 >= 0 and i1 < len(wders) else None), 0)), python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(SKL, (k - i1)), l))
                             v2 = verb_core_Vec.zeros1d(dim)
                             _g12 = 1
                             _g13 = (l + 1)
                             while (_g12 < _g13):
                                 j2 = _g12
                                 _g12 = (_g12 + 1)
-                                verb_core_Vec.addMulMutate(v2,(verb_core_Binomial.get(l,j2) * python_internal_ArrayImpl._get((wders[i1] if i1 >= 0 and i1 < len(wders) else None), j2)),python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(SKL, (k - i1)), (l - j2)))
-                            verb_core_Vec.subMulMutate(v,verb_core_Binomial.get(k,i1),v2)
-                        verb_core_Vec.mulMutate((1 / python_internal_ArrayImpl._get((wders[0] if 0 < len(wders) else None), 0)),v)
+                                verb_core_Vec.addMulMutate(v2, (verb_core_Binomial.get(l, j2) * python_internal_ArrayImpl._get((wders[i1] if i1 >= 0 and i1 < len(
+                                    wders) else None), j2)), python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(SKL, (k - i1)), (l - j2)))
+                            verb_core_Vec.subMulMutate(v, verb_core_Binomial.get(k, i1), v2)
+                        verb_core_Vec.mulMutate((1 / python_internal_ArrayImpl._get((wders[0] if 0 < len(wders) else None), 0)), v)
                         _this = (SKL[k] if k >= 0 and k < len(SKL) else None)
                         _this.append(v)
                 rowders.append(SKL)
         return allratders
 
     @staticmethod
-    def surfaceRegularSampleDerivatives(surface,divsU,divsV,numDerivs):
+    def surfaceRegularSampleDerivatives(surface, divsU, divsV, numDerivs):
         degreeU = surface.degreeU
         degreeV = surface.degreeV
         controlPoints = surface.controlPoints
@@ -6797,10 +7091,10 @@ class verb_eval_Eval:
         dim = len(python_internal_ArrayImpl._get((controlPoints[0] if 0 < len(controlPoints) else None), 0))
         spanU = (((verb_core_ArrayExtensions.last(knotsU) - (knotsU[0] if 0 < len(knotsU) else None))) / divsU)
         spanV = (((verb_core_ArrayExtensions.last(knotsV) - (knotsV[0] if 0 < len(knotsV) else None))) / divsV)
-        knotSpansBasesU = verb_eval_Eval.regularlySpacedDerivativeBasisFunctions(degreeU,knotsU,divsU)
+        knotSpansBasesU = verb_eval_Eval.regularlySpacedDerivativeBasisFunctions(degreeU, knotsU, divsU)
         knotSpansU = knotSpansBasesU.item0
         basesU = knotSpansBasesU.item1
-        knotSpansBasesV = verb_eval_Eval.regularlySpacedDerivativeBasisFunctions(degreeV,knotsV,divsV)
+        knotSpansBasesV = verb_eval_Eval.regularlySpacedDerivativeBasisFunctions(degreeV, knotsV, divsV)
         knotSpansV = knotSpansBasesV.item0
         basesV = knotSpansBasesV.item1
         pts = []
@@ -6818,16 +7112,17 @@ class verb_eval_Eval:
             while (_g2 < _g3):
                 j = _g2
                 _g2 = (_g2 + 1)
-                x = verb_eval_Eval.surfaceDerivativesGivenBasesKnotSpans(degreeU,degreeV,controlPoints,(knotSpansU[i] if i >= 0 and i < len(knotSpansU) else None),(knotSpansV[j] if j >= 0 and j < len(knotSpansV) else None),(basesU[i] if i >= 0 and i < len(basesU) else None),(basesV[j] if j >= 0 and j < len(basesV) else None),dim,numDerivs)
+                x = verb_eval_Eval.surfaceDerivativesGivenBasesKnotSpans(degreeU, degreeV, controlPoints, (knotSpansU[i] if i >= 0 and i < len(knotSpansU) else None), (knotSpansV[j] if j >= 0 and j < len(
+                    knotSpansV) else None), (basesU[i] if i >= 0 and i < len(basesU) else None), (basesV[j] if j >= 0 and j < len(basesV) else None), dim, numDerivs)
                 ptsi.append(x)
         return pts
 
     @staticmethod
-    def rationalSurfaceRegularSamplePoints(surface,divsU,divsV):
-        return verb_eval_Eval.dehomogenize2d(verb_eval_Eval.surfaceRegularSamplePoints(surface,divsU,divsV))
+    def rationalSurfaceRegularSamplePoints(surface, divsU, divsV):
+        return verb_eval_Eval.dehomogenize2d(verb_eval_Eval.surfaceRegularSamplePoints(surface, divsU, divsV))
 
     @staticmethod
-    def surfaceRegularSamplePoints(surface,divsU,divsV):
+    def surfaceRegularSamplePoints(surface, divsU, divsV):
         degreeU = surface.degreeU
         degreeV = surface.degreeV
         controlPoints = surface.controlPoints
@@ -6836,10 +7131,10 @@ class verb_eval_Eval:
         dim = len(python_internal_ArrayImpl._get((controlPoints[0] if 0 < len(controlPoints) else None), 0))
         spanU = (((verb_core_ArrayExtensions.last(knotsU) - (knotsU[0] if 0 < len(knotsU) else None))) / divsU)
         spanV = (((verb_core_ArrayExtensions.last(knotsV) - (knotsV[0] if 0 < len(knotsV) else None))) / divsV)
-        knotSpansBasesU = verb_eval_Eval.regularlySpacedBasisFunctions(degreeU,knotsU,divsU)
+        knotSpansBasesU = verb_eval_Eval.regularlySpacedBasisFunctions(degreeU, knotsU, divsU)
         knotSpansU = knotSpansBasesU.item0
         basesU = knotSpansBasesU.item1
-        knotSpansBasesV = verb_eval_Eval.regularlySpacedBasisFunctions(degreeV,knotsV,divsV)
+        knotSpansBasesV = verb_eval_Eval.regularlySpacedBasisFunctions(degreeV, knotsV, divsV)
         knotSpansV = knotSpansBasesV.item0
         basesV = knotSpansBasesV.item1
         pts = []
@@ -6857,18 +7152,19 @@ class verb_eval_Eval:
             while (_g2 < _g3):
                 j = _g2
                 _g2 = (_g2 + 1)
-                x = verb_eval_Eval.surfacePointGivenBasesKnotSpans(degreeU,degreeV,controlPoints,(knotSpansU[i] if i >= 0 and i < len(knotSpansU) else None),(knotSpansV[j] if j >= 0 and j < len(knotSpansV) else None),(basesU[i] if i >= 0 and i < len(basesU) else None),(basesV[j] if j >= 0 and j < len(basesV) else None),dim)
+                x = verb_eval_Eval.surfacePointGivenBasesKnotSpans(degreeU, degreeV, controlPoints, (knotSpansU[i] if i >= 0 and i < len(knotSpansU) else None), (knotSpansV[j] if j >= 0 and j < len(
+                    knotSpansV) else None), (basesU[i] if i >= 0 and i < len(basesU) else None), (basesV[j] if j >= 0 and j < len(basesV) else None), dim)
                 ptsi.append(x)
         return pts
 
     @staticmethod
-    def regularlySpacedBasisFunctions(degree,knots,divs):
+    def regularlySpacedBasisFunctions(degree, knots, divs):
         n = ((len(knots) - degree) - 2)
         span = (((verb_core_ArrayExtensions.last(knots) - (knots[0] if 0 < len(knots) else None))) / divs)
         bases = []
         knotspans = []
         u = (knots[0] if 0 < len(knots) else None)
-        knotIndex = verb_eval_Eval.knotSpanGivenN(n,degree,u,knots)
+        knotIndex = verb_eval_Eval.knotSpanGivenN(n, degree, u, knots)
         div1 = (divs + 1)
         _g = 0
         _g1 = div1
@@ -6878,19 +7174,19 @@ class verb_eval_Eval:
             while (u >= python_internal_ArrayImpl._get(knots, (knotIndex + 1))):
                 knotIndex = (knotIndex + 1)
             knotspans.append(knotIndex)
-            x = verb_eval_Eval.basisFunctionsGivenKnotSpanIndex(knotIndex,u,degree,knots)
+            x = verb_eval_Eval.basisFunctionsGivenKnotSpanIndex(knotIndex, u, degree, knots)
             bases.append(x)
             u = (u + span)
-        return verb_core_Pair(knotspans,bases)
+        return verb_core_Pair(knotspans, bases)
 
     @staticmethod
-    def regularlySpacedDerivativeBasisFunctions(degree,knots,divs):
+    def regularlySpacedDerivativeBasisFunctions(degree, knots, divs):
         n = ((len(knots) - degree) - 2)
         span = (((verb_core_ArrayExtensions.last(knots) - (knots[0] if 0 < len(knots) else None))) / divs)
         bases = []
         knotspans = []
         u = (knots[0] if 0 < len(knots) else None)
-        knotIndex = verb_eval_Eval.knotSpanGivenN(n,degree,u,knots)
+        knotIndex = verb_eval_Eval.knotSpanGivenN(n, degree, u, knots)
         div1 = (divs + 1)
         _g = 0
         _g1 = div1
@@ -6900,13 +7196,13 @@ class verb_eval_Eval:
             while (u >= python_internal_ArrayImpl._get(knots, (knotIndex + 1))):
                 knotIndex = (knotIndex + 1)
             knotspans.append(knotIndex)
-            x = verb_eval_Eval.derivativeBasisFunctionsGivenNI(knotIndex,u,degree,n,knots)
+            x = verb_eval_Eval.derivativeBasisFunctionsGivenNI(knotIndex, u, degree, n, knots)
             bases.append(x)
             u = (u + span)
-        return verb_core_Pair(knotspans,bases)
+        return verb_core_Pair(knotspans, bases)
 
     @staticmethod
-    def surfacePointGivenBasesKnotSpans(degreeU,degreeV,controlPoints,knotSpanU,knotSpanV,basesU,basesV,dim):
+    def surfacePointGivenBasesKnotSpans(degreeU, degreeV, controlPoints, knotSpanU, knotSpanV, basesU, basesV, dim):
         position = verb_core_Vec.zeros1d(dim)
         temp = None
         uind = (knotSpanU - degreeU)
@@ -6922,18 +7218,19 @@ class verb_eval_Eval:
             while (_g2 < _g3):
                 k = _g2
                 _g2 = (_g2 + 1)
-                verb_core_Vec.addMulMutate(temp,(basesU[k] if k >= 0 and k < len(basesU) else None),python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(controlPoints, (uind + k)), vind))
+                verb_core_Vec.addMulMutate(temp, (basesU[k] if k >= 0 and k < len(basesU) else None),
+                                           python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(controlPoints, (uind + k)), vind))
             vind = (vind + 1)
-            verb_core_Vec.addMulMutate(position,(basesV[l] if l >= 0 and l < len(basesV) else None),temp)
+            verb_core_Vec.addMulMutate(position, (basesV[l] if l >= 0 and l < len(basesV) else None), temp)
         return position
 
     @staticmethod
-    def surfaceDerivativesGivenBasesKnotSpans(degreeU,degreeV,controlPoints,knotSpanU,knotSpanV,basesU,basesV,dim,numDerivs):
+    def surfaceDerivativesGivenBasesKnotSpans(degreeU, degreeV, controlPoints, knotSpanU, knotSpanV, basesU, basesV, dim, numDerivs):
         dim = len(python_internal_ArrayImpl._get((controlPoints[0] if 0 < len(controlPoints) else None), 0))
         du = (numDerivs if ((numDerivs < degreeU)) else degreeU)
         dv = (numDerivs if ((numDerivs < degreeV)) else degreeV)
-        SKL = verb_core_Vec.zeros3d((du + 1),(dv + 1),dim)
-        temp = verb_core_Vec.zeros2d((degreeV + 1),dim)
+        SKL = verb_core_Vec.zeros3d((du + 1), (dv + 1), dim)
+        temp = verb_core_Vec.zeros2d((degreeV + 1), dim)
         dd = 0
         _g = 0
         _g1 = (du + 1)
@@ -6951,7 +7248,8 @@ class verb_eval_Eval:
                 while (_g4 < _g5):
                     r = _g4
                     _g4 = (_g4 + 1)
-                    verb_core_Vec.addMulMutate((temp[s] if s >= 0 and s < len(temp) else None),python_internal_ArrayImpl._get((basesU[k] if k >= 0 and k < len(basesU) else None), r),python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(controlPoints, ((knotSpanU - degreeU) + r)), ((knotSpanV - degreeV) + s)))
+                    verb_core_Vec.addMulMutate((temp[s] if s >= 0 and s < len(temp) else None), python_internal_ArrayImpl._get((basesU[k] if k >= 0 and k < len(
+                        basesU) else None), r), python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(controlPoints, ((knotSpanU - degreeU) + r)), ((knotSpanV - degreeV) + s)))
             nk = (numDerivs - k)
             dd = (nk if ((nk < dv)) else dv)
             _g6 = 0
@@ -6965,26 +7263,27 @@ class verb_eval_Eval:
                 while (_g8 < _g9):
                     s1 = _g8
                     _g8 = (_g8 + 1)
-                    verb_core_Vec.addMulMutate(python_internal_ArrayImpl._get((SKL[k] if k >= 0 and k < len(SKL) else None), l),python_internal_ArrayImpl._get((basesV[l] if l >= 0 and l < len(basesV) else None), s1),(temp[s1] if s1 >= 0 and s1 < len(temp) else None))
+                    verb_core_Vec.addMulMutate(python_internal_ArrayImpl._get((SKL[k] if k >= 0 and k < len(SKL) else None), l), python_internal_ArrayImpl._get(
+                        (basesV[l] if l >= 0 and l < len(basesV) else None), s1), (temp[s1] if s1 >= 0 and s1 < len(temp) else None))
         return SKL
 
     @staticmethod
-    def curveDerivatives(crv,u,numDerivs):
+    def curveDerivatives(crv, u, numDerivs):
         n = ((len(crv.knots) - crv.degree) - 2)
-        return verb_eval_Eval.curveDerivativesGivenN(n,crv,u,numDerivs)
+        return verb_eval_Eval.curveDerivativesGivenN(n, crv, u, numDerivs)
 
     @staticmethod
-    def curveDerivativesGivenN(n,curve,u,numDerivs):
+    def curveDerivativesGivenN(n, curve, u, numDerivs):
         degree = curve.degree
         controlPoints = curve.controlPoints
         knots = curve.knots
-        if (not verb_eval_Eval.areValidRelations(degree,len(controlPoints),len(knots))):
+        if (not verb_eval_Eval.areValidRelations(degree, len(controlPoints), len(knots))):
             raise haxe_Exception.thrown("Invalid relations between control points, knot vector, and n")
         dim = len((controlPoints[0] if 0 < len(controlPoints) else None))
         du = (numDerivs if ((numDerivs < degree)) else degree)
-        CK = verb_core_Vec.zeros2d((numDerivs + 1),dim)
-        knotSpan_index = verb_eval_Eval.knotSpanGivenN(n,degree,u,knots)
-        nders = verb_eval_Eval.derivativeBasisFunctionsGivenNI(knotSpan_index,u,degree,du,knots)
+        CK = verb_core_Vec.zeros2d((numDerivs + 1), dim)
+        knotSpan_index = verb_eval_Eval.knotSpanGivenN(n, degree, u, knots)
+        nders = verb_eval_Eval.derivativeBasisFunctionsGivenNI(knotSpan_index, u, degree, du, knots)
         k = 0
         j = 0
         _g = 0
@@ -6997,46 +7296,48 @@ class verb_eval_Eval:
             while (_g2 < _g3):
                 j = _g2
                 _g2 = (_g2 + 1)
-                verb_core_Vec.addMulMutate((CK[k] if k >= 0 and k < len(CK) else None),python_internal_ArrayImpl._get((nders[k] if k >= 0 and k < len(nders) else None), j),python_internal_ArrayImpl._get(controlPoints, ((knotSpan_index - degree) + j)))
+                verb_core_Vec.addMulMutate((CK[k] if k >= 0 and k < len(CK) else None), python_internal_ArrayImpl._get(
+                    (nders[k] if k >= 0 and k < len(nders) else None), j), python_internal_ArrayImpl._get(controlPoints, ((knotSpan_index - degree) + j)))
         return CK
 
     @staticmethod
-    def curvePoint(curve,u):
+    def curvePoint(curve, u):
         n = ((len(curve.knots) - curve.degree) - 2)
-        return verb_eval_Eval.curvePointGivenN(n,curve,u)
+        return verb_eval_Eval.curvePointGivenN(n, curve, u)
 
     @staticmethod
-    def areValidRelations(degree,num_controlPoints,knots_length):
+    def areValidRelations(degree, num_controlPoints, knots_length):
         return ((((num_controlPoints + degree) + 1) - knots_length) == 0)
 
     @staticmethod
-    def curvePointGivenN(n,curve,u):
+    def curvePointGivenN(n, curve, u):
         degree = curve.degree
         controlPoints = curve.controlPoints
         knots = curve.knots
-        if (not verb_eval_Eval.areValidRelations(degree,len(controlPoints),len(knots))):
+        if (not verb_eval_Eval.areValidRelations(degree, len(controlPoints), len(knots))):
             raise haxe_Exception.thrown("Invalid relations between control points, knot Array, and n")
-        knotSpan_index = verb_eval_Eval.knotSpanGivenN(n,degree,u,knots)
-        basis_values = verb_eval_Eval.basisFunctionsGivenKnotSpanIndex(knotSpan_index,u,degree,knots)
+        knotSpan_index = verb_eval_Eval.knotSpanGivenN(n, degree, u, knots)
+        basis_values = verb_eval_Eval.basisFunctionsGivenKnotSpanIndex(knotSpan_index, u, degree, knots)
         position = verb_core_Vec.zeros1d(len((controlPoints[0] if 0 < len(controlPoints) else None)))
         _g = 0
         _g1 = (degree + 1)
         while (_g < _g1):
             j = _g
             _g = (_g + 1)
-            verb_core_Vec.addMulMutate(position,(basis_values[j] if j >= 0 and j < len(basis_values) else None),python_internal_ArrayImpl._get(controlPoints, ((knotSpan_index - degree) + j)))
+            verb_core_Vec.addMulMutate(position, (basis_values[j] if j >= 0 and j < len(basis_values) else None),
+                                       python_internal_ArrayImpl._get(controlPoints, ((knotSpan_index - degree) + j)))
         return position
 
     @staticmethod
-    def volumePoint(volume,u,v,w):
+    def volumePoint(volume, u, v, w):
         n = ((len(volume.knotsU) - volume.degreeU) - 2)
         m = ((len(volume.knotsV) - volume.degreeV) - 2)
         l = ((len(volume.knotsW) - volume.degreeW) - 2)
-        return verb_eval_Eval.volumePointGivenNML(volume,n,m,l,u,v,w)
+        return verb_eval_Eval.volumePointGivenNML(volume, n, m, l, u, v, w)
 
     @staticmethod
-    def volumePointGivenNML(volume,n,m,l,u,v,w):
-        if (((not verb_eval_Eval.areValidRelations(volume.degreeU,len(volume.controlPoints),len(volume.knotsU))) or (not verb_eval_Eval.areValidRelations(volume.degreeV,len((volume.controlPoints[0] if 0 < len(volume.controlPoints) else None)),len(volume.knotsV)))) or (not verb_eval_Eval.areValidRelations(volume.degreeW,len(python_internal_ArrayImpl._get((volume.controlPoints[0] if 0 < len(volume.controlPoints) else None), 0)),len(volume.knotsW)))):
+    def volumePointGivenNML(volume, n, m, l, u, v, w):
+        if (((not verb_eval_Eval.areValidRelations(volume.degreeU, len(volume.controlPoints), len(volume.knotsU))) or (not verb_eval_Eval.areValidRelations(volume.degreeV, len((volume.controlPoints[0] if 0 < len(volume.controlPoints) else None)), len(volume.knotsV)))) or (not verb_eval_Eval.areValidRelations(volume.degreeW, len(python_internal_ArrayImpl._get((volume.controlPoints[0] if 0 < len(volume.controlPoints) else None), 0)), len(volume.knotsW)))):
             raise haxe_Exception.thrown("Invalid relations between control points and knot vector")
         controlPoints = volume.controlPoints
         degreeU = volume.degreeU
@@ -7046,12 +7347,12 @@ class verb_eval_Eval:
         knotsV = volume.knotsV
         knotsW = volume.knotsW
         dim = len(python_internal_ArrayImpl._get(python_internal_ArrayImpl._get((controlPoints[0] if 0 < len(controlPoints) else None), 0), 0))
-        knotSpan_index_u = verb_eval_Eval.knotSpanGivenN(n,degreeU,u,knotsU)
-        knotSpan_index_v = verb_eval_Eval.knotSpanGivenN(m,degreeV,v,knotsV)
-        knotSpan_index_w = verb_eval_Eval.knotSpanGivenN(l,degreeW,w,knotsW)
-        u_basis_vals = verb_eval_Eval.basisFunctionsGivenKnotSpanIndex(knotSpan_index_u,u,degreeU,knotsU)
-        v_basis_vals = verb_eval_Eval.basisFunctionsGivenKnotSpanIndex(knotSpan_index_v,v,degreeV,knotsV)
-        w_basis_vals = verb_eval_Eval.basisFunctionsGivenKnotSpanIndex(knotSpan_index_w,w,degreeW,knotsW)
+        knotSpan_index_u = verb_eval_Eval.knotSpanGivenN(n, degreeU, u, knotsU)
+        knotSpan_index_v = verb_eval_Eval.knotSpanGivenN(m, degreeV, v, knotsV)
+        knotSpan_index_w = verb_eval_Eval.knotSpanGivenN(l, degreeW, w, knotsW)
+        u_basis_vals = verb_eval_Eval.basisFunctionsGivenKnotSpanIndex(knotSpan_index_u, u, degreeU, knotsU)
+        v_basis_vals = verb_eval_Eval.basisFunctionsGivenKnotSpanIndex(knotSpan_index_v, v, degreeV, knotsV)
+        w_basis_vals = verb_eval_Eval.basisFunctionsGivenKnotSpanIndex(knotSpan_index_w, w, degreeW, knotsW)
         uind = (knotSpan_index_u - degreeU)
         position = verb_core_Vec.zeros1d(dim)
         temp = verb_core_Vec.zeros1d(dim)
@@ -7075,21 +7376,22 @@ class verb_eval_Eval:
                 while (_g4 < _g5):
                     k = _g4
                     _g4 = (_g4 + 1)
-                    verb_core_Vec.addMulMutate(temp,(u_basis_vals[k] if k >= 0 and k < len(u_basis_vals) else None),python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(controlPoints, (uind + k)), vind), wind))
-                verb_core_Vec.addMulMutate(temp2,(v_basis_vals[j] if j >= 0 and j < len(v_basis_vals) else None),temp)
-            verb_core_Vec.addMulMutate(position,(w_basis_vals[i] if i >= 0 and i < len(w_basis_vals) else None),temp2)
+                    verb_core_Vec.addMulMutate(temp, (u_basis_vals[k] if k >= 0 and k < len(u_basis_vals) else None), python_internal_ArrayImpl._get(
+                        python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(controlPoints, (uind + k)), vind), wind))
+                verb_core_Vec.addMulMutate(temp2, (v_basis_vals[j] if j >= 0 and j < len(v_basis_vals) else None), temp)
+            verb_core_Vec.addMulMutate(position, (w_basis_vals[i] if i >= 0 and i < len(w_basis_vals) else None), temp2)
         return position
 
     @staticmethod
-    def derivativeBasisFunctions(u,degree,knots):
-        knotSpan_index = verb_eval_Eval.knotSpan(degree,u,knots)
+    def derivativeBasisFunctions(u, degree, knots):
+        knotSpan_index = verb_eval_Eval.knotSpan(degree, u, knots)
         m = (len(knots) - 1)
         n = ((m - degree) - 1)
-        return verb_eval_Eval.derivativeBasisFunctionsGivenNI(knotSpan_index,u,degree,n,knots)
+        return verb_eval_Eval.derivativeBasisFunctionsGivenNI(knotSpan_index, u, degree, n, knots)
 
     @staticmethod
-    def derivativeBasisFunctionsGivenNI(knotIndex,u,p,n,knots):
-        ndu = verb_core_Vec.zeros2d((p + 1),(p + 1))
+    def derivativeBasisFunctionsGivenNI(knotIndex, u, p, n, knots):
+        ndu = verb_core_Vec.zeros2d((p + 1), (p + 1))
         left = verb_core_Vec.zeros1d((p + 1))
         right = verb_core_Vec.zeros1d((p + 1))
         saved = 0.0
@@ -7108,13 +7410,15 @@ class verb_eval_Eval:
             while (_g2 < _g3):
                 r = _g2
                 _g2 = (_g2 + 1)
-                python_internal_ArrayImpl._set((ndu[j] if j >= 0 and j < len(ndu) else None), r, (python_internal_ArrayImpl._get(right, (r + 1)) + python_internal_ArrayImpl._get(left, (j - r))))
-                temp = (python_internal_ArrayImpl._get((ndu[r] if r >= 0 and r < len(ndu) else None), (j - 1)) / python_internal_ArrayImpl._get((ndu[j] if j >= 0 and j < len(ndu) else None), r))
+                python_internal_ArrayImpl._set((ndu[j] if j >= 0 and j < len(ndu) else None), r,
+                                               (python_internal_ArrayImpl._get(right, (r + 1)) + python_internal_ArrayImpl._get(left, (j - r))))
+                temp = (python_internal_ArrayImpl._get((ndu[r] if r >= 0 and r < len(ndu) else None), (j - 1)) /
+                        python_internal_ArrayImpl._get((ndu[j] if j >= 0 and j < len(ndu) else None), r))
                 python_internal_ArrayImpl._set((ndu[r] if r >= 0 and r < len(ndu) else None), j, (saved + ((python_internal_ArrayImpl._get(right, (r + 1)) * temp))))
                 saved = (python_internal_ArrayImpl._get(left, (j - r)) * temp)
             python_internal_ArrayImpl._set((ndu[j] if j >= 0 and j < len(ndu) else None), j, saved)
-        ders = verb_core_Vec.zeros2d((n + 1),(p + 1))
-        a = verb_core_Vec.zeros2d(2,(p + 1))
+        ders = verb_core_Vec.zeros2d((n + 1), (p + 1))
+        a = verb_core_Vec.zeros2d(2, (p + 1))
         s1 = 0
         s2 = 1
         d = 0.0
@@ -7145,8 +7449,10 @@ class verb_eval_Eval:
                 rk = (r - k)
                 pk = (p - k)
                 if (r >= k):
-                    python_internal_ArrayImpl._set((a[s2] if s2 >= 0 and s2 < len(a) else None), 0, (python_internal_ArrayImpl._get((a[s1] if s1 >= 0 and s1 < len(a) else None), 0) / python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(ndu, (pk + 1)), rk)))
-                    d = (python_internal_ArrayImpl._get((a[s2] if s2 >= 0 and s2 < len(a) else None), 0) * python_internal_ArrayImpl._get((ndu[rk] if rk >= 0 and rk < len(ndu) else None), pk))
+                    python_internal_ArrayImpl._set((a[s2] if s2 >= 0 and s2 < len(a) else None), 0, (python_internal_ArrayImpl._get(
+                        (a[s1] if s1 >= 0 and s1 < len(a) else None), 0) / python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(ndu, (pk + 1)), rk)))
+                    d = (python_internal_ArrayImpl._get((a[s2] if s2 >= 0 and s2 < len(a) else None), 0) *
+                         python_internal_ArrayImpl._get((ndu[rk] if rk >= 0 and rk < len(ndu) else None), pk))
                 if (rk >= -1):
                     j1 = 1
                 else:
@@ -7160,11 +7466,15 @@ class verb_eval_Eval:
                 while (_g4 < _g5):
                     j = _g4
                     _g4 = (_g4 + 1)
-                    python_internal_ArrayImpl._set((a[s2] if s2 >= 0 and s2 < len(a) else None), j, (((python_internal_ArrayImpl._get((a[s1] if s1 >= 0 and s1 < len(a) else None), j) - python_internal_ArrayImpl._get((a[s1] if s1 >= 0 and s1 < len(a) else None), (j - 1)))) / python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(ndu, (pk + 1)), (rk + j))))
-                    d = (d + ((python_internal_ArrayImpl._get((a[s2] if s2 >= 0 and s2 < len(a) else None), j) * python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(ndu, (rk + j)), pk))))
+                    python_internal_ArrayImpl._set((a[s2] if s2 >= 0 and s2 < len(a) else None), j, (((python_internal_ArrayImpl._get((a[s1] if s1 >= 0 and s1 < len(
+                        a) else None), j) - python_internal_ArrayImpl._get((a[s1] if s1 >= 0 and s1 < len(a) else None), (j - 1)))) / python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(ndu, (pk + 1)), (rk + j))))
+                    d = (d + ((python_internal_ArrayImpl._get((a[s2] if s2 >= 0 and s2 < len(a) else None), j)
+                               * python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(ndu, (rk + j)), pk))))
                 if (r <= pk):
-                    python_internal_ArrayImpl._set((a[s2] if s2 >= 0 and s2 < len(a) else None), k, (-python_internal_ArrayImpl._get((a[s1] if s1 >= 0 and s1 < len(a) else None), (k - 1)) / python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(ndu, (pk + 1)), r)))
-                    d = (d + ((python_internal_ArrayImpl._get((a[s2] if s2 >= 0 and s2 < len(a) else None), k) * python_internal_ArrayImpl._get((ndu[r] if r >= 0 and r < len(ndu) else None), pk))))
+                    python_internal_ArrayImpl._set((a[s2] if s2 >= 0 and s2 < len(a) else None), k, (-python_internal_ArrayImpl._get((a[s1] if s1 >=
+                                                                                                                                      0 and s1 < len(a) else None), (k - 1)) / python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(ndu, (pk + 1)), r)))
+                    d = (d + ((python_internal_ArrayImpl._get((a[s2] if s2 >= 0 and s2 < len(a) else None), k)
+                               * python_internal_ArrayImpl._get((ndu[r] if r >= 0 and r < len(ndu) else None), pk))))
                 python_internal_ArrayImpl._set((ders[k] if k >= 0 and k < len(ders) else None), r, d)
                 temp = s1
                 s1 = s2
@@ -7189,12 +7499,12 @@ class verb_eval_Eval:
         return ders
 
     @staticmethod
-    def basisFunctions(u,degree,knots):
-        knotSpan_index = verb_eval_Eval.knotSpan(degree,u,knots)
-        return verb_eval_Eval.basisFunctionsGivenKnotSpanIndex(knotSpan_index,u,degree,knots)
+    def basisFunctions(u, degree, knots):
+        knotSpan_index = verb_eval_Eval.knotSpan(degree, u, knots)
+        return verb_eval_Eval.basisFunctionsGivenKnotSpanIndex(knotSpan_index, u, degree, knots)
 
     @staticmethod
-    def basisFunctionsGivenKnotSpanIndex(knotSpan_index,u,degree,knots):
+    def basisFunctionsGivenKnotSpanIndex(knotSpan_index, u, degree, knots):
         basisFunctions = verb_core_Vec.zeros1d((degree + 1))
         left = verb_core_Vec.zeros1d((degree + 1))
         right = verb_core_Vec.zeros1d((degree + 1))
@@ -7214,18 +7524,19 @@ class verb_eval_Eval:
             while (_g2 < _g3):
                 r = _g2
                 _g2 = (_g2 + 1)
-                temp = ((basisFunctions[r] if r >= 0 and r < len(basisFunctions) else None) / ((python_internal_ArrayImpl._get(right, (r + 1)) + python_internal_ArrayImpl._get(left, (j - r)))))
+                temp = ((basisFunctions[r] if r >= 0 and r < len(basisFunctions) else None) /
+                        ((python_internal_ArrayImpl._get(right, (r + 1)) + python_internal_ArrayImpl._get(left, (j - r)))))
                 python_internal_ArrayImpl._set(basisFunctions, r, (saved + ((python_internal_ArrayImpl._get(right, (r + 1)) * temp))))
                 saved = (python_internal_ArrayImpl._get(left, (j - r)) * temp)
             python_internal_ArrayImpl._set(basisFunctions, j, saved)
         return basisFunctions
 
     @staticmethod
-    def knotSpan(degree,u,knots):
-        return verb_eval_Eval.knotSpanGivenN(((len(knots) - degree) - 2),degree,u,knots)
+    def knotSpan(degree, u, knots):
+        return verb_eval_Eval.knotSpanGivenN(((len(knots) - degree) - 2), degree, u, knots)
 
     @staticmethod
-    def knotSpanGivenN(n,degree,u,knots):
+    def knotSpanGivenN(n, degree, u, knots):
         if (u > ((python_internal_ArrayImpl._get(knots, (n + 1)) - verb_core_Constants.EPSILON))):
             return n
         if (u < (((knots[degree] if degree >= 0 and degree < len(knots) else None) + verb_core_Constants.EPSILON))):
@@ -7258,45 +7569,47 @@ class verb_eval_Eval:
     @staticmethod
     def rational1d(homoPoints):
         dim = (len((homoPoints[0] if 0 < len(homoPoints) else None)) - 1)
+
         def _hx_local_1():
             def _hx_local_0(x):
                 return x[0:dim]
-            return list(map(_hx_local_0,homoPoints))
+            return list(map(_hx_local_0, homoPoints))
         return _hx_local_1()
 
     @staticmethod
     def rational2d(homoPoints):
-        return list(map(verb_eval_Eval.rational1d,homoPoints))
+        return list(map(verb_eval_Eval.rational1d, homoPoints))
 
     @staticmethod
     def weight1d(homoPoints):
         dim = (len((homoPoints[0] if 0 < len(homoPoints) else None)) - 1)
+
         def _hx_local_1():
             def _hx_local_0(x):
                 return (x[dim] if dim >= 0 and dim < len(x) else None)
-            return list(map(_hx_local_0,homoPoints))
+            return list(map(_hx_local_0, homoPoints))
         return _hx_local_1()
 
     @staticmethod
     def weight2d(homoPoints):
-        return list(map(verb_eval_Eval.weight1d,homoPoints))
+        return list(map(verb_eval_Eval.weight1d, homoPoints))
 
     @staticmethod
     def dehomogenize1d(homoPoints):
-        return list(map(verb_eval_Eval.dehomogenize,homoPoints))
+        return list(map(verb_eval_Eval.dehomogenize, homoPoints))
 
     @staticmethod
     def dehomogenize2d(homoPoints):
-        return list(map(verb_eval_Eval.dehomogenize1d,homoPoints))
+        return list(map(verb_eval_Eval.dehomogenize1d, homoPoints))
 
     @staticmethod
-    def homogenize1d(controlPoints,weights = None):
+    def homogenize1d(controlPoints, weights=None):
         rows = len(controlPoints)
         dim = len((controlPoints[0] if 0 < len(controlPoints) else None))
         homo_controlPoints = list()
         wt = 0.0
         ref_pt = list()
-        weights1 = (weights if ((weights is not None)) else verb_core_Vec.rep(len(controlPoints),1.0))
+        weights1 = (weights if ((weights is not None)) else verb_core_Vec.rep(len(controlPoints), 1.0))
         _g = 0
         _g1 = rows
         while (_g < _g1):
@@ -7316,7 +7629,7 @@ class verb_eval_Eval:
         return homo_controlPoints
 
     @staticmethod
-    def homogenize2d(controlPoints,weights = None):
+    def homogenize2d(controlPoints, weights=None):
         rows = len(controlPoints)
         homo_controlPoints = list()
         weights1 = None
@@ -7329,7 +7642,7 @@ class verb_eval_Eval:
             while (_g1 < _g2):
                 i = _g1
                 _g1 = (_g1 + 1)
-                x = verb_core_Vec.rep(len((controlPoints[0] if 0 < len(controlPoints) else None)),1.0)
+                x = verb_core_Vec.rep(len((controlPoints[0] if 0 < len(controlPoints) else None)), 1.0)
                 _g.append(x)
             weights1 = _g
         _g = 0
@@ -7337,9 +7650,11 @@ class verb_eval_Eval:
         while (_g < _g1):
             i = _g
             _g = (_g + 1)
-            x = verb_eval_Eval.homogenize1d((controlPoints[i] if i >= 0 and i < len(controlPoints) else None),(weights1[i] if i >= 0 and i < len(weights1) else None))
+            x = verb_eval_Eval.homogenize1d((controlPoints[i] if i >= 0 and i < len(controlPoints) else None), (weights1[i] if i >= 0 and i < len(weights1) else None))
             homo_controlPoints.append(x)
         return homo_controlPoints
+
+
 verb_eval_Eval._hx_class = verb_eval_Eval
 _hx_classes["verb.eval.Eval"] = verb_eval_Eval
 
@@ -7347,32 +7662,35 @@ _hx_classes["verb.eval.Eval"] = verb_eval_Eval
 class verb_eval_Intersect:
     _hx_class_name = "verb.eval.Intersect"
     __slots__ = ()
-    _hx_statics = ["surfaces", "surfacesAtPointWithEstimate", "meshes", "meshSlices", "makeMeshIntersectionPolylines", "kdTreeFromSegments", "lookupAdjacentSegment", "curveAndSurface", "curveAndSurfaceWithEstimate", "polylineAndMesh", "boundingBoxTrees", "curves", "curvesWithEstimate", "triangles", "clipRayInCoplanarTriangle", "mergeTriangleClipIntervals", "planes", "threePlanes", "polylines", "segments", "rays", "segmentWithTriangle", "segmentAndPlane"]
+    _hx_statics = ["surfaces", "surfacesAtPointWithEstimate", "meshes", "meshSlices", "makeMeshIntersectionPolylines", "kdTreeFromSegments", "lookupAdjacentSegment", "curveAndSurface", "curveAndSurfaceWithEstimate", "polylineAndMesh",
+                   "boundingBoxTrees", "curves", "curvesWithEstimate", "triangles", "clipRayInCoplanarTriangle", "mergeTriangleClipIntervals", "planes", "threePlanes", "polylines", "segments", "rays", "segmentWithTriangle", "segmentAndPlane"]
 
     @staticmethod
-    def surfaces(surface0,surface1,tol):
+    def surfaces(surface0, surface1, tol):
         tess1 = verb_eval_Tess.rationalSurfaceAdaptive(surface0)
         tess2 = verb_eval_Tess.rationalSurfaceAdaptive(surface1)
-        resApprox = verb_eval_Intersect.meshes(tess1,tess2)
+        resApprox = verb_eval_Intersect.meshes(tess1, tess2)
+
         def _hx_local_2(pl):
             def _hx_local_1():
                 def _hx_local_0(inter):
-                    return verb_eval_Intersect.surfacesAtPointWithEstimate(surface0,surface1,inter.uv0,inter.uv1,tol)
-                return list(map(_hx_local_0,pl))
+                    return verb_eval_Intersect.surfacesAtPointWithEstimate(surface0, surface1, inter.uv0, inter.uv1, tol)
+                return list(map(_hx_local_0, pl))
             return _hx_local_1()
-        exactPls = list(map(_hx_local_2,resApprox))
+        exactPls = list(map(_hx_local_2, resApprox))
+
         def _hx_local_6():
             def _hx_local_5(x):
                 def _hx_local_4():
                     def _hx_local_3(y):
                         return y.point
-                    return verb_eval_Make.rationalInterpCurve(list(map(_hx_local_3,x)),3)
+                    return verb_eval_Make.rationalInterpCurve(list(map(_hx_local_3, x)), 3)
                 return _hx_local_4()
-            return list(map(_hx_local_5,exactPls))
+            return list(map(_hx_local_5, exactPls))
         return _hx_local_6()
 
     @staticmethod
-    def surfacesAtPointWithEstimate(surface0,surface1,uv1,uv2,tol):
+    def surfacesAtPointWithEstimate(surface0, surface1, uv1, uv2, tol):
         pds = None
         p = None
         pn = None
@@ -7389,65 +7707,69 @@ class verb_eval_Intersect:
         maxits = 5
         its = 0
         while True:
-            pds = verb_eval_Eval.rationalSurfaceDerivatives(surface0,(uv1[0] if 0 < len(uv1) else None),(uv1[1] if 1 < len(uv1) else None),1)
+            pds = verb_eval_Eval.rationalSurfaceDerivatives(surface0, (uv1[0] if 0 < len(uv1) else None), (uv1[1] if 1 < len(uv1) else None), 1)
             p = python_internal_ArrayImpl._get((pds[0] if 0 < len(pds) else None), 0)
             pu = python_internal_ArrayImpl._get((pds[1] if 1 < len(pds) else None), 0)
             pv = python_internal_ArrayImpl._get((pds[0] if 0 < len(pds) else None), 1)
-            pn = verb_core_Vec.normalized(verb_core_Vec.cross(pu,pv))
-            pd = verb_core_Vec.dot(pn,p)
-            qds = verb_eval_Eval.rationalSurfaceDerivatives(surface1,(uv2[0] if 0 < len(uv2) else None),(uv2[1] if 1 < len(uv2) else None),1)
+            pn = verb_core_Vec.normalized(verb_core_Vec.cross(pu, pv))
+            pd = verb_core_Vec.dot(pn, p)
+            qds = verb_eval_Eval.rationalSurfaceDerivatives(surface1, (uv2[0] if 0 < len(uv2) else None), (uv2[1] if 1 < len(uv2) else None), 1)
             q = python_internal_ArrayImpl._get((qds[0] if 0 < len(qds) else None), 0)
             qu = python_internal_ArrayImpl._get((qds[1] if 1 < len(qds) else None), 0)
             qv = python_internal_ArrayImpl._get((qds[0] if 0 < len(qds) else None), 1)
-            qn = verb_core_Vec.normalized(verb_core_Vec.cross(qu,qv))
-            qd = verb_core_Vec.dot(qn,q)
-            dist = verb_core_Vec.distSquared(p,q)
+            qn = verb_core_Vec.normalized(verb_core_Vec.cross(qu, qv))
+            qd = verb_core_Vec.dot(qn, q)
+            dist = verb_core_Vec.distSquared(p, q)
             if (dist < ((tol * tol))):
                 break
-            fn = verb_core_Vec.normalized(verb_core_Vec.cross(pn,qn))
-            fd = verb_core_Vec.dot(fn,p)
-            x = verb_eval_Intersect.threePlanes(pn,pd,qn,qd,fn,fd)
+            fn = verb_core_Vec.normalized(verb_core_Vec.cross(pn, qn))
+            fd = verb_core_Vec.dot(fn, p)
+            x = verb_eval_Intersect.threePlanes(pn, pd, qn, qd, fn, fd)
             if (x is None):
                 raise haxe_Exception.thrown("panic!")
-            pdif = verb_core_Vec.sub(x,p)
-            qdif = verb_core_Vec.sub(x,q)
-            rw = verb_core_Vec.cross(pu,pn)
-            rt = verb_core_Vec.cross(pv,pn)
-            su = verb_core_Vec.cross(qu,qn)
-            sv = verb_core_Vec.cross(qv,qn)
-            dw = (verb_core_Vec.dot(rt,pdif) / verb_core_Vec.dot(rt,pu))
-            dt = (verb_core_Vec.dot(rw,pdif) / verb_core_Vec.dot(rw,pv))
-            du = (verb_core_Vec.dot(sv,qdif) / verb_core_Vec.dot(sv,qu))
-            dv = (verb_core_Vec.dot(su,qdif) / verb_core_Vec.dot(su,qv))
-            uv1 = verb_core_Vec.add([dw, dt],uv1)
-            uv2 = verb_core_Vec.add([du, dv],uv2)
+            pdif = verb_core_Vec.sub(x, p)
+            qdif = verb_core_Vec.sub(x, q)
+            rw = verb_core_Vec.cross(pu, pn)
+            rt = verb_core_Vec.cross(pv, pn)
+            su = verb_core_Vec.cross(qu, qn)
+            sv = verb_core_Vec.cross(qv, qn)
+            dw = (verb_core_Vec.dot(rt, pdif) / verb_core_Vec.dot(rt, pu))
+            dt = (verb_core_Vec.dot(rw, pdif) / verb_core_Vec.dot(rw, pv))
+            du = (verb_core_Vec.dot(sv, qdif) / verb_core_Vec.dot(sv, qu))
+            dv = (verb_core_Vec.dot(su, qdif) / verb_core_Vec.dot(su, qv))
+            uv1 = verb_core_Vec.add([dw, dt], uv1)
+            uv2 = verb_core_Vec.add([du, dv], uv2)
             its = (its + 1)
             if (not ((its < maxits))):
                 break
-        return verb_core_SurfaceSurfaceIntersectionPoint(uv1,uv2,p,dist)
+        return verb_core_SurfaceSurfaceIntersectionPoint(uv1, uv2, p, dist)
 
     @staticmethod
-    def meshes(mesh0,mesh1,bbtree0 = None,bbtree1 = None):
+    def meshes(mesh0, mesh1, bbtree0=None, bbtree1=None):
         if (bbtree0 is None):
             bbtree0 = verb_core_LazyMeshBoundingBoxTree(mesh0)
         if (bbtree1 is None):
             bbtree1 = verb_core_LazyMeshBoundingBoxTree(mesh1)
-        bbints = verb_eval_Intersect.boundingBoxTrees(bbtree0,bbtree1,0)
+        bbints = verb_eval_Intersect.boundingBoxTrees(bbtree0, bbtree1, 0)
+
         def _hx_local_0(x):
-            return (verb_core_Vec.distSquared(x.min.point,x.max.point) > verb_core_Constants.EPSILON)
+            return (verb_core_Vec.distSquared(x.min.point, x.max.point) > verb_core_Constants.EPSILON)
+
         def _hx_local_1(x):
             return (x is not None)
+
         def _hx_local_2(ids):
-            return verb_eval_Intersect.triangles(mesh0,ids.item0,mesh1,ids.item1)
-        def _hx_local_3(a,b):
-            s1 = verb_core_Vec.sub(a.min.uv0,b.min.uv0)
-            d1 = verb_core_Vec.dot(s1,s1)
-            s2 = verb_core_Vec.sub(a.max.uv0,b.max.uv0)
-            d2 = verb_core_Vec.dot(s2,s2)
-            s3 = verb_core_Vec.sub(a.min.uv0,b.max.uv0)
-            d3 = verb_core_Vec.dot(s3,s3)
-            s4 = verb_core_Vec.sub(a.max.uv0,b.min.uv0)
-            d4 = verb_core_Vec.dot(s4,s4)
+            return verb_eval_Intersect.triangles(mesh0, ids.item0, mesh1, ids.item1)
+
+        def _hx_local_3(a, b):
+            s1 = verb_core_Vec.sub(a.min.uv0, b.min.uv0)
+            d1 = verb_core_Vec.dot(s1, s1)
+            s2 = verb_core_Vec.sub(a.max.uv0, b.max.uv0)
+            d2 = verb_core_Vec.dot(s2, s2)
+            s3 = verb_core_Vec.sub(a.min.uv0, b.max.uv0)
+            d3 = verb_core_Vec.dot(s3, s3)
+            s4 = verb_core_Vec.sub(a.max.uv0, b.min.uv0)
+            d4 = verb_core_Vec.dot(s4, s4)
             if (not (((d1 < verb_core_Constants.EPSILON) and ((d2 < verb_core_Constants.EPSILON))))):
                 if (d3 < verb_core_Constants.EPSILON):
                     return (d4 < verb_core_Constants.EPSILON)
@@ -7455,18 +7777,18 @@ class verb_eval_Intersect:
                     return False
             else:
                 return True
-        segments = verb_core_ArrayExtensions.unique(list(filter(_hx_local_0,list(filter(_hx_local_1,list(map(_hx_local_2,bbints)))))),_hx_local_3)
+        segments = verb_core_ArrayExtensions.unique(list(filter(_hx_local_0, list(filter(_hx_local_1, list(map(_hx_local_2, bbints)))))), _hx_local_3)
         return verb_eval_Intersect.makeMeshIntersectionPolylines(segments)
 
     @staticmethod
-    def meshSlices(mesh,_hx_min,_hx_max,step):
+    def meshSlices(mesh, _hx_min, _hx_max, step):
         bbtree = verb_core_MeshBoundingBoxTree(mesh)
         bb = bbtree.boundingBox()
         x0 = (bb.min[0] if 0 < len(bb.min) else None)
         y0 = (bb.min[1] if 1 < len(bb.min) else None)
         x1 = (bb.max[0] if 0 < len(bb.max) else None)
         y1 = (bb.max[1] if 1 < len(bb.max) else None)
-        span = verb_core_Vec.span(_hx_min,_hx_max,step)
+        span = verb_core_Vec.span(_hx_min, _hx_max, step)
         slices = []
         _g = 0
         while (_g < len(span)):
@@ -7475,8 +7797,8 @@ class verb_eval_Intersect:
             pts = [[x0, y0, z], [x1, y0, z], [x1, y1, z], [x0, y1, z]]
             uvs = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0.0, 1.0]]
             faces = [[0, 1, 2], [0, 2, 3]]
-            plane = verb_core_MeshData(faces,pts,None,uvs)
-            x = verb_eval_Intersect.meshes(mesh,plane,bbtree)
+            plane = verb_core_MeshData(faces, pts, None, uvs)
+            x = verb_eval_Intersect.meshes(mesh, plane, bbtree)
             slices.append(x)
         return slices
 
@@ -7506,13 +7828,14 @@ class verb_eval_Intersect:
             _g = (_g + 1)
             if (segEnd.adj is not None):
                 continue
-            adjEnd = verb_eval_Intersect.lookupAdjacentSegment(segEnd,tree,len(segments))
+            adjEnd = verb_eval_Intersect.lookupAdjacentSegment(segEnd, tree, len(segments))
             if ((adjEnd is not None) and ((adjEnd.adj is None))):
                 segEnd.adj = adjEnd
                 adjEnd.adj = segEnd
+
         def _hx_local_3(x):
             return (x.adj is None)
-        freeEnds = list(filter(_hx_local_3,ends))
+        freeEnds = list(filter(_hx_local_3, ends))
         if (len(freeEnds) == 0):
             freeEnds = ends
         pls = []
@@ -7550,36 +7873,39 @@ class verb_eval_Intersect:
         while (_g < len(segments)):
             seg = (segments[_g] if _g >= 0 and _g < len(segments) else None)
             _g = (_g + 1)
-            x = verb_core_KdPoint(seg.min.point,seg.min)
+            x = verb_core_KdPoint(seg.min.point, seg.min)
             treePoints.append(x)
-            x1 = verb_core_KdPoint(seg.max.point,seg.max)
+            x1 = verb_core_KdPoint(seg.max.point, seg.max)
             treePoints.append(x1)
-        return verb_core_KdTree(treePoints,verb_core_Vec.distSquared)
+        return verb_core_KdTree(treePoints, verb_core_Vec.distSquared)
 
     @staticmethod
-    def lookupAdjacentSegment(segEnd,tree,numResults):
+    def lookupAdjacentSegment(segEnd, tree, numResults):
         def _hx_local_0(r):
             return r.item0.obj
+
         def _hx_local_1(r):
             return (segEnd != r.item0.obj)
-        adj = list(map(_hx_local_0,list(filter(_hx_local_1,tree.nearest(segEnd.point,numResults,verb_core_Constants.EPSILON)))))
+        adj = list(map(_hx_local_0, list(filter(_hx_local_1, tree.nearest(segEnd.point, numResults, verb_core_Constants.EPSILON)))))
         if (len(adj) == 1):
             return (adj[0] if 0 < len(adj) else None)
         else:
             return None
 
     @staticmethod
-    def curveAndSurface(curve,surface,tol = None,crvBbTree = None,srfBbTree = None):
+    def curveAndSurface(curve, surface, tol=None, crvBbTree=None, srfBbTree=None):
         if (tol is None):
             tol = 1e-3
         if (crvBbTree is None):
             crvBbTree = verb_core_LazyCurveBoundingBoxTree(curve)
         if (srfBbTree is None):
             srfBbTree = verb_core_LazySurfaceBoundingBoxTree(surface)
-        ints = verb_eval_Intersect.boundingBoxTrees(crvBbTree,srfBbTree,tol)
+        ints = verb_eval_Intersect.boundingBoxTrees(crvBbTree, srfBbTree, tol)
+
         def _hx_local_3():
             def _hx_local_0(x):
-                return (verb_core_Vec.distSquared(x.curvePoint,x.surfacePoint) < ((tol * tol)))
+                return (verb_core_Vec.distSquared(x.curvePoint, x.surfacePoint) < ((tol * tol)))
+
             def _hx_local_1(inter):
                 crvSeg = inter.item0
                 srfPart = inter.item1
@@ -7591,38 +7917,41 @@ class verb_eval_Intersect:
                 minv = verb_core_ArrayExtensions.first(srfPart.knotsV)
                 maxv = verb_core_ArrayExtensions.last(srfPart.knotsV)
                 uv = [(((minu + maxu)) / 2.0), (((minv + maxv)) / 2.0)]
-                return verb_eval_Intersect.curveAndSurfaceWithEstimate(crvSeg,srfPart,([u] + uv),tol)
-            def _hx_local_2(a,b):
-                return (Reflect.field(Math,"fabs")((a.u - b.u)) < ((0.5 * tol)))
-            return verb_core_ArrayExtensions.unique(list(filter(_hx_local_0,list(map(_hx_local_1,ints)))),_hx_local_2)
+                return verb_eval_Intersect.curveAndSurfaceWithEstimate(crvSeg, srfPart, ([u] + uv), tol)
+
+            def _hx_local_2(a, b):
+                return (Reflect.field(Math, "fabs")((a.u - b.u)) < ((0.5 * tol)))
+            return verb_core_ArrayExtensions.unique(list(filter(_hx_local_0, list(map(_hx_local_1, ints)))), _hx_local_2)
         return _hx_local_3()
 
     @staticmethod
-    def curveAndSurfaceWithEstimate(curve,surface,start_params,tol = None):
+    def curveAndSurfaceWithEstimate(curve, surface, start_params, tol=None):
         if (tol is None):
             tol = 1e-3
+
         def _hx_local_0(x):
-            p1 = verb_eval_Eval.rationalCurvePoint(curve,(x[0] if 0 < len(x) else None))
-            p2 = verb_eval_Eval.rationalSurfacePoint(surface,(x[1] if 1 < len(x) else None),(x[2] if 2 < len(x) else None))
-            p1_p2 = verb_core_Vec.sub(p1,p2)
-            return verb_core_Vec.dot(p1_p2,p1_p2)
+            p1 = verb_eval_Eval.rationalCurvePoint(curve, (x[0] if 0 < len(x) else None))
+            p2 = verb_eval_Eval.rationalSurfacePoint(surface, (x[1] if 1 < len(x) else None), (x[2] if 2 < len(x) else None))
+            p1_p2 = verb_core_Vec.sub(p1, p2)
+            return verb_core_Vec.dot(p1_p2, p1_p2)
         objective = _hx_local_0
+
         def _hx_local_1(x):
-            dc = verb_eval_Eval.rationalCurveDerivatives(curve,(x[0] if 0 < len(x) else None),1)
-            ds = verb_eval_Eval.rationalSurfaceDerivatives(surface,(x[1] if 1 < len(x) else None),(x[2] if 2 < len(x) else None),1)
-            r = verb_core_Vec.sub(python_internal_ArrayImpl._get((ds[0] if 0 < len(ds) else None), 0),(dc[0] if 0 < len(dc) else None))
-            drdt = verb_core_Vec.mul(-1.0,(dc[1] if 1 < len(dc) else None))
+            dc = verb_eval_Eval.rationalCurveDerivatives(curve, (x[0] if 0 < len(x) else None), 1)
+            ds = verb_eval_Eval.rationalSurfaceDerivatives(surface, (x[1] if 1 < len(x) else None), (x[2] if 2 < len(x) else None), 1)
+            r = verb_core_Vec.sub(python_internal_ArrayImpl._get((ds[0] if 0 < len(ds) else None), 0), (dc[0] if 0 < len(dc) else None))
+            drdt = verb_core_Vec.mul(-1.0, (dc[1] if 1 < len(dc) else None))
             drdu = python_internal_ArrayImpl._get((ds[1] if 1 < len(ds) else None), 0)
             drdv = python_internal_ArrayImpl._get((ds[0] if 0 < len(ds) else None), 1)
-            return [(2.0 * verb_core_Vec.dot(drdt,r)), (2.0 * verb_core_Vec.dot(drdu,r)), (2.0 * verb_core_Vec.dot(drdv,r))]
+            return [(2.0 * verb_core_Vec.dot(drdt, r)), (2.0 * verb_core_Vec.dot(drdu, r)), (2.0 * verb_core_Vec.dot(drdv, r))]
         grad = _hx_local_1
-        sol_obj = verb_core_Minimizer.uncmin(objective,start_params,(tol * tol),grad)
+        sol_obj = verb_core_Minimizer.uncmin(objective, start_params, (tol * tol), grad)
         finala = sol_obj.solution
-        return verb_core_CurveSurfaceIntersection((finala[0] if 0 < len(finala) else None),[(finala[1] if 1 < len(finala) else None), (finala[2] if 2 < len(finala) else None)],verb_eval_Eval.rationalCurvePoint(curve,(finala[0] if 0 < len(finala) else None)),verb_eval_Eval.rationalSurfacePoint(surface,(finala[1] if 1 < len(finala) else None),(finala[2] if 2 < len(finala) else None)))
+        return verb_core_CurveSurfaceIntersection((finala[0] if 0 < len(finala) else None), [(finala[1] if 1 < len(finala) else None), (finala[2] if 2 < len(finala) else None)], verb_eval_Eval.rationalCurvePoint(curve, (finala[0] if 0 < len(finala) else None)), verb_eval_Eval.rationalSurfacePoint(surface, (finala[1] if 1 < len(finala) else None), (finala[2] if 2 < len(finala) else None)))
 
     @staticmethod
-    def polylineAndMesh(polyline,mesh,tol):
-        res = verb_eval_Intersect.boundingBoxTrees(verb_core_LazyPolylineBoundingBoxTree(polyline),verb_core_LazyMeshBoundingBoxTree(mesh),tol)
+    def polylineAndMesh(polyline, mesh, tol):
+        res = verb_eval_Intersect.boundingBoxTrees(verb_core_LazyPolylineBoundingBoxTree(polyline), verb_core_LazyMeshBoundingBoxTree(mesh), tol)
         finalResults = []
         _g = 0
         while (_g < len(res)):
@@ -7630,18 +7959,20 @@ class verb_eval_Intersect:
             _g = (_g + 1)
             polid = event.item0
             faceid = event.item1
-            inter = verb_eval_Intersect.segmentWithTriangle((polyline.points[polid] if polid >= 0 and polid < len(polyline.points) else None),python_internal_ArrayImpl._get(polyline.points, (polid + 1)),mesh.points,(mesh.faces[faceid] if faceid >= 0 and faceid < len(mesh.faces) else None))
+            inter = verb_eval_Intersect.segmentWithTriangle((polyline.points[polid] if polid >= 0 and polid < len(polyline.points) else None), python_internal_ArrayImpl._get(
+                polyline.points, (polid + 1)), mesh.points, (mesh.faces[faceid] if faceid >= 0 and faceid < len(mesh.faces) else None))
             if (inter is None):
                 continue
             pt = inter.point
-            u = python_internal_ArrayImpl._get(verb_core_Vec.lerp(inter.p,[(polyline.params[polid] if polid >= 0 and polid < len(polyline.params) else None)],[python_internal_ArrayImpl._get(polyline.params, (polid + 1))]), 0)
-            uv = verb_core_Mesh.triangleUVFromPoint(mesh,faceid,pt)
-            x = verb_core_PolylineMeshIntersection(pt,u,uv,polid,faceid)
+            u = python_internal_ArrayImpl._get(verb_core_Vec.lerp(inter.p, [(polyline.params[polid] if polid >= 0 and polid < len(polyline.params) else None)], [
+                                               python_internal_ArrayImpl._get(polyline.params, (polid + 1))]), 0)
+            uv = verb_core_Mesh.triangleUVFromPoint(mesh, faceid, pt)
+            x = verb_core_PolylineMeshIntersection(pt, u, uv, polid, faceid)
             finalResults.append(x)
         return finalResults
 
     @staticmethod
-    def boundingBoxTrees(ai,bi,tol = None):
+    def boundingBoxTrees(ai, bi, tol=None):
         if (tol is None):
             tol = 1e-9
         atrees = []
@@ -7654,12 +7985,12 @@ class verb_eval_Intersect:
             b = (None if ((len(btrees) == 0)) else btrees.pop())
             if (a.empty() or b.empty()):
                 continue
-            if (not a.boundingBox().intersects(b.boundingBox(),tol)):
+            if (not a.boundingBox().intersects(b.boundingBox(), tol)):
                 continue
             ai = a.indivisible(tol)
             bi = b.indivisible(tol)
             if (ai and bi):
-                x = verb_core_Pair(a._hx_yield(),b._hx_yield())
+                x = verb_core_Pair(a._hx_yield(), b._hx_yield())
                 results.append(x)
                 continue
             elif (ai and (not bi)):
@@ -7701,72 +8032,80 @@ class verb_eval_Intersect:
         return results
 
     @staticmethod
-    def curves(curve1,curve2,tolerance):
-        ints = verb_eval_Intersect.boundingBoxTrees(verb_core_LazyCurveBoundingBoxTree(curve1),verb_core_LazyCurveBoundingBoxTree(curve2),0)
+    def curves(curve1, curve2, tolerance):
+        ints = verb_eval_Intersect.boundingBoxTrees(verb_core_LazyCurveBoundingBoxTree(curve1), verb_core_LazyCurveBoundingBoxTree(curve2), 0)
+
         def _hx_local_3():
             def _hx_local_0(x):
-                return (verb_core_Vec.distSquared(x.point0,x.point1) < tolerance)
+                return (verb_core_Vec.distSquared(x.point0, x.point1) < tolerance)
+
             def _hx_local_1(x):
-                return verb_eval_Intersect.curvesWithEstimate(curve1,curve2,verb_core_ArrayExtensions.first(x.item0.knots),verb_core_ArrayExtensions.first(x.item1.knots),tolerance)
-            def _hx_local_2(a,b):
-                return (Reflect.field(Math,"fabs")((a.u0 - b.u0)) < ((tolerance * 5)))
-            return verb_core_ArrayExtensions.unique(list(filter(_hx_local_0,list(map(_hx_local_1,ints)))),_hx_local_2)
+                return verb_eval_Intersect.curvesWithEstimate(curve1, curve2, verb_core_ArrayExtensions.first(x.item0.knots), verb_core_ArrayExtensions.first(x.item1.knots), tolerance)
+
+            def _hx_local_2(a, b):
+                return (Reflect.field(Math, "fabs")((a.u0 - b.u0)) < ((tolerance * 5)))
+            return verb_core_ArrayExtensions.unique(list(filter(_hx_local_0, list(map(_hx_local_1, ints)))), _hx_local_2)
         return _hx_local_3()
 
     @staticmethod
-    def curvesWithEstimate(curve0,curve1,u0,u1,tolerance):
+    def curvesWithEstimate(curve0, curve1, u0, u1, tolerance):
         def _hx_local_0(x):
-            p1 = verb_eval_Eval.rationalCurvePoint(curve0,(x[0] if 0 < len(x) else None))
-            p2 = verb_eval_Eval.rationalCurvePoint(curve1,(x[1] if 1 < len(x) else None))
-            p1_p2 = verb_core_Vec.sub(p1,p2)
-            return verb_core_Vec.dot(p1_p2,p1_p2)
+            p1 = verb_eval_Eval.rationalCurvePoint(curve0, (x[0] if 0 < len(x) else None))
+            p2 = verb_eval_Eval.rationalCurvePoint(curve1, (x[1] if 1 < len(x) else None))
+            p1_p2 = verb_core_Vec.sub(p1, p2)
+            return verb_core_Vec.dot(p1_p2, p1_p2)
         objective = _hx_local_0
+
         def _hx_local_1(x):
-            dc0 = verb_eval_Eval.rationalCurveDerivatives(curve0,(x[0] if 0 < len(x) else None),1)
-            dc1 = verb_eval_Eval.rationalCurveDerivatives(curve1,(x[1] if 1 < len(x) else None),1)
-            r = verb_core_Vec.sub((dc0[0] if 0 < len(dc0) else None),(dc1[0] if 0 < len(dc1) else None))
+            dc0 = verb_eval_Eval.rationalCurveDerivatives(curve0, (x[0] if 0 < len(x) else None), 1)
+            dc1 = verb_eval_Eval.rationalCurveDerivatives(curve1, (x[1] if 1 < len(x) else None), 1)
+            r = verb_core_Vec.sub((dc0[0] if 0 < len(dc0) else None), (dc1[0] if 0 < len(dc1) else None))
             drdu = (dc0[1] if 1 < len(dc0) else None)
-            drdt = verb_core_Vec.mul(-1.0,(dc1[1] if 1 < len(dc1) else None))
-            return [(2.0 * verb_core_Vec.dot(drdu,r)), (2.0 * verb_core_Vec.dot(drdt,r))]
+            drdt = verb_core_Vec.mul(-1.0, (dc1[1] if 1 < len(dc1) else None))
+            return [(2.0 * verb_core_Vec.dot(drdu, r)), (2.0 * verb_core_Vec.dot(drdt, r))]
         grad = _hx_local_1
-        sol_obj = verb_core_Minimizer.uncmin(objective,[u0, u1],(tolerance * tolerance),grad)
+        sol_obj = verb_core_Minimizer.uncmin(objective, [u0, u1], (tolerance * tolerance), grad)
         u1 = (sol_obj.solution[0] if 0 < len(sol_obj.solution) else None)
         u2 = (sol_obj.solution[1] if 1 < len(sol_obj.solution) else None)
-        p1 = verb_eval_Eval.rationalCurvePoint(curve0,u1)
-        p2 = verb_eval_Eval.rationalCurvePoint(curve1,u2)
-        return verb_core_CurveCurveIntersection(p1,p2,u1,u2)
+        p1 = verb_eval_Eval.rationalCurvePoint(curve0, u1)
+        p2 = verb_eval_Eval.rationalCurvePoint(curve1, u2)
+        return verb_core_CurveCurveIntersection(p1, p2, u1, u2)
 
     @staticmethod
-    def triangles(mesh0,faceIndex0,mesh1,faceIndex1):
+    def triangles(mesh0, faceIndex0, mesh1, faceIndex1):
         tri0 = (mesh0.faces[faceIndex0] if faceIndex0 >= 0 and faceIndex0 < len(mesh0.faces) else None)
         tri1 = (mesh1.faces[faceIndex1] if faceIndex1 >= 0 and faceIndex1 < len(mesh1.faces) else None)
-        n0 = verb_core_Mesh.getTriangleNorm(mesh0.points,tri0)
-        n1 = verb_core_Mesh.getTriangleNorm(mesh1.points,tri1)
+        n0 = verb_core_Mesh.getTriangleNorm(mesh0.points, tri0)
+        n1 = verb_core_Mesh.getTriangleNorm(mesh1.points, tri1)
         o0 = python_internal_ArrayImpl._get(mesh0.points, (tri0[0] if 0 < len(tri0) else None))
         o1 = python_internal_ArrayImpl._get(mesh1.points, (tri1[0] if 0 < len(tri1) else None))
-        ray = verb_eval_Intersect.planes(o0,n0,o1,n1)
+        ray = verb_eval_Intersect.planes(o0, n0, o1, n1)
         if (ray is None):
             return None
-        clip1 = verb_eval_Intersect.clipRayInCoplanarTriangle(ray,mesh0,faceIndex0)
+        clip1 = verb_eval_Intersect.clipRayInCoplanarTriangle(ray, mesh0, faceIndex0)
         if (clip1 is None):
             return None
-        clip2 = verb_eval_Intersect.clipRayInCoplanarTriangle(ray,mesh1,faceIndex1)
+        clip2 = verb_eval_Intersect.clipRayInCoplanarTriangle(ray, mesh1, faceIndex1)
         if (clip2 is None):
             return None
-        merged = verb_eval_Intersect.mergeTriangleClipIntervals(clip1,clip2,mesh0,faceIndex0,mesh1,faceIndex1)
+        merged = verb_eval_Intersect.mergeTriangleClipIntervals(clip1, clip2, mesh0, faceIndex0, mesh1, faceIndex1)
         if (merged is None):
             return None
-        return verb_core_Interval(verb_core_MeshIntersectionPoint(merged.min.uv0,merged.min.uv1,merged.min.point,faceIndex0,faceIndex1),verb_core_MeshIntersectionPoint(merged.max.uv0,merged.max.uv1,merged.max.point,faceIndex0,faceIndex1))
+        return verb_core_Interval(verb_core_MeshIntersectionPoint(merged.min.uv0, merged.min.uv1, merged.min.point, faceIndex0, faceIndex1), verb_core_MeshIntersectionPoint(merged.max.uv0, merged.max.uv1, merged.max.point, faceIndex0, faceIndex1))
 
     @staticmethod
-    def clipRayInCoplanarTriangle(ray,mesh,faceIndex):
+    def clipRayInCoplanarTriangle(ray, mesh, faceIndex):
         tri = (mesh.faces[faceIndex] if faceIndex >= 0 and faceIndex < len(mesh.faces) else None)
-        o = [python_internal_ArrayImpl._get(mesh.points, (tri[0] if 0 < len(tri) else None)), python_internal_ArrayImpl._get(mesh.points, (tri[1] if 1 < len(tri) else None)), python_internal_ArrayImpl._get(mesh.points, (tri[2] if 2 < len(tri) else None))]
-        uvs = [python_internal_ArrayImpl._get(mesh.uvs, (tri[0] if 0 < len(tri) else None)), python_internal_ArrayImpl._get(mesh.uvs, (tri[1] if 1 < len(tri) else None)), python_internal_ArrayImpl._get(mesh.uvs, (tri[2] if 2 < len(tri) else None))]
-        uvd = [verb_core_Vec.sub((uvs[1] if 1 < len(uvs) else None),(uvs[0] if 0 < len(uvs) else None)), verb_core_Vec.sub((uvs[2] if 2 < len(uvs) else None),(uvs[1] if 1 < len(uvs) else None)), verb_core_Vec.sub((uvs[0] if 0 < len(uvs) else None),(uvs[2] if 2 < len(uvs) else None))]
-        s = [verb_core_Vec.sub((o[1] if 1 < len(o) else None),(o[0] if 0 < len(o) else None)), verb_core_Vec.sub((o[2] if 2 < len(o) else None),(o[1] if 1 < len(o) else None)), verb_core_Vec.sub((o[0] if 0 < len(o) else None),(o[2] if 2 < len(o) else None))]
-        d = list(map(verb_core_Vec.normalized,s))
-        l = list(map(verb_core_Vec.norm,s))
+        o = [python_internal_ArrayImpl._get(mesh.points, (tri[0] if 0 < len(tri) else None)), python_internal_ArrayImpl._get(
+            mesh.points, (tri[1] if 1 < len(tri) else None)), python_internal_ArrayImpl._get(mesh.points, (tri[2] if 2 < len(tri) else None))]
+        uvs = [python_internal_ArrayImpl._get(mesh.uvs, (tri[0] if 0 < len(tri) else None)), python_internal_ArrayImpl._get(
+            mesh.uvs, (tri[1] if 1 < len(tri) else None)), python_internal_ArrayImpl._get(mesh.uvs, (tri[2] if 2 < len(tri) else None))]
+        uvd = [verb_core_Vec.sub((uvs[1] if 1 < len(uvs) else None), (uvs[0] if 0 < len(uvs) else None)), verb_core_Vec.sub((uvs[2] if 2 < len(uvs) else None),
+                                                                                                                            (uvs[1] if 1 < len(uvs) else None)), verb_core_Vec.sub((uvs[0] if 0 < len(uvs) else None), (uvs[2] if 2 < len(uvs) else None))]
+        s = [verb_core_Vec.sub((o[1] if 1 < len(o) else None), (o[0] if 0 < len(o) else None)), verb_core_Vec.sub((o[2] if 2 < len(o) else None),
+                                                                                                                  (o[1] if 1 < len(o) else None)), verb_core_Vec.sub((o[0] if 0 < len(o) else None), (o[2] if 2 < len(o) else None))]
+        d = list(map(verb_core_Vec.normalized, s))
+        l = list(map(verb_core_Vec.norm, s))
         minU = None
         maxU = None
         _g = 0
@@ -7775,7 +8114,7 @@ class verb_eval_Intersect:
             _g = (_g + 1)
             o0 = (o[i] if i >= 0 and i < len(o) else None)
             d0 = (d[i] if i >= 0 and i < len(d) else None)
-            res = verb_eval_Intersect.rays(o0,d0,ray.origin,ray.dir)
+            res = verb_eval_Intersect.rays(o0, d0, ray.origin, ray.dir)
             if (res is None):
                 continue
             useg = res.u0
@@ -7783,43 +8122,46 @@ class verb_eval_Intersect:
             if ((useg < -verb_core_Constants.EPSILON) or ((useg > (((l[i] if i >= 0 and i < len(l) else None) + verb_core_Constants.EPSILON))))):
                 continue
             if ((minU is None) or ((uray < minU.u))):
-                minU = verb_core_CurveTriPoint(uray,verb_core_Vec.onRay(ray.origin,ray.dir,uray),verb_core_Vec.onRay((uvs[i] if i >= 0 and i < len(uvs) else None),(uvd[i] if i >= 0 and i < len(uvd) else None),(useg / (l[i] if i >= 0 and i < len(l) else None))))
+                minU = verb_core_CurveTriPoint(uray, verb_core_Vec.onRay(ray.origin, ray.dir, uray), verb_core_Vec.onRay(
+                    (uvs[i] if i >= 0 and i < len(uvs) else None), (uvd[i] if i >= 0 and i < len(uvd) else None), (useg / (l[i] if i >= 0 and i < len(l) else None))))
             if ((maxU is None) or ((uray > maxU.u))):
-                maxU = verb_core_CurveTriPoint(uray,verb_core_Vec.onRay(ray.origin,ray.dir,uray),verb_core_Vec.onRay((uvs[i] if i >= 0 and i < len(uvs) else None),(uvd[i] if i >= 0 and i < len(uvd) else None),(useg / (l[i] if i >= 0 and i < len(l) else None))))
+                maxU = verb_core_CurveTriPoint(uray, verb_core_Vec.onRay(ray.origin, ray.dir, uray), verb_core_Vec.onRay(
+                    (uvs[i] if i >= 0 and i < len(uvs) else None), (uvd[i] if i >= 0 and i < len(uvd) else None), (useg / (l[i] if i >= 0 and i < len(l) else None))))
         if ((maxU is None) or ((minU is None))):
             return None
-        return verb_core_Interval(minU,maxU)
+        return verb_core_Interval(minU, maxU)
 
     @staticmethod
-    def mergeTriangleClipIntervals(clip1,clip2,mesh1,faceIndex1,mesh2,faceIndex2):
+    def mergeTriangleClipIntervals(clip1, clip2, mesh1, faceIndex1, mesh2, faceIndex2):
         if ((clip2.min.u > ((clip1.max.u + verb_core_Constants.EPSILON))) or ((clip1.min.u > ((clip2.max.u + verb_core_Constants.EPSILON))))):
             return None
-        _hx_min = (verb_core_Pair(clip1.min,0) if ((clip1.min.u > clip2.min.u)) else verb_core_Pair(clip2.min,1))
-        _hx_max = (verb_core_Pair(clip1.max,0) if ((clip1.max.u < clip2.max.u)) else verb_core_Pair(clip2.max,1))
-        res = verb_core_Interval(verb_core_MeshIntersectionPoint(None,None,_hx_min.item0.point,faceIndex1,faceIndex2),verb_core_MeshIntersectionPoint(None,None,_hx_max.item0.point,faceIndex1,faceIndex2))
+        _hx_min = (verb_core_Pair(clip1.min, 0) if ((clip1.min.u > clip2.min.u)) else verb_core_Pair(clip2.min, 1))
+        _hx_max = (verb_core_Pair(clip1.max, 0) if ((clip1.max.u < clip2.max.u)) else verb_core_Pair(clip2.max, 1))
+        res = verb_core_Interval(verb_core_MeshIntersectionPoint(None, None, _hx_min.item0.point, faceIndex1, faceIndex2),
+                                 verb_core_MeshIntersectionPoint(None, None, _hx_max.item0.point, faceIndex1, faceIndex2))
         if (_hx_min.item1 == 0):
             res.min.uv0 = _hx_min.item0.uv
-            res.min.uv1 = verb_core_Mesh.triangleUVFromPoint(mesh2,faceIndex2,_hx_min.item0.point)
+            res.min.uv1 = verb_core_Mesh.triangleUVFromPoint(mesh2, faceIndex2, _hx_min.item0.point)
         else:
-            res.min.uv0 = verb_core_Mesh.triangleUVFromPoint(mesh1,faceIndex1,_hx_min.item0.point)
+            res.min.uv0 = verb_core_Mesh.triangleUVFromPoint(mesh1, faceIndex1, _hx_min.item0.point)
             res.min.uv1 = _hx_min.item0.uv
         if (_hx_max.item1 == 0):
             res.max.uv0 = _hx_max.item0.uv
-            res.max.uv1 = verb_core_Mesh.triangleUVFromPoint(mesh2,faceIndex2,_hx_max.item0.point)
+            res.max.uv1 = verb_core_Mesh.triangleUVFromPoint(mesh2, faceIndex2, _hx_max.item0.point)
         else:
-            res.max.uv0 = verb_core_Mesh.triangleUVFromPoint(mesh1,faceIndex1,_hx_max.item0.point)
+            res.max.uv0 = verb_core_Mesh.triangleUVFromPoint(mesh1, faceIndex1, _hx_max.item0.point)
             res.max.uv1 = _hx_max.item0.uv
         return res
 
     @staticmethod
-    def planes(origin0,normal0,origin1,normal1):
-        d = verb_core_Vec.cross(normal0,normal1)
-        if (verb_core_Vec.dot(d,d) < verb_core_Constants.EPSILON):
+    def planes(origin0, normal0, origin1, normal1):
+        d = verb_core_Vec.cross(normal0, normal1)
+        if (verb_core_Vec.dot(d, d) < verb_core_Constants.EPSILON):
             return None
         li = 0
-        mi = Reflect.field(Math,"fabs")((d[0] if 0 < len(d) else None))
-        m1 = Reflect.field(Math,"fabs")((d[1] if 1 < len(d) else None))
-        m2 = Reflect.field(Math,"fabs")((d[2] if 2 < len(d) else None))
+        mi = Reflect.field(Math, "fabs")((d[0] if 0 < len(d) else None))
+        m1 = Reflect.field(Math, "fabs")((d[1] if 1 < len(d) else None))
+        m2 = Reflect.field(Math, "fabs")((d[2] if 2 < len(d) else None))
         if (m1 > mi):
             li = 1
             mi = m1
@@ -7845,8 +8187,8 @@ class verb_eval_Intersect:
             b1 = (normal0[1] if 1 < len(normal0) else None)
             a2 = (normal1[0] if 0 < len(normal1) else None)
             b2 = (normal1[1] if 1 < len(normal1) else None)
-        d1 = -verb_core_Vec.dot(origin0,normal0)
-        d2 = -verb_core_Vec.dot(origin1,normal1)
+        d1 = -verb_core_Vec.dot(origin0, normal0)
+        d2 = -verb_core_Vec.dot(origin1, normal1)
         den = ((a1 * b2) - ((b1 * a2)))
         x = ((((b1 * d2) - ((d1 * b2)))) / den)
         y = ((((d1 * a2) - ((a1 * d2)))) / den)
@@ -7857,21 +8199,21 @@ class verb_eval_Intersect:
             p = [x, 0, y]
         else:
             p = [x, y, 0]
-        return verb_core_Ray(p,verb_core_Vec.normalized(d))
+        return verb_core_Ray(p, verb_core_Vec.normalized(d))
 
     @staticmethod
-    def threePlanes(n0,d0,n1,d1,n2,d2):
-        u = verb_core_Vec.cross(n1,n2)
-        den = verb_core_Vec.dot(n0,u)
-        if (Reflect.field(Math,"fabs")(den) < verb_core_Constants.EPSILON):
+    def threePlanes(n0, d0, n1, d1, n2, d2):
+        u = verb_core_Vec.cross(n1, n2)
+        den = verb_core_Vec.dot(n0, u)
+        if (Reflect.field(Math, "fabs")(den) < verb_core_Constants.EPSILON):
             return None
-        diff = verb_core_Vec.sub(verb_core_Vec.mul(d2,n1),verb_core_Vec.mul(d1,n2))
-        num = verb_core_Vec.add(verb_core_Vec.mul(d0,u),verb_core_Vec.cross(n0,diff))
-        return verb_core_Vec.mul((1 / den),num)
+        diff = verb_core_Vec.sub(verb_core_Vec.mul(d2, n1), verb_core_Vec.mul(d1, n2))
+        num = verb_core_Vec.add(verb_core_Vec.mul(d0, u), verb_core_Vec.cross(n0, diff))
+        return verb_core_Vec.mul((1 / den), num)
 
     @staticmethod
-    def polylines(polyline0,polyline1,tol):
-        res = verb_eval_Intersect.boundingBoxTrees(verb_core_LazyPolylineBoundingBoxTree(polyline0),verb_core_LazyPolylineBoundingBoxTree(polyline1),tol)
+    def polylines(polyline0, polyline1, tol):
+        res = verb_eval_Intersect.boundingBoxTrees(verb_core_LazyPolylineBoundingBoxTree(polyline0), verb_core_LazyPolylineBoundingBoxTree(polyline1), tol)
         finalResults = []
         _g = 0
         while (_g < len(res)):
@@ -7879,101 +8221,106 @@ class verb_eval_Intersect:
             _g = (_g + 1)
             polid0 = event.item0
             polid1 = event.item1
-            inter = verb_eval_Intersect.segments((polyline0.points[polid0] if polid0 >= 0 and polid0 < len(polyline0.points) else None),python_internal_ArrayImpl._get(polyline0.points, (polid0 + 1)),(polyline1.points[polid1] if polid1 >= 0 and polid1 < len(polyline1.points) else None),python_internal_ArrayImpl._get(polyline1.points, (polid1 + 1)),tol)
+            inter = verb_eval_Intersect.segments((polyline0.points[polid0] if polid0 >= 0 and polid0 < len(polyline0.points) else None), python_internal_ArrayImpl._get(
+                polyline0.points, (polid0 + 1)), (polyline1.points[polid1] if polid1 >= 0 and polid1 < len(polyline1.points) else None), python_internal_ArrayImpl._get(polyline1.points, (polid1 + 1)), tol)
             if (inter is None):
                 continue
-            inter.u0 = python_internal_ArrayImpl._get(verb_core_Vec.lerp(inter.u0,[(polyline0.params[polid0] if polid0 >= 0 and polid0 < len(polyline0.params) else None)],[python_internal_ArrayImpl._get(polyline0.params, (polid0 + 1))]), 0)
-            inter.u1 = python_internal_ArrayImpl._get(verb_core_Vec.lerp(inter.u1,[(polyline1.params[polid1] if polid1 >= 0 and polid1 < len(polyline1.params) else None)],[python_internal_ArrayImpl._get(polyline1.params, (polid1 + 1))]), 0)
+            inter.u0 = python_internal_ArrayImpl._get(verb_core_Vec.lerp(inter.u0, [(polyline0.params[polid0] if polid0 >= 0 and polid0 < len(polyline0.params) else None)], [
+                                                      python_internal_ArrayImpl._get(polyline0.params, (polid0 + 1))]), 0)
+            inter.u1 = python_internal_ArrayImpl._get(verb_core_Vec.lerp(inter.u1, [(polyline1.params[polid1] if polid1 >= 0 and polid1 < len(polyline1.params) else None)], [
+                                                      python_internal_ArrayImpl._get(polyline1.params, (polid1 + 1))]), 0)
             finalResults.append(inter)
         return finalResults
 
     @staticmethod
-    def segments(a0,a1,b0,b1,tol):
-        a1ma0 = verb_core_Vec.sub(a1,a0)
-        v = verb_core_Vec.dot(a1ma0,a1ma0)
+    def segments(a0, a1, b0, b1, tol):
+        a1ma0 = verb_core_Vec.sub(a1, a0)
+        v = verb_core_Vec.dot(a1ma0, a1ma0)
         aN = (Math.NaN if ((v < 0)) else python_lib_Math.sqrt(v))
-        a = verb_core_Vec.mul((1 / aN),a1ma0)
-        b1mb0 = verb_core_Vec.sub(b1,b0)
-        v = verb_core_Vec.dot(b1mb0,b1mb0)
+        a = verb_core_Vec.mul((1 / aN), a1ma0)
+        b1mb0 = verb_core_Vec.sub(b1, b0)
+        v = verb_core_Vec.dot(b1mb0, b1mb0)
         bN = (Math.NaN if ((v < 0)) else python_lib_Math.sqrt(v))
-        b = verb_core_Vec.mul((1 / bN),b1mb0)
-        int_params = verb_eval_Intersect.rays(a0,a,b0,b)
+        b = verb_core_Vec.mul((1 / bN), b1mb0)
+        int_params = verb_eval_Intersect.rays(a0, a, b0, b)
         if (int_params is not None):
             b = (int_params.u0 / aN)
-            a = (0 if (python_lib_Math.isnan(0)) else (b if (python_lib_Math.isnan(b)) else max(0,b)))
-            u0 = (a if (python_lib_Math.isnan(a)) else (1.0 if (python_lib_Math.isnan(1.0)) else min(a,1.0)))
+            a = (0 if (python_lib_Math.isnan(0)) else (b if (python_lib_Math.isnan(b)) else max(0, b)))
+            u0 = (a if (python_lib_Math.isnan(a)) else (1.0 if (python_lib_Math.isnan(1.0)) else min(a, 1.0)))
             b = (int_params.u1 / bN)
-            a = (0 if (python_lib_Math.isnan(0)) else (b if (python_lib_Math.isnan(b)) else max(0,b)))
-            u1 = (a if (python_lib_Math.isnan(a)) else (1.0 if (python_lib_Math.isnan(1.0)) else min(a,1.0)))
-            point0 = verb_core_Vec.onRay(a0,a1ma0,u0)
-            point1 = verb_core_Vec.onRay(b0,b1mb0,u1)
-            dist = verb_core_Vec.distSquared(point0,point1)
+            a = (0 if (python_lib_Math.isnan(0)) else (b if (python_lib_Math.isnan(b)) else max(0, b)))
+            u1 = (a if (python_lib_Math.isnan(a)) else (1.0 if (python_lib_Math.isnan(1.0)) else min(a, 1.0)))
+            point0 = verb_core_Vec.onRay(a0, a1ma0, u0)
+            point1 = verb_core_Vec.onRay(b0, b1mb0, u1)
+            dist = verb_core_Vec.distSquared(point0, point1)
             if (dist < ((tol * tol))):
-                return verb_core_CurveCurveIntersection(point0,point1,u0,u1)
+                return verb_core_CurveCurveIntersection(point0, point1, u0, u1)
         return None
 
     @staticmethod
-    def rays(a0,a,b0,b):
-        dab = verb_core_Vec.dot(a,b)
-        dab0 = verb_core_Vec.dot(a,b0)
-        daa0 = verb_core_Vec.dot(a,a0)
-        dbb0 = verb_core_Vec.dot(b,b0)
-        dba0 = verb_core_Vec.dot(b,a0)
-        daa = verb_core_Vec.dot(a,a)
-        dbb = verb_core_Vec.dot(b,b)
+    def rays(a0, a, b0, b):
+        dab = verb_core_Vec.dot(a, b)
+        dab0 = verb_core_Vec.dot(a, b0)
+        daa0 = verb_core_Vec.dot(a, a0)
+        dbb0 = verb_core_Vec.dot(b, b0)
+        dba0 = verb_core_Vec.dot(b, a0)
+        daa = verb_core_Vec.dot(a, a)
+        dbb = verb_core_Vec.dot(b, b)
         div = ((daa * dbb) - ((dab * dab)))
-        if (Reflect.field(Math,"fabs")(div) < verb_core_Constants.EPSILON):
+        if (Reflect.field(Math, "fabs")(div) < verb_core_Constants.EPSILON):
             return None
         num = ((dab * ((dab0 - daa0))) - ((daa * ((dbb0 - dba0)))))
         w = (num / div)
         t = ((((dab0 - daa0) + ((w * dab)))) / daa)
-        p0 = verb_core_Vec.onRay(a0,a,t)
-        p1 = verb_core_Vec.onRay(b0,b,w)
-        return verb_core_CurveCurveIntersection(p0,p1,t,w)
+        p0 = verb_core_Vec.onRay(a0, a, t)
+        p1 = verb_core_Vec.onRay(b0, b, w)
+        return verb_core_CurveCurveIntersection(p0, p1, t, w)
 
     @staticmethod
-    def segmentWithTriangle(p0,p1,points,tri):
+    def segmentWithTriangle(p0, p1, points, tri):
         v0 = python_internal_ArrayImpl._get(points, (tri[0] if 0 < len(tri) else None))
         v1 = python_internal_ArrayImpl._get(points, (tri[1] if 1 < len(tri) else None))
         v2 = python_internal_ArrayImpl._get(points, (tri[2] if 2 < len(tri) else None))
-        u = verb_core_Vec.sub(v1,v0)
-        v = verb_core_Vec.sub(v2,v0)
-        n = verb_core_Vec.cross(u,v)
-        dir = verb_core_Vec.sub(p1,p0)
-        w0 = verb_core_Vec.sub(p0,v0)
-        a = -verb_core_Vec.dot(n,w0)
-        b = verb_core_Vec.dot(n,dir)
-        if (Reflect.field(Math,"fabs")(b) < verb_core_Constants.EPSILON):
+        u = verb_core_Vec.sub(v1, v0)
+        v = verb_core_Vec.sub(v2, v0)
+        n = verb_core_Vec.cross(u, v)
+        dir = verb_core_Vec.sub(p1, p0)
+        w0 = verb_core_Vec.sub(p0, v0)
+        a = -verb_core_Vec.dot(n, w0)
+        b = verb_core_Vec.dot(n, dir)
+        if (Reflect.field(Math, "fabs")(b) < verb_core_Constants.EPSILON):
             return None
         r = (a / b)
         if ((r < 0) or ((r > 1))):
             return None
-        pt = verb_core_Vec.add(p0,verb_core_Vec.mul(r,dir))
-        uv = verb_core_Vec.dot(u,v)
-        uu = verb_core_Vec.dot(u,u)
-        vv = verb_core_Vec.dot(v,v)
-        w = verb_core_Vec.sub(pt,v0)
-        wu = verb_core_Vec.dot(w,u)
-        wv = verb_core_Vec.dot(w,v)
+        pt = verb_core_Vec.add(p0, verb_core_Vec.mul(r, dir))
+        uv = verb_core_Vec.dot(u, v)
+        uu = verb_core_Vec.dot(u, u)
+        vv = verb_core_Vec.dot(v, v)
+        w = verb_core_Vec.sub(pt, v0)
+        wu = verb_core_Vec.dot(w, u)
+        wv = verb_core_Vec.dot(w, v)
         denom = ((uv * uv) - ((uu * vv)))
-        if (Reflect.field(Math,"fabs")(denom) < verb_core_Constants.EPSILON):
+        if (Reflect.field(Math, "fabs")(denom) < verb_core_Constants.EPSILON):
             return None
         s = ((((uv * wv) - ((vv * wu)))) / denom)
         t = ((((uv * wu) - ((uu * wv)))) / denom)
         if (((((s > ((1.0 + verb_core_Constants.EPSILON))) or ((t > ((1.0 + verb_core_Constants.EPSILON))))) or ((t < -verb_core_Constants.EPSILON))) or ((s < -verb_core_Constants.EPSILON))) or (((s + t) > ((1.0 + verb_core_Constants.EPSILON))))):
             return None
-        return verb_core_TriSegmentIntersection(pt,s,t,r)
+        return verb_core_TriSegmentIntersection(pt, s, t, r)
 
     @staticmethod
-    def segmentAndPlane(p0,p1,v0,n):
-        denom = verb_core_Vec.dot(n,verb_core_Vec.sub(p1,p0))
-        if (Reflect.field(Math,"fabs")(denom) < verb_core_Constants.EPSILON):
+    def segmentAndPlane(p0, p1, v0, n):
+        denom = verb_core_Vec.dot(n, verb_core_Vec.sub(p1, p0))
+        if (Reflect.field(Math, "fabs")(denom) < verb_core_Constants.EPSILON):
             return None
-        numer = verb_core_Vec.dot(n,verb_core_Vec.sub(v0,p0))
+        numer = verb_core_Vec.dot(n, verb_core_Vec.sub(v0, p0))
         p = (numer / denom)
         if ((p > ((1.0 + verb_core_Constants.EPSILON))) or ((p < -verb_core_Constants.EPSILON))):
             return None
         return _hx_AnonObject({'p': p})
+
+
 verb_eval_Intersect._hx_class = verb_eval_Intersect
 _hx_classes["verb.eval.Intersect"] = verb_eval_Intersect
 
@@ -7981,11 +8328,12 @@ _hx_classes["verb.eval.Intersect"] = verb_eval_Intersect
 class verb_eval_Make:
     _hx_class_name = "verb.eval.Make"
     __slots__ = ()
-    _hx_statics = ["rationalTranslationalSurface", "surfaceBoundaryCurves", "surfaceIsocurve", "loftedSurface", "clonedCurve", "rationalBezierCurve", "fourPointSurface", "ellipseArc", "arc", "polyline", "extrudedSurface", "cylindricalSurface", "revolvedSurface", "sphericalSurface", "conicalSurface", "rationalInterpCurve"]
+    _hx_statics = ["rationalTranslationalSurface", "surfaceBoundaryCurves", "surfaceIsocurve", "loftedSurface", "clonedCurve", "rationalBezierCurve", "fourPointSurface",
+                   "ellipseArc", "arc", "polyline", "extrudedSurface", "cylindricalSurface", "revolvedSurface", "sphericalSurface", "conicalSurface", "rationalInterpCurve"]
 
     @staticmethod
-    def rationalTranslationalSurface(profile,rail):
-        pt0 = verb_eval_Eval.rationalCurvePoint(rail,verb_core_ArrayExtensions.first(rail.knots))
+    def rationalTranslationalSurface(profile, rail):
+        pt0 = verb_eval_Eval.rationalCurvePoint(rail, verb_core_ArrayExtensions.first(rail.knots))
         startu = verb_core_ArrayExtensions.first(rail.knots)
         endu = verb_core_ArrayExtensions.last(rail.knots)
         numSamples = (2 * len(rail.controlPoints))
@@ -7996,21 +8344,22 @@ class verb_eval_Make:
         while (_g < _g1):
             i = _g
             _g = (_g + 1)
-            pt = verb_core_Vec.sub(verb_eval_Eval.rationalCurvePoint(rail,(startu + ((i * span)))),pt0)
-            crv = verb_eval_Modify.rationalCurveTransform(profile,[[1, 0, 0, (pt[0] if 0 < len(pt) else None)], [0, 1, 0, (pt[1] if 1 < len(pt) else None)], [0, 0, 1, (pt[2] if 2 < len(pt) else None)], [0, 0, 0, 1]])
+            pt = verb_core_Vec.sub(verb_eval_Eval.rationalCurvePoint(rail, (startu + ((i * span)))), pt0)
+            crv = verb_eval_Modify.rationalCurveTransform(profile, [[1, 0, 0, (pt[0] if 0 < len(pt) else None)], [0, 1, 0, (pt[1] if 1 < len(pt) else None)], [
+                                                          0, 0, 1, (pt[2] if 2 < len(pt) else None)], [0, 0, 0, 1]])
             crvs.append(crv)
         return verb_eval_Make.loftedSurface(crvs)
 
     @staticmethod
     def surfaceBoundaryCurves(surface):
-        c0 = verb_eval_Make.surfaceIsocurve(surface,verb_core_ArrayExtensions.first(surface.knotsU),False)
-        c1 = verb_eval_Make.surfaceIsocurve(surface,verb_core_ArrayExtensions.last(surface.knotsU),False)
-        c2 = verb_eval_Make.surfaceIsocurve(surface,verb_core_ArrayExtensions.first(surface.knotsV),True)
-        c3 = verb_eval_Make.surfaceIsocurve(surface,verb_core_ArrayExtensions.last(surface.knotsV),True)
+        c0 = verb_eval_Make.surfaceIsocurve(surface, verb_core_ArrayExtensions.first(surface.knotsU), False)
+        c1 = verb_eval_Make.surfaceIsocurve(surface, verb_core_ArrayExtensions.last(surface.knotsU), False)
+        c2 = verb_eval_Make.surfaceIsocurve(surface, verb_core_ArrayExtensions.first(surface.knotsV), True)
+        c3 = verb_eval_Make.surfaceIsocurve(surface, verb_core_ArrayExtensions.last(surface.knotsV), True)
         return [c0, c1, c2, c3]
 
     @staticmethod
-    def surfaceIsocurve(surface,u,useV = None):
+    def surfaceIsocurve(surface, u, useV=None):
         if (useV is None):
             useV = False
         knots = (surface.knotsV if useV else surface.knotsU)
@@ -8022,20 +8371,20 @@ class verb_eval_Make:
         while (_g < _g1):
             i = _g
             _g = (_g + 1)
-            if (Reflect.field(Math,"fabs")((u - (knotMults[i] if i >= 0 and i < len(knotMults) else None).knot)) < verb_core_Constants.EPSILON):
+            if (Reflect.field(Math, "fabs")((u - (knotMults[i] if i >= 0 and i < len(knotMults) else None).knot)) < verb_core_Constants.EPSILON):
                 reqKnotIndex = i
                 break
         numKnotsToInsert = (degree + 1)
         if (reqKnotIndex >= 0):
             numKnotsToInsert = (numKnotsToInsert - (knotMults[reqKnotIndex] if reqKnotIndex >= 0 and reqKnotIndex < len(knotMults) else None).mult)
-        newSrf = (verb_eval_Modify.surfaceKnotRefine(surface,verb_core_Vec.rep(numKnotsToInsert,u),useV) if ((numKnotsToInsert > 0)) else surface)
-        span = verb_eval_Eval.knotSpan(degree,u,knots)
+        newSrf = (verb_eval_Modify.surfaceKnotRefine(surface, verb_core_Vec.rep(numKnotsToInsert, u), useV) if ((numKnotsToInsert > 0)) else surface)
+        span = verb_eval_Eval.knotSpan(degree, u, knots)
         v = (u - verb_core_ArrayExtensions.first(knots))
-        if (Reflect.field(Math,"fabs")(v) < verb_core_Constants.EPSILON):
+        if (Reflect.field(Math, "fabs")(v) < verb_core_Constants.EPSILON):
             span = 0
         else:
             v = (u - verb_core_ArrayExtensions.last(knots))
-            if (Reflect.field(Math,"fabs")(v) < verb_core_Constants.EPSILON):
+            if (Reflect.field(Math, "fabs")(v) < verb_core_Constants.EPSILON):
                 span = (((len((newSrf.controlPoints[0] if 0 < len(newSrf.controlPoints) else None)) if useV else len(newSrf.controlPoints))) - 1)
         if useV:
             newSrf1 = newSrf.degreeU
@@ -8047,11 +8396,11 @@ class verb_eval_Make:
                 row = (_g2[_g1] if _g1 >= 0 and _g1 < len(_g2) else None)
                 _g1 = (_g1 + 1)
                 _g.append((row[span] if span >= 0 and span < len(row) else None))
-            return verb_core_NurbsCurveData(newSrf1,newSrf2,_g)
-        return verb_core_NurbsCurveData(newSrf.degreeV,newSrf.knotsV,(newSrf.controlPoints[span] if span >= 0 and span < len(newSrf.controlPoints) else None))
+            return verb_core_NurbsCurveData(newSrf1, newSrf2, _g)
+        return verb_core_NurbsCurveData(newSrf.degreeV, newSrf.knotsV, (newSrf.controlPoints[span] if span >= 0 and span < len(newSrf.controlPoints) else None))
 
     @staticmethod
-    def loftedSurface(curves,degreeV = None):
+    def loftedSurface(curves, degreeV=None):
         curves = verb_eval_Modify.unifyCurveKnotVectors(curves)
         degreeU = (curves[0] if 0 < len(curves) else None).degree
         if (degreeV is None):
@@ -8067,27 +8416,28 @@ class verb_eval_Make:
             i = _g
             _g = (_g + 1)
             i1 = [i]
+
             def _hx_local_1(i):
                 def _hx_local_0(x):
                     return python_internal_ArrayImpl._get(x.controlPoints, (i[0] if 0 < len(i) else None))
                 return _hx_local_0
-            points = list(map(_hx_local_1(i1),curves))
-            c = verb_eval_Make.rationalInterpCurve(points,degreeV,True)
+            points = list(map(_hx_local_1(i1), curves))
+            c = verb_eval_Make.rationalInterpCurve(points, degreeV, True)
             x = c.controlPoints
             controlPoints.append(x)
             knotsV = c.knots
-        return verb_core_NurbsSurfaceData(degreeU,degreeV,knotsU,knotsV,controlPoints)
+        return verb_core_NurbsSurfaceData(degreeU, degreeV, knotsU, knotsV, controlPoints)
 
     @staticmethod
     def clonedCurve(curve):
         def _hx_local_1():
             def _hx_local_0(x):
                 return list(x)
-            return verb_core_NurbsCurveData(curve.degree,list(curve.knots),list(map(_hx_local_0,curve.controlPoints)))
+            return verb_core_NurbsCurveData(curve.degree, list(curve.knots), list(map(_hx_local_0, curve.controlPoints)))
         return _hx_local_1()
 
     @staticmethod
-    def rationalBezierCurve(controlPoints,weights = None):
+    def rationalBezierCurve(controlPoints, weights=None):
         degree = (len(controlPoints) - 1)
         knots = []
         _g = 0
@@ -8103,11 +8453,11 @@ class verb_eval_Make:
             _g = (_g + 1)
             knots.append(1.0)
         if (weights is None):
-            weights = verb_core_Vec.rep(len(controlPoints),1.0)
-        return verb_core_NurbsCurveData(degree,knots,verb_eval_Eval.homogenize1d(controlPoints,weights))
+            weights = verb_core_Vec.rep(len(controlPoints), 1.0)
+        return verb_core_NurbsCurveData(degree, knots, verb_eval_Eval.homogenize1d(controlPoints, weights))
 
     @staticmethod
-    def fourPointSurface(p1,p2,p3,p4,degree = None):
+    def fourPointSurface(p1, p2, p3, p4, degree=None):
         if (degree is None):
             degree = 3
         degreeFloat = degree
@@ -8124,18 +8474,18 @@ class verb_eval_Make:
                 j = _g2
                 _g2 = (_g2 + 1)
                 l = (1.0 - ((i / degreeFloat)))
-                p1p2 = verb_core_Vec.lerp(l,p1,p2)
-                p4p3 = verb_core_Vec.lerp(l,p4,p3)
-                res = verb_core_Vec.lerp((1.0 - ((j / degreeFloat))),p1p2,p4p3)
+                p1p2 = verb_core_Vec.lerp(l, p1, p2)
+                p4p3 = verb_core_Vec.lerp(l, p4, p3)
+                res = verb_core_Vec.lerp((1.0 - ((j / degreeFloat))), p1p2, p4p3)
                 res.append(1.0)
                 row.append(res)
             pts.append(row)
-        zeros = verb_core_Vec.rep((degree + 1),0.0)
-        ones = verb_core_Vec.rep((degree + 1),1.0)
-        return verb_core_NurbsSurfaceData(degree,degree,(zeros + ones),(zeros + ones),pts)
+        zeros = verb_core_Vec.rep((degree + 1), 0.0)
+        ones = verb_core_Vec.rep((degree + 1), 1.0)
+        return verb_core_NurbsSurfaceData(degree, degree, (zeros + ones), (zeros + ones), pts)
 
     @staticmethod
-    def ellipseArc(center,xaxis,yaxis,startAngle,endAngle):
+    def ellipseArc(center, xaxis, yaxis, startAngle, endAngle):
         xradius = verb_core_Vec.norm(xaxis)
         yradius = verb_core_Vec.norm(yaxis)
         xaxis = verb_core_Vec.normalized(xaxis)
@@ -8156,8 +8506,10 @@ class verb_eval_Make:
         n = (2 * numArcs)
         v = (dtheta / 2)
         w1 = (Math.NaN if (((v == Math.POSITIVE_INFINITY) or ((v == Math.NEGATIVE_INFINITY)))) else python_lib_Math.cos(v))
-        P0 = verb_core_Vec.add(center,verb_core_Vec.add(verb_core_Vec.mul((xradius * ((Math.NaN if (((startAngle == Math.POSITIVE_INFINITY) or ((startAngle == Math.NEGATIVE_INFINITY)))) else python_lib_Math.cos(startAngle)))),xaxis),verb_core_Vec.mul((yradius * ((Math.NaN if (((startAngle == Math.POSITIVE_INFINITY) or ((startAngle == Math.NEGATIVE_INFINITY)))) else python_lib_Math.sin(startAngle)))),yaxis)))
-        T0 = verb_core_Vec.sub(verb_core_Vec.mul((Math.NaN if (((startAngle == Math.POSITIVE_INFINITY) or ((startAngle == Math.NEGATIVE_INFINITY)))) else python_lib_Math.cos(startAngle)),yaxis),verb_core_Vec.mul((Math.NaN if (((startAngle == Math.POSITIVE_INFINITY) or ((startAngle == Math.NEGATIVE_INFINITY)))) else python_lib_Math.sin(startAngle)),xaxis))
+        P0 = verb_core_Vec.add(center, verb_core_Vec.add(verb_core_Vec.mul((xradius * ((Math.NaN if (((startAngle == Math.POSITIVE_INFINITY) or ((startAngle == Math.NEGATIVE_INFINITY)))) else python_lib_Math.cos(
+            startAngle)))), xaxis), verb_core_Vec.mul((yradius * ((Math.NaN if (((startAngle == Math.POSITIVE_INFINITY) or ((startAngle == Math.NEGATIVE_INFINITY)))) else python_lib_Math.sin(startAngle)))), yaxis)))
+        T0 = verb_core_Vec.sub(verb_core_Vec.mul((Math.NaN if (((startAngle == Math.POSITIVE_INFINITY) or ((startAngle == Math.NEGATIVE_INFINITY)))) else python_lib_Math.cos(
+            startAngle)), yaxis), verb_core_Vec.mul((Math.NaN if (((startAngle == Math.POSITIVE_INFINITY) or ((startAngle == Math.NEGATIVE_INFINITY)))) else python_lib_Math.sin(startAngle)), xaxis))
         controlPoints = []
         knots = verb_core_Vec.zeros1d(((2 * numArcs) + 3))
         index = 0
@@ -8171,12 +8523,14 @@ class verb_eval_Make:
             i = _g
             _g = (_g + 1)
             angle = (angle + dtheta)
-            P2 = verb_core_Vec.add(center,verb_core_Vec.add(verb_core_Vec.mul((xradius * ((Math.NaN if (((angle == Math.POSITIVE_INFINITY) or ((angle == Math.NEGATIVE_INFINITY)))) else python_lib_Math.cos(angle)))),xaxis),verb_core_Vec.mul((yradius * ((Math.NaN if (((angle == Math.POSITIVE_INFINITY) or ((angle == Math.NEGATIVE_INFINITY)))) else python_lib_Math.sin(angle)))),yaxis)))
+            P2 = verb_core_Vec.add(center, verb_core_Vec.add(verb_core_Vec.mul((xradius * ((Math.NaN if (((angle == Math.POSITIVE_INFINITY) or ((angle == Math.NEGATIVE_INFINITY)))) else python_lib_Math.cos(
+                angle)))), xaxis), verb_core_Vec.mul((yradius * ((Math.NaN if (((angle == Math.POSITIVE_INFINITY) or ((angle == Math.NEGATIVE_INFINITY)))) else python_lib_Math.sin(angle)))), yaxis)))
             python_internal_ArrayImpl._set(weights, (index + 2), 1)
             python_internal_ArrayImpl._set(controlPoints, (index + 2), P2)
-            T2 = verb_core_Vec.sub(verb_core_Vec.mul((Math.NaN if (((angle == Math.POSITIVE_INFINITY) or ((angle == Math.NEGATIVE_INFINITY)))) else python_lib_Math.cos(angle)),yaxis),verb_core_Vec.mul((Math.NaN if (((angle == Math.POSITIVE_INFINITY) or ((angle == Math.NEGATIVE_INFINITY)))) else python_lib_Math.sin(angle)),xaxis))
-            inters = verb_eval_Intersect.rays(P0,verb_core_Vec.mul((1 / verb_core_Vec.norm(T0)),T0),P2,verb_core_Vec.mul((1 / verb_core_Vec.norm(T2)),T2))
-            P1 = verb_core_Vec.add(P0,verb_core_Vec.mul(inters.u0,T0))
+            T2 = verb_core_Vec.sub(verb_core_Vec.mul((Math.NaN if (((angle == Math.POSITIVE_INFINITY) or ((angle == Math.NEGATIVE_INFINITY)))) else python_lib_Math.cos(
+                angle)), yaxis), verb_core_Vec.mul((Math.NaN if (((angle == Math.POSITIVE_INFINITY) or ((angle == Math.NEGATIVE_INFINITY)))) else python_lib_Math.sin(angle)), xaxis))
+            inters = verb_eval_Intersect.rays(P0, verb_core_Vec.mul((1 / verb_core_Vec.norm(T0)), T0), P2, verb_core_Vec.mul((1 / verb_core_Vec.norm(T2)), T2))
+            P1 = verb_core_Vec.add(P0, verb_core_Vec.mul(inters.u0, T0))
             python_internal_ArrayImpl._set(weights, (index + 1), w1)
             python_internal_ArrayImpl._set(controlPoints, (index + 1), P1)
             index = (index + 2)
@@ -8201,6 +8555,7 @@ class verb_eval_Make:
                 python_internal_ArrayImpl._set(knots, 4, 0.33333333333333331)
                 return (knots[4] if 4 < len(knots) else None)
             python_internal_ArrayImpl._set(knots, 3, _hx_local_3())
+
             def _hx_local_4():
                 python_internal_ArrayImpl._set(knots, 6, 0.66666666666666663)
                 return (knots[6] if 6 < len(knots) else None)
@@ -8210,21 +8565,23 @@ class verb_eval_Make:
                 python_internal_ArrayImpl._set(knots, 4, 0.25)
                 return (knots[4] if 4 < len(knots) else None)
             python_internal_ArrayImpl._set(knots, 3, _hx_local_5())
+
             def _hx_local_6():
                 python_internal_ArrayImpl._set(knots, 6, 0.5)
                 return (knots[6] if 6 < len(knots) else None)
             python_internal_ArrayImpl._set(knots, 5, _hx_local_6())
+
             def _hx_local_7():
                 python_internal_ArrayImpl._set(knots, 8, 0.75)
                 return (knots[8] if 8 < len(knots) else None)
             python_internal_ArrayImpl._set(knots, 7, _hx_local_7())
         else:
             pass
-        return verb_core_NurbsCurveData(2,knots,verb_eval_Eval.homogenize1d(controlPoints,weights))
+        return verb_core_NurbsCurveData(2, knots, verb_eval_Eval.homogenize1d(controlPoints, weights))
 
     @staticmethod
-    def arc(center,xaxis,yaxis,radius,startAngle,endAngle):
-        return verb_eval_Make.ellipseArc(center,verb_core_Vec.mul(radius,verb_core_Vec.normalized(xaxis)),verb_core_Vec.mul(radius,verb_core_Vec.normalized(yaxis)),startAngle,endAngle)
+    def arc(center, xaxis, yaxis, radius, startAngle, endAngle):
+        return verb_eval_Make.ellipseArc(center, verb_core_Vec.mul(radius, verb_core_Vec.normalized(xaxis)), verb_core_Vec.mul(radius, verb_core_Vec.normalized(yaxis)), startAngle, endAngle)
 
     @staticmethod
     def polyline(pts):
@@ -8235,10 +8592,10 @@ class verb_eval_Make:
         while (_g < _g1):
             i = _g
             _g = (_g + 1)
-            lsum = (lsum + verb_core_Vec.dist((pts[i] if i >= 0 and i < len(pts) else None),python_internal_ArrayImpl._get(pts, (i + 1))))
+            lsum = (lsum + verb_core_Vec.dist((pts[i] if i >= 0 and i < len(pts) else None), python_internal_ArrayImpl._get(pts, (i + 1))))
             knots.append(lsum)
         knots.append(lsum)
-        knots = verb_core_Vec.mul((1 / lsum),knots)
+        knots = verb_core_Vec.mul((1 / lsum), knots)
         _g = []
         _g1 = 0
         _g2 = len(pts)
@@ -8247,38 +8604,40 @@ class verb_eval_Make:
             _g1 = (_g1 + 1)
             _g.append(1.0)
         weights = _g
-        return verb_core_NurbsCurveData(1,knots,verb_eval_Eval.homogenize1d(pts[0:None],weights))
+        return verb_core_NurbsCurveData(1, knots, verb_eval_Eval.homogenize1d(pts[0:None], weights))
 
     @staticmethod
-    def extrudedSurface(axis,length,profile):
+    def extrudedSurface(axis, length, profile):
         controlPoints = [[], [], []]
         weights = [[], [], []]
         prof_controlPoints = verb_eval_Eval.dehomogenize1d(profile.controlPoints)
         prof_weights = verb_eval_Eval.weight1d(profile.controlPoints)
-        translation = verb_core_Vec.mul(length,axis)
-        halfTranslation = verb_core_Vec.mul((0.5 * length),axis)
+        translation = verb_core_Vec.mul(length, axis)
+        halfTranslation = verb_core_Vec.mul((0.5 * length), axis)
         _g = 0
         _g1 = len(prof_controlPoints)
         while (_g < _g1):
             j = _g
             _g = (_g + 1)
             python_internal_ArrayImpl._set((controlPoints[2] if 2 < len(controlPoints) else None), j, (prof_controlPoints[j] if j >= 0 and j < len(prof_controlPoints) else None))
-            python_internal_ArrayImpl._set((controlPoints[1] if 1 < len(controlPoints) else None), j, verb_core_Vec.add(halfTranslation,(prof_controlPoints[j] if j >= 0 and j < len(prof_controlPoints) else None)))
-            python_internal_ArrayImpl._set((controlPoints[0] if 0 < len(controlPoints) else None), j, verb_core_Vec.add(translation,(prof_controlPoints[j] if j >= 0 and j < len(prof_controlPoints) else None)))
+            python_internal_ArrayImpl._set((controlPoints[1] if 1 < len(controlPoints) else None), j, verb_core_Vec.add(
+                halfTranslation, (prof_controlPoints[j] if j >= 0 and j < len(prof_controlPoints) else None)))
+            python_internal_ArrayImpl._set((controlPoints[0] if 0 < len(controlPoints) else None), j, verb_core_Vec.add(
+                translation, (prof_controlPoints[j] if j >= 0 and j < len(prof_controlPoints) else None)))
             python_internal_ArrayImpl._set((weights[0] if 0 < len(weights) else None), j, (prof_weights[j] if j >= 0 and j < len(prof_weights) else None))
             python_internal_ArrayImpl._set((weights[1] if 1 < len(weights) else None), j, (prof_weights[j] if j >= 0 and j < len(prof_weights) else None))
             python_internal_ArrayImpl._set((weights[2] if 2 < len(weights) else None), j, (prof_weights[j] if j >= 0 and j < len(prof_weights) else None))
-        return verb_core_NurbsSurfaceData(2,profile.degree,[0, 0, 0, 1, 1, 1],profile.knots,verb_eval_Eval.homogenize2d(controlPoints,weights))
+        return verb_core_NurbsSurfaceData(2, profile.degree, [0, 0, 0, 1, 1, 1], profile.knots, verb_eval_Eval.homogenize2d(controlPoints, weights))
 
     @staticmethod
-    def cylindricalSurface(axis,xaxis,base,height,radius):
-        yaxis = verb_core_Vec.cross(axis,xaxis)
+    def cylindricalSurface(axis, xaxis, base, height, radius):
+        yaxis = verb_core_Vec.cross(axis, xaxis)
         angle = (2.0 * Math.PI)
-        circ = verb_eval_Make.arc(base,xaxis,yaxis,radius,0.0,(2 * Math.PI))
-        return verb_eval_Make.extrudedSurface(axis,height,circ)
+        circ = verb_eval_Make.arc(base, xaxis, yaxis, radius, 0.0, (2 * Math.PI))
+        return verb_eval_Make.extrudedSurface(axis, height, circ)
 
     @staticmethod
-    def revolvedSurface(profile,center,axis,theta):
+    def revolvedSurface(profile, center, axis, theta):
         prof_controlPoints = verb_eval_Eval.dehomogenize1d(profile.controlPoints)
         prof_weights = verb_eval_Eval.weight1d(profile.controlPoints)
         narcs = None
@@ -8291,6 +8650,7 @@ class verb_eval_Make:
         elif (theta <= Math.PI):
             narcs = 2
             knotsU = verb_core_Vec.zeros1d((6 + ((2 * ((narcs - 1))))))
+
             def _hx_local_0():
                 python_internal_ArrayImpl._set(knotsU, 4, 0.5)
                 return (knotsU[4] if 4 < len(knotsU) else None)
@@ -8298,10 +8658,12 @@ class verb_eval_Make:
         elif (theta <= (((3 * Math.PI) / 2))):
             narcs = 3
             knotsU = verb_core_Vec.zeros1d((6 + ((2 * ((narcs - 1))))))
+
             def _hx_local_1():
                 python_internal_ArrayImpl._set(knotsU, 4, 0.33333333333333331)
                 return (knotsU[4] if 4 < len(knotsU) else None)
             python_internal_ArrayImpl._set(knotsU, 3, _hx_local_1())
+
             def _hx_local_2():
                 python_internal_ArrayImpl._set(knotsU, 6, 0.66666666666666663)
                 return (knotsU[6] if 6 < len(knotsU) else None)
@@ -8309,14 +8671,17 @@ class verb_eval_Make:
         else:
             narcs = 4
             knotsU = verb_core_Vec.zeros1d((6 + ((2 * ((narcs - 1))))))
+
             def _hx_local_3():
                 python_internal_ArrayImpl._set(knotsU, 4, 0.25)
                 return (knotsU[4] if 4 < len(knotsU) else None)
             python_internal_ArrayImpl._set(knotsU, 3, _hx_local_3())
+
             def _hx_local_4():
                 python_internal_ArrayImpl._set(knotsU, 6, 0.5)
                 return (knotsU[6] if 6 < len(knotsU) else None)
             python_internal_ArrayImpl._set(knotsU, 5, _hx_local_4())
+
             def _hx_local_5():
                 python_internal_ArrayImpl._set(knotsU, 8, 0.75)
                 return (knotsU[8] if 8 < len(knotsU) else None)
@@ -8335,8 +8700,8 @@ class verb_eval_Make:
         angle = 0.0
         sines = verb_core_Vec.zeros1d((narcs + 1))
         cosines = verb_core_Vec.zeros1d((narcs + 1))
-        controlPoints = verb_core_Vec.zeros3d(((2 * narcs) + 1),len(prof_controlPoints),3)
-        weights = verb_core_Vec.zeros2d(((2 * narcs) + 1),len(prof_controlPoints))
+        controlPoints = verb_core_Vec.zeros3d(((2 * narcs) + 1), len(prof_controlPoints), 3)
+        weights = verb_core_Vec.zeros2d(((2 * narcs) + 1), len(prof_controlPoints))
         _g = 1
         _g1 = (narcs + 1)
         while (_g < _g1):
@@ -8350,13 +8715,13 @@ class verb_eval_Make:
         while (_g < _g1):
             j = _g
             _g = (_g + 1)
-            O = verb_core_Trig.rayClosestPoint((prof_controlPoints[j] if j >= 0 and j < len(prof_controlPoints) else None),center,axis)
-            X = verb_core_Vec.sub((prof_controlPoints[j] if j >= 0 and j < len(prof_controlPoints) else None),O)
+            O = verb_core_Trig.rayClosestPoint((prof_controlPoints[j] if j >= 0 and j < len(prof_controlPoints) else None), center, axis)
+            X = verb_core_Vec.sub((prof_controlPoints[j] if j >= 0 and j < len(prof_controlPoints) else None), O)
             r = verb_core_Vec.norm(X)
-            Y = verb_core_Vec.cross(axis,X)
+            Y = verb_core_Vec.cross(axis, X)
             if (r > verb_core_Constants.EPSILON):
-                X = verb_core_Vec.mul((1 / r),X)
-                Y = verb_core_Vec.mul((1 / r),Y)
+                X = verb_core_Vec.mul((1 / r), X)
+                Y = verb_core_Vec.mul((1 / r), Y)
             python_internal_ArrayImpl._set((controlPoints[0] if 0 < len(controlPoints) else None), j, (prof_controlPoints[j] if j >= 0 and j < len(prof_controlPoints) else None))
             P0 = (prof_controlPoints[j] if j >= 0 and j < len(prof_controlPoints) else None)
             python_internal_ArrayImpl._set((weights[0] if 0 < len(weights) else None), j, (prof_weights[j] if j >= 0 and j < len(prof_weights) else None))
@@ -8368,40 +8733,42 @@ class verb_eval_Make:
             while (_g2 < _g3):
                 i = _g2
                 _g2 = (_g2 + 1)
-                P2 = (O if ((r == 0)) else verb_core_Vec.add(O,verb_core_Vec.add(verb_core_Vec.mul((r * (cosines[i] if i >= 0 and i < len(cosines) else None)),X),verb_core_Vec.mul((r * (sines[i] if i >= 0 and i < len(sines) else None)),Y))))
+                P2 = (O if ((r == 0)) else verb_core_Vec.add(O, verb_core_Vec.add(verb_core_Vec.mul(
+                    (r * (cosines[i] if i >= 0 and i < len(cosines) else None)), X), verb_core_Vec.mul((r * (sines[i] if i >= 0 and i < len(sines) else None)), Y))))
                 python_internal_ArrayImpl._set(python_internal_ArrayImpl._get(controlPoints, (index + 2)), j, P2)
                 python_internal_ArrayImpl._set(python_internal_ArrayImpl._get(weights, (index + 2)), j, (prof_weights[j] if j >= 0 and j < len(prof_weights) else None))
-                T2 = verb_core_Vec.sub(verb_core_Vec.mul((cosines[i] if i >= 0 and i < len(cosines) else None),Y),verb_core_Vec.mul((sines[i] if i >= 0 and i < len(sines) else None),X))
+                T2 = verb_core_Vec.sub(verb_core_Vec.mul((cosines[i] if i >= 0 and i < len(cosines) else None), Y),
+                                       verb_core_Vec.mul((sines[i] if i >= 0 and i < len(sines) else None), X))
                 if (r == 0):
                     python_internal_ArrayImpl._set(python_internal_ArrayImpl._get(controlPoints, (index + 1)), j, O)
                 else:
-                    inters = verb_eval_Intersect.rays(P0,verb_core_Vec.mul((1 / verb_core_Vec.norm(T0)),T0),P2,verb_core_Vec.mul((1 / verb_core_Vec.norm(T2)),T2))
-                    P1 = verb_core_Vec.add(P0,verb_core_Vec.mul(inters.u0,T0))
+                    inters = verb_eval_Intersect.rays(P0, verb_core_Vec.mul((1 / verb_core_Vec.norm(T0)), T0), P2, verb_core_Vec.mul((1 / verb_core_Vec.norm(T2)), T2))
+                    P1 = verb_core_Vec.add(P0, verb_core_Vec.mul(inters.u0, T0))
                     python_internal_ArrayImpl._set(python_internal_ArrayImpl._get(controlPoints, (index + 1)), j, P1)
                 python_internal_ArrayImpl._set(python_internal_ArrayImpl._get(weights, (index + 1)), j, (wm * (prof_weights[j] if j >= 0 and j < len(prof_weights) else None)))
                 index = (index + 2)
                 if (i < narcs):
                     P0 = P2
                     T0 = T2
-        return verb_core_NurbsSurfaceData(2,profile.degree,knotsU,profile.knots,verb_eval_Eval.homogenize2d(controlPoints,weights))
+        return verb_core_NurbsSurfaceData(2, profile.degree, knotsU, profile.knots, verb_eval_Eval.homogenize2d(controlPoints, weights))
 
     @staticmethod
-    def sphericalSurface(center,axis,xaxis,radius):
-        arc = verb_eval_Make.arc(center,verb_core_Vec.mul(-1.0,axis),xaxis,radius,0.0,Math.PI)
-        return verb_eval_Make.revolvedSurface(arc,center,axis,(2 * Math.PI))
+    def sphericalSurface(center, axis, xaxis, radius):
+        arc = verb_eval_Make.arc(center, verb_core_Vec.mul(-1.0, axis), xaxis, radius, 0.0, Math.PI)
+        return verb_eval_Make.revolvedSurface(arc, center, axis, (2 * Math.PI))
 
     @staticmethod
-    def conicalSurface(axis,xaxis,base,height,radius):
+    def conicalSurface(axis, xaxis, base, height, radius):
         angle = (2 * Math.PI)
         prof_degree = 1
-        prof_ctrl_pts = [verb_core_Vec.add(base,verb_core_Vec.mul(height,axis)), verb_core_Vec.add(base,verb_core_Vec.mul(radius,xaxis))]
+        prof_ctrl_pts = [verb_core_Vec.add(base, verb_core_Vec.mul(height, axis)), verb_core_Vec.add(base, verb_core_Vec.mul(radius, xaxis))]
         prof_knots = [0.0, 0.0, 1.0, 1.0]
         prof_weights = [1.0, 1.0]
-        prof = verb_core_NurbsCurveData(prof_degree,prof_knots,verb_eval_Eval.homogenize1d(prof_ctrl_pts,prof_weights))
-        return verb_eval_Make.revolvedSurface(prof,base,axis,angle)
+        prof = verb_core_NurbsCurveData(prof_degree, prof_knots, verb_eval_Eval.homogenize1d(prof_ctrl_pts, prof_weights))
+        return verb_eval_Make.revolvedSurface(prof, base, axis, angle)
 
     @staticmethod
-    def rationalInterpCurve(points,degree = None,homogeneousPoints = None,start_tangent = None,end_tangent = None):
+    def rationalInterpCurve(points, degree=None, homogeneousPoints=None, start_tangent=None, end_tangent=None):
         if (degree is None):
             degree = 3
         if (homogeneousPoints is None):
@@ -8414,7 +8781,7 @@ class verb_eval_Make:
         while (_g < _g1):
             i = _g
             _g = (_g + 1)
-            chord = verb_core_Vec.norm(verb_core_Vec.sub((points[i] if i >= 0 and i < len(points) else None),python_internal_ArrayImpl._get(points, (i - 1))))
+            chord = verb_core_Vec.norm(verb_core_Vec.sub((points[i] if i >= 0 and i < len(points) else None), python_internal_ArrayImpl._get(points, (i - 1))))
             last = python_internal_ArrayImpl._get(us, (len(us) - 1))
             us.append((last + chord))
         _hx_max = python_internal_ArrayImpl._get(us, (len(us) - 1))
@@ -8424,7 +8791,7 @@ class verb_eval_Make:
             i = _g
             _g = (_g + 1)
             python_internal_ArrayImpl._set(us, i, ((us[i] if i >= 0 and i < len(us) else None) / _hx_max))
-        knotsStart = verb_core_Vec.rep((degree + 1),0.0)
+        knotsStart = verb_core_Vec.rep((degree + 1), 0.0)
         hasTangents = ((start_tangent is not None) and ((end_tangent is not None)))
         start = (0 if hasTangents else 1)
         end = (((len(us) - degree) + 1) if hasTangents else (len(us) - degree))
@@ -8441,7 +8808,7 @@ class verb_eval_Make:
                 _g2 = (_g2 + 1)
                 weightSums = (weightSums + python_internal_ArrayImpl._get(us, (i + j)))
             knotsStart.append(((1 / degree) * weightSums))
-        knots = (knotsStart + verb_core_Vec.rep((degree + 1),1.0))
+        knots = (knotsStart + verb_core_Vec.rep((degree + 1), 1.0))
         A = []
         n = ((len(points) + 1) if hasTangents else (len(points) - 1))
         lst = (1 if hasTangents else 0)
@@ -8450,8 +8817,8 @@ class verb_eval_Make:
         while (_g < len(us)):
             u = (us[_g] if _g >= 0 and _g < len(us) else None)
             _g = (_g + 1)
-            span = verb_eval_Eval.knotSpanGivenN(n,degree,u,knots)
-            basisFuncs = verb_eval_Eval.basisFunctionsGivenKnotSpanIndex(span,u,degree,knots)
+            span = verb_eval_Eval.knotSpanGivenN(n, degree, u, knots)
+            basisFuncs = verb_eval_Eval.basisFunctionsGivenKnotSpanIndex(span, u, degree, knots)
             ls = (span - degree)
             rowstart = verb_core_Vec.zeros1d(ls)
             rowend = verb_core_Vec.zeros1d((ld - ls))
@@ -8461,8 +8828,8 @@ class verb_eval_Make:
             ln = (len((A[0] if 0 < len(A) else None)) - 2)
             tanRow0 = ([-1.0, 1.0] + verb_core_Vec.zeros1d(ln))
             tanRow1 = (verb_core_Vec.zeros1d(ln) + [-1.0, 1.0])
-            verb_core_ArrayExtensions.spliceAndInsert(A,1,0,tanRow0)
-            verb_core_ArrayExtensions.spliceAndInsert(A,(len(A) - 1),0,tanRow1)
+            verb_core_ArrayExtensions.spliceAndInsert(A, 1, 0, tanRow0)
+            verb_core_ArrayExtensions.spliceAndInsert(A, (len(A) - 1), 0, tanRow1)
         dim = len((points[0] if 0 < len(points) else None))
         xs = []
         mult1 = (((1 - python_internal_ArrayImpl._get(knots, ((len(knots) - degree) - 2)))) / degree)
@@ -8479,7 +8846,7 @@ class verb_eval_Make:
                     def _hx_local_3(x):
                         return python_internal_ArrayImpl._get(x, (i[0] if 0 < len(i) else None))
                     return _hx_local_3
-                b = list(map(_hx_local_4(i1),points))
+                b = list(map(_hx_local_4(i1), points))
             else:
                 b = [python_internal_ArrayImpl._get((points[0] if 0 < len(points) else None), (i1[0] if 0 < len(i1) else None))]
                 b.append((mult0 * python_internal_ArrayImpl._get(start_tangent, (i1[0] if 0 < len(i1) else None))))
@@ -8492,13 +8859,15 @@ class verb_eval_Make:
                 b.append((mult1 * python_internal_ArrayImpl._get(end_tangent, (i1[0] if 0 < len(i1) else None))))
                 x = python_internal_ArrayImpl._get(verb_core_ArrayExtensions.last(points), (i1[0] if 0 < len(i1) else None))
                 b.append(x)
-            x1 = verb_core_Mat.solve(A,b)
+            x1 = verb_core_Mat.solve(A, b)
             xs.append(x1)
         controlPts = verb_core_Mat.transpose(xs)
         if (not homogeneousPoints):
-            weights = verb_core_Vec.rep(len(controlPts),1.0)
-            controlPts = verb_eval_Eval.homogenize1d(controlPts,weights)
-        return verb_core_NurbsCurveData(degree,knots,controlPts)
+            weights = verb_core_Vec.rep(len(controlPts), 1.0)
+            controlPts = verb_eval_Eval.homogenize1d(controlPts, weights)
+        return verb_core_NurbsCurveData(degree, knots, controlPts)
+
+
 verb_eval_Make._hx_class = verb_eval_Make
 _hx_classes["verb.eval.Make"] = verb_eval_Make
 
@@ -8506,14 +8875,15 @@ _hx_classes["verb.eval.Make"] = verb_eval_Make
 class verb_eval_Modify:
     _hx_class_name = "verb.eval.Modify"
     __slots__ = ()
-    _hx_statics = ["curveReverse", "surfaceReverse", "knotsReverse", "unifyCurveKnotVectors", "imin", "imax", "curveElevateDegree", "rationalSurfaceTransform", "rationalCurveTransform", "surfaceKnotRefine", "decomposeCurveIntoBeziers", "curveKnotRefine", "curveKnotInsert"]
+    _hx_statics = ["curveReverse", "surfaceReverse", "knotsReverse", "unifyCurveKnotVectors", "imin", "imax", "curveElevateDegree",
+                   "rationalSurfaceTransform", "rationalCurveTransform", "surfaceKnotRefine", "decomposeCurveIntoBeziers", "curveKnotRefine", "curveKnotInsert"]
 
     @staticmethod
     def curveReverse(curve):
-        return verb_core_NurbsCurveData(curve.degree,verb_eval_Modify.knotsReverse(curve.knots),verb_core_ArrayExtensions.reversed(curve.controlPoints))
+        return verb_core_NurbsCurveData(curve.degree, verb_eval_Modify.knotsReverse(curve.knots), verb_core_ArrayExtensions.reversed(curve.controlPoints))
 
     @staticmethod
-    def surfaceReverse(surface,useV = None):
+    def surfaceReverse(surface, useV=None):
         if (useV is None):
             useV = False
         if useV:
@@ -8529,8 +8899,8 @@ class verb_eval_Modify:
                 _g1 = (_g1 + 1)
                 x = verb_core_ArrayExtensions.reversed(row)
                 _g.append(x)
-            return verb_core_NurbsSurfaceData(surface1,surface2,surface3,tmp,_g)
-        return verb_core_NurbsSurfaceData(surface.degreeU,surface.degreeV,verb_eval_Modify.knotsReverse(surface.knotsU),surface.knotsV,verb_core_ArrayExtensions.reversed(surface.controlPoints))
+            return verb_core_NurbsSurfaceData(surface1, surface2, surface3, tmp, _g)
+        return verb_core_NurbsSurfaceData(surface.degreeU, surface.degreeV, verb_eval_Modify.knotsReverse(surface.knotsU), surface.knotsV, verb_core_ArrayExtensions.reversed(surface.controlPoints))
 
     @staticmethod
     def knotsReverse(knots):
@@ -8548,23 +8918,24 @@ class verb_eval_Modify:
 
     @staticmethod
     def unifyCurveKnotVectors(curves):
-        curves = list(map(verb_eval_Make.clonedCurve,curves))
-        def _hx_local_0(x,a):
-            return verb_eval_Modify.imax(x.degree,a)
-        maxDegree = Lambda.fold(curves,_hx_local_0,0)
+        curves = list(map(verb_eval_Make.clonedCurve, curves))
+
+        def _hx_local_0(x, a):
+            return verb_eval_Modify.imax(x.degree, a)
+        maxDegree = Lambda.fold(curves, _hx_local_0, 0)
         _g = 0
         _g1 = len(curves)
         while (_g < _g1):
             i = _g
             _g = (_g + 1)
             if ((curves[i] if i >= 0 and i < len(curves) else None).degree < maxDegree):
-                python_internal_ArrayImpl._set(curves, i, verb_eval_Modify.curveElevateDegree((curves[i] if i >= 0 and i < len(curves) else None),maxDegree))
+                python_internal_ArrayImpl._set(curves, i, verb_eval_Modify.curveElevateDegree((curves[i] if i >= 0 and i < len(curves) else None), maxDegree))
         _g = []
         _g1 = 0
         while (_g1 < len(curves)):
             c = (curves[_g1] if _g1 >= 0 and _g1 < len(curves) else None)
             _g1 = (_g1 + 1)
-            x = verb_core_Interval(verb_core_ArrayExtensions.first(c.knots),verb_core_ArrayExtensions.last(c.knots))
+            x = verb_core_Interval(verb_core_ArrayExtensions.first(c.knots), verb_core_ArrayExtensions.last(c.knots))
             _g.append(x)
         knotIntervals = _g
         _g = 0
@@ -8574,23 +8945,26 @@ class verb_eval_Modify:
             _g = (_g + 1)
             _hx_min = [(knotIntervals[i] if i >= 0 and i < len(knotIntervals) else None).min]
             _this = (curves[i] if i >= 0 and i < len(curves) else None).knots
+
             def _hx_local_3(_hx_min):
                 def _hx_local_2(x):
                     return (x - (_hx_min[0] if 0 < len(_hx_min) else None))
                 return _hx_local_2
-            tmp = list(map(_hx_local_3(_hx_min),_this))
+            tmp = list(map(_hx_local_3(_hx_min), _this))
             (curves[i] if i >= 0 and i < len(curves) else None).knots = tmp
+
         def _hx_local_4(x):
             return (x.max - x.min)
-        knotSpans = list(map(_hx_local_4,knotIntervals))
-        def _hx_local_5(x,a):
+        knotSpans = list(map(_hx_local_4, knotIntervals))
+
+        def _hx_local_5(x, a):
             if python_lib_Math.isnan(x):
                 return x
             elif python_lib_Math.isnan(a):
                 return a
             else:
-                return max(x,a)
-        maxKnotSpan = Lambda.fold(knotSpans,_hx_local_5,0.0)
+                return max(x, a)
+        maxKnotSpan = Lambda.fold(knotSpans, _hx_local_5, 0.0)
         _g = 0
         _g1 = len(curves)
         while (_g < _g1):
@@ -8598,42 +8972,44 @@ class verb_eval_Modify:
             _g = (_g + 1)
             scale = [(maxKnotSpan / (knotSpans[i] if i >= 0 and i < len(knotSpans) else None))]
             _this = (curves[i] if i >= 0 and i < len(curves) else None).knots
+
             def _hx_local_7(scale):
                 def _hx_local_6(x):
                     return (x * (scale[0] if 0 < len(scale) else None))
                 return _hx_local_6
-            tmp = list(map(_hx_local_7(scale),_this))
+            tmp = list(map(_hx_local_7(scale), _this))
             (curves[i] if i >= 0 and i < len(curves) else None).knots = tmp
-        def _hx_local_8(x,a):
-            return verb_core_Vec.sortedSetUnion(x.knots,a)
-        mergedKnots = Lambda.fold(curves,_hx_local_8,[])
+
+        def _hx_local_8(x, a):
+            return verb_core_Vec.sortedSetUnion(x.knots, a)
+        mergedKnots = Lambda.fold(curves, _hx_local_8, [])
         _g = 0
         _g1 = len(curves)
         while (_g < _g1):
             i = _g
             _g = (_g + 1)
-            rem = verb_core_Vec.sortedSetSub(mergedKnots,(curves[i] if i >= 0 and i < len(curves) else None).knots)
+            rem = verb_core_Vec.sortedSetSub(mergedKnots, (curves[i] if i >= 0 and i < len(curves) else None).knots)
             if (len(rem) == 0):
                 python_internal_ArrayImpl._set(curves, i, (curves[i] if i >= 0 and i < len(curves) else None))
-            python_internal_ArrayImpl._set(curves, i, verb_eval_Modify.curveKnotRefine((curves[i] if i >= 0 and i < len(curves) else None),rem))
+            python_internal_ArrayImpl._set(curves, i, verb_eval_Modify.curveKnotRefine((curves[i] if i >= 0 and i < len(curves) else None), rem))
         return curves
 
     @staticmethod
-    def imin(a,b):
+    def imin(a, b):
         if (a < b):
             return a
         else:
             return b
 
     @staticmethod
-    def imax(a,b):
+    def imax(a, b):
         if (a > b):
             return a
         else:
             return b
 
     @staticmethod
-    def curveElevateDegree(curve,finalDegree):
+    def curveElevateDegree(curve, finalDegree):
         if (finalDegree <= curve.degree):
             return curve
         n = ((len(curve.knots) - curve.degree) - 2)
@@ -8642,7 +9018,7 @@ class verb_eval_Modify:
         controlPoints = curve.controlPoints
         degreeInc = (finalDegree - curve.degree)
         dim = len((curve.controlPoints[0] if 0 < len(curve.controlPoints) else None))
-        bezalfs = verb_core_Vec.zeros2d(((newDegree + degreeInc) + 1),(newDegree + 1))
+        bezalfs = verb_core_Vec.zeros2d(((newDegree + degreeInc) + 1), (newDegree + 1))
         bpts = []
         ebpts = []
         Nextbpts = []
@@ -8658,26 +9034,28 @@ class verb_eval_Modify:
         while (_g < _g1):
             i = _g
             _g = (_g + 1)
-            inv = (1.0 / verb_core_Binomial.get(ph,i))
-            mpi = verb_eval_Modify.imin(newDegree,i)
-            _g2 = verb_eval_Modify.imax(0,(i - degreeInc))
+            inv = (1.0 / verb_core_Binomial.get(ph, i))
+            mpi = verb_eval_Modify.imin(newDegree, i)
+            _g2 = verb_eval_Modify.imax(0, (i - degreeInc))
             _g3 = (mpi + 1)
             while (_g2 < _g3):
                 j = _g2
                 _g2 = (_g2 + 1)
-                python_internal_ArrayImpl._set((bezalfs[i] if i >= 0 and i < len(bezalfs) else None), j, ((inv * verb_core_Binomial.get(newDegree,j)) * verb_core_Binomial.get(degreeInc,(i - j))))
+                python_internal_ArrayImpl._set((bezalfs[i] if i >= 0 and i < len(bezalfs) else None), j, ((
+                    inv * verb_core_Binomial.get(newDegree, j)) * verb_core_Binomial.get(degreeInc, (i - j))))
         _g = (ph2 + 1)
         _g1 = ph
         while (_g < _g1):
             i = _g
             _g = (_g + 1)
-            mpi = verb_eval_Modify.imin(newDegree,i)
-            _g2 = verb_eval_Modify.imax(0,(i - degreeInc))
+            mpi = verb_eval_Modify.imin(newDegree, i)
+            _g2 = verb_eval_Modify.imax(0, (i - degreeInc))
             _g3 = (mpi + 1)
             while (_g2 < _g3):
                 j = _g2
                 _g2 = (_g2 + 1)
-                python_internal_ArrayImpl._set((bezalfs[i] if i >= 0 and i < len(bezalfs) else None), j, python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(bezalfs, (ph - i)), (newDegree - j)))
+                python_internal_ArrayImpl._set((bezalfs[i] if i >= 0 and i < len(bezalfs) else None), j,
+                                               python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(bezalfs, (ph - i)), (newDegree - j)))
         mh = ph
         kind = (ph + 1)
         r = -1
@@ -8725,7 +9103,8 @@ class verb_eval_Modify:
                     s = (mul + j)
                     k1 = newDegree
                     while (k1 >= s):
-                        python_internal_ArrayImpl._set(bpts, k1, verb_core_Vec.add(verb_core_Vec.mul(python_internal_ArrayImpl._get(alfs, (k1 - s)),(bpts[k1] if k1 >= 0 and k1 < len(bpts) else None)),verb_core_Vec.mul((1.0 - python_internal_ArrayImpl._get(alfs, (k1 - s))),python_internal_ArrayImpl._get(bpts, (k1 - 1)))))
+                        python_internal_ArrayImpl._set(bpts, k1, verb_core_Vec.add(verb_core_Vec.mul(python_internal_ArrayImpl._get(alfs, (k1 - s)), (bpts[k1] if k1 >= 0 and k1 < len(
+                            bpts) else None)), verb_core_Vec.mul((1.0 - python_internal_ArrayImpl._get(alfs, (k1 - s))), python_internal_ArrayImpl._get(bpts, (k1 - 1)))))
                         k1 = (k1 - 1)
                     python_internal_ArrayImpl._set(Nextbpts, save, (bpts[newDegree] if newDegree >= 0 and newDegree < len(bpts) else None))
             _g2 = lbz
@@ -8734,13 +9113,14 @@ class verb_eval_Modify:
                 i1 = _g2
                 _g2 = (_g2 + 1)
                 python_internal_ArrayImpl._set(ebpts, i1, verb_core_Vec.zeros1d(dim))
-                mpi = verb_eval_Modify.imin(newDegree,i1)
-                _g4 = verb_eval_Modify.imax(0,(i1 - degreeInc))
+                mpi = verb_eval_Modify.imin(newDegree, i1)
+                _g4 = verb_eval_Modify.imax(0, (i1 - degreeInc))
                 _g5 = (mpi + 1)
                 while (_g4 < _g5):
                     j1 = _g4
                     _g4 = (_g4 + 1)
-                    python_internal_ArrayImpl._set(ebpts, i1, verb_core_Vec.add((ebpts[i1] if i1 >= 0 and i1 < len(ebpts) else None),verb_core_Vec.mul(python_internal_ArrayImpl._get((bezalfs[i1] if i1 >= 0 and i1 < len(bezalfs) else None), j1),(bpts[j1] if j1 >= 0 and j1 < len(bpts) else None))))
+                    python_internal_ArrayImpl._set(ebpts, i1, verb_core_Vec.add((ebpts[i1] if i1 >= 0 and i1 < len(ebpts) else None), verb_core_Vec.mul(
+                        python_internal_ArrayImpl._get((bezalfs[i1] if i1 >= 0 and i1 < len(bezalfs) else None), j1), (bpts[j1] if j1 >= 0 and j1 < len(bpts) else None))))
             if (oldr > 1):
                 first = (kind - 2)
                 last = kind
@@ -8757,13 +9137,16 @@ class verb_eval_Modify:
                     while ((j2 - i2) > tr):
                         if (i2 < cind):
                             alf = (((ub - (Uh[i2] if i2 >= 0 and i2 < len(Uh) else None))) / ((ua - (Uh[i2] if i2 >= 0 and i2 < len(Uh) else None))))
-                            python_internal_ArrayImpl._set(Qw, i2, verb_core_Vec.lerp(alf,(Qw[i2] if i2 >= 0 and i2 < len(Qw) else None),python_internal_ArrayImpl._get(Qw, (i2 - 1))))
+                            python_internal_ArrayImpl._set(Qw, i2, verb_core_Vec.lerp(
+                                alf, (Qw[i2] if i2 >= 0 and i2 < len(Qw) else None), python_internal_ArrayImpl._get(Qw, (i2 - 1))))
                         if (j2 >= lbz):
                             if ((j2 - tr) <= (((kind - ph) + oldr))):
                                 gam = (((ub - python_internal_ArrayImpl._get(Uh, (j2 - tr)))) / den)
-                                python_internal_ArrayImpl._set(ebpts, kj, verb_core_Vec.lerp(gam,(ebpts[kj] if kj >= 0 and kj < len(ebpts) else None),python_internal_ArrayImpl._get(ebpts, (kj + 1))))
+                                python_internal_ArrayImpl._set(ebpts, kj, verb_core_Vec.lerp(
+                                    gam, (ebpts[kj] if kj >= 0 and kj < len(ebpts) else None), python_internal_ArrayImpl._get(ebpts, (kj + 1))))
                         else:
-                            python_internal_ArrayImpl._set(ebpts, kj, verb_core_Vec.lerp(bet,(ebpts[kj] if kj >= 0 and kj < len(ebpts) else None),python_internal_ArrayImpl._get(ebpts, (kj + 1))))
+                            python_internal_ArrayImpl._set(ebpts, kj, verb_core_Vec.lerp(
+                                bet, (ebpts[kj] if kj >= 0 and kj < len(ebpts) else None), python_internal_ArrayImpl._get(ebpts, (kj + 1))))
                         i2 = (i2 + 1)
                         j2 = (j2 - 1)
                         kj = (kj - 1)
@@ -8808,10 +9191,10 @@ class verb_eval_Modify:
                     _g16 = (_g16 + 1)
                     python_internal_ArrayImpl._set(Uh, (kind + i4), ub)
         nh = ((mh - ph) - 1)
-        return verb_core_NurbsCurveData(finalDegree,Uh,Qw)
+        return verb_core_NurbsCurveData(finalDegree, Uh, Qw)
 
     @staticmethod
-    def rationalSurfaceTransform(surface,mat):
+    def rationalSurfaceTransform(surface, mat):
         pts = verb_eval_Eval.dehomogenize2d(surface.controlPoints)
         _g = 0
         _g1 = len(pts)
@@ -8825,11 +9208,11 @@ class verb_eval_Modify:
                 _g2 = (_g2 + 1)
                 homoPt = python_internal_ArrayImpl._get((pts[i] if i >= 0 and i < len(pts) else None), j)
                 homoPt.append(1.0)
-                python_internal_ArrayImpl._set((pts[i] if i >= 0 and i < len(pts) else None), j, verb_core_Mat.dot(mat,homoPt)[0:(len(homoPt) - 1)])
-        return verb_core_NurbsSurfaceData(surface.degreeU,surface.degreeV,list(surface.knotsU),list(surface.knotsV),verb_eval_Eval.homogenize2d(pts,verb_eval_Eval.weight2d(surface.controlPoints)))
+                python_internal_ArrayImpl._set((pts[i] if i >= 0 and i < len(pts) else None), j, verb_core_Mat.dot(mat, homoPt)[0:(len(homoPt) - 1)])
+        return verb_core_NurbsSurfaceData(surface.degreeU, surface.degreeV, list(surface.knotsU), list(surface.knotsV), verb_eval_Eval.homogenize2d(pts, verb_eval_Eval.weight2d(surface.controlPoints)))
 
     @staticmethod
-    def rationalCurveTransform(curve,mat):
+    def rationalCurveTransform(curve, mat):
         pts = verb_eval_Eval.dehomogenize1d(curve.controlPoints)
         _g = 0
         _g1 = len(pts)
@@ -8838,11 +9221,11 @@ class verb_eval_Modify:
             _g = (_g + 1)
             homoPt = (pts[i] if i >= 0 and i < len(pts) else None)
             homoPt.append(1.0)
-            python_internal_ArrayImpl._set(pts, i, verb_core_Mat.dot(mat,homoPt)[0:(len(homoPt) - 1)])
-        return verb_core_NurbsCurveData(curve.degree,list(curve.knots),verb_eval_Eval.homogenize1d(pts,verb_eval_Eval.weight1d(curve.controlPoints)))
+            python_internal_ArrayImpl._set(pts, i, verb_core_Mat.dot(mat, homoPt)[0:(len(homoPt) - 1)])
+        return verb_core_NurbsCurveData(curve.degree, list(curve.knots), verb_eval_Eval.homogenize1d(pts, verb_eval_Eval.weight1d(curve.controlPoints)))
 
     @staticmethod
-    def surfaceKnotRefine(surface,knotsToInsert,useV):
+    def surfaceKnotRefine(surface, knotsToInsert, useV):
         newPts = []
         knots = None
         degree = None
@@ -8860,15 +9243,15 @@ class verb_eval_Modify:
         while (_g < len(ctrlPts)):
             cptrow = (ctrlPts[_g] if _g >= 0 and _g < len(ctrlPts) else None)
             _g = (_g + 1)
-            c = verb_eval_Modify.curveKnotRefine(verb_core_NurbsCurveData(degree,knots,cptrow),knotsToInsert)
+            c = verb_eval_Modify.curveKnotRefine(verb_core_NurbsCurveData(degree, knots, cptrow), knotsToInsert)
             x = c.controlPoints
             newPts.append(x)
         newknots = c.knots
         if (not useV):
             newPts = verb_core_Mat.transpose(newPts)
-            return verb_core_NurbsSurfaceData(surface.degreeU,surface.degreeV,newknots,list(surface.knotsV),newPts)
+            return verb_core_NurbsSurfaceData(surface.degreeU, surface.degreeV, newknots, list(surface.knotsV), newPts)
         else:
-            return verb_core_NurbsSurfaceData(surface.degreeU,surface.degreeV,list(surface.knotsU),newknots,newPts)
+            return verb_core_NurbsSurfaceData(surface.degreeU, surface.degreeV, list(surface.knotsU), newknots, newPts)
 
     @staticmethod
     def decomposeCurveIntoBeziers(curve):
@@ -8882,8 +9265,8 @@ class verb_eval_Modify:
             knotmult = (knotmults[_g] if _g >= 0 and _g < len(knotmults) else None)
             _g = (_g + 1)
             if (knotmult.mult < reqMult):
-                knotsInsert = verb_core_Vec.rep((reqMult - knotmult.mult),knotmult.knot)
-                res = verb_eval_Modify.curveKnotRefine(verb_core_NurbsCurveData(degree,knots,controlPoints),knotsInsert)
+                knotsInsert = verb_core_Vec.rep((reqMult - knotmult.mult), knotmult.knot)
+                res = verb_eval_Modify.curveKnotRefine(verb_core_NurbsCurveData(degree, knots, controlPoints), knotsInsert)
                 knots = res.knots
                 controlPoints = res.controlPoints
         numCrvs = ((len(knots) / reqMult) - 1)
@@ -8893,13 +9276,13 @@ class verb_eval_Modify:
         while (i < len(controlPoints)):
             kts = knots[i:(i + crvKnotLength)]
             pts = controlPoints[i:(i + reqMult)]
-            x = verb_core_NurbsCurveData(degree,kts,pts)
+            x = verb_core_NurbsCurveData(degree, kts, pts)
             crvs.append(x)
             i = (i + reqMult)
         return crvs
 
     @staticmethod
-    def curveKnotRefine(curve,knotsToInsert):
+    def curveKnotRefine(curve, knotsToInsert):
         if (len(knotsToInsert) == 0):
             return verb_eval_Make.clonedCurve(curve)
         degree = curve.degree
@@ -8908,8 +9291,8 @@ class verb_eval_Modify:
         n = (len(controlPoints) - 1)
         m = ((n + degree) + 1)
         r = (len(knotsToInsert) - 1)
-        a = verb_eval_Eval.knotSpan(degree,(knotsToInsert[0] if 0 < len(knotsToInsert) else None),knots)
-        b = verb_eval_Eval.knotSpan(degree,(knotsToInsert[r] if r >= 0 and r < len(knotsToInsert) else None),knots)
+        a = verb_eval_Eval.knotSpan(degree, (knotsToInsert[0] if 0 < len(knotsToInsert) else None), knots)
+        b = verb_eval_Eval.knotSpan(degree, (knotsToInsert[r] if r >= 0 and r < len(knotsToInsert) else None), knots)
         controlPoints_post = list()
         knots_post = list()
         _g = 0
@@ -8953,24 +9336,25 @@ class verb_eval_Modify:
                 _g = (_g + 1)
                 ind = ((k - degree) + l)
                 alfa = (python_internal_ArrayImpl._get(knots_post, (k + l)) - (knotsToInsert[j] if j >= 0 and j < len(knotsToInsert) else None))
-                if (Reflect.field(Math,"fabs")(alfa) < verb_core_Constants.EPSILON):
+                if (Reflect.field(Math, "fabs")(alfa) < verb_core_Constants.EPSILON):
                     python_internal_ArrayImpl._set(controlPoints_post, (ind - 1), (controlPoints_post[ind] if ind >= 0 and ind < len(controlPoints_post) else None))
                 else:
                     alfa = (alfa / ((python_internal_ArrayImpl._get(knots_post, (k + l)) - python_internal_ArrayImpl._get(knots, ((i - degree) + l)))))
-                    python_internal_ArrayImpl._set(controlPoints_post, (ind - 1), verb_core_Vec.add(verb_core_Vec.mul(alfa,python_internal_ArrayImpl._get(controlPoints_post, (ind - 1))),verb_core_Vec.mul((1.0 - alfa),(controlPoints_post[ind] if ind >= 0 and ind < len(controlPoints_post) else None))))
+                    python_internal_ArrayImpl._set(controlPoints_post, (ind - 1), verb_core_Vec.add(verb_core_Vec.mul(alfa, python_internal_ArrayImpl._get(
+                        controlPoints_post, (ind - 1))), verb_core_Vec.mul((1.0 - alfa), (controlPoints_post[ind] if ind >= 0 and ind < len(controlPoints_post) else None))))
             python_internal_ArrayImpl._set(knots_post, k, (knotsToInsert[j] if j >= 0 and j < len(knotsToInsert) else None))
             k = (k - 1)
             j = (j - 1)
-        return verb_core_NurbsCurveData(degree,knots_post,controlPoints_post)
+        return verb_core_NurbsCurveData(degree, knots_post, controlPoints_post)
 
     @staticmethod
-    def curveKnotInsert(curve,u,r):
+    def curveKnotInsert(curve, u, r):
         degree = curve.degree
         controlPoints = curve.controlPoints
         knots = curve.knots
         s = 0
         num_pts = len(controlPoints)
-        k = verb_eval_Eval.knotSpan(degree,u,knots)
+        k = verb_eval_Eval.knotSpan(degree, u, knots)
         num_pts_post = (num_pts + r)
         controlPoints_temp = list()
         knots_post = list()
@@ -9026,7 +9410,8 @@ class verb_eval_Modify:
                 i = _g2
                 _g2 = (_g2 + 1)
                 alpha = (((u - python_internal_ArrayImpl._get(knots, (L + i)))) / ((python_internal_ArrayImpl._get(knots, ((i + k) + 1)) - python_internal_ArrayImpl._get(knots, (L + i)))))
-                python_internal_ArrayImpl._set(controlPoints_temp, i, verb_core_Vec.add(verb_core_Vec.mul(alpha,python_internal_ArrayImpl._get(controlPoints_temp, (i + 1))),verb_core_Vec.mul((1.0 - alpha),(controlPoints_temp[i] if i >= 0 and i < len(controlPoints_temp) else None))))
+                python_internal_ArrayImpl._set(controlPoints_temp, i, verb_core_Vec.add(verb_core_Vec.mul(alpha, python_internal_ArrayImpl._get(
+                    controlPoints_temp, (i + 1))), verb_core_Vec.mul((1.0 - alpha), (controlPoints_temp[i] if i >= 0 and i < len(controlPoints_temp) else None))))
             python_internal_ArrayImpl._set(controlPoints_post, L, (controlPoints_temp[0] if 0 < len(controlPoints_temp) else None))
             python_internal_ArrayImpl._set(controlPoints_post, (((k + r) - j) - s), python_internal_ArrayImpl._get(controlPoints_temp, ((degree - j) - s)))
         _g = (L + 1)
@@ -9035,7 +9420,9 @@ class verb_eval_Modify:
             i = _g
             _g = (_g + 1)
             python_internal_ArrayImpl._set(controlPoints_post, i, python_internal_ArrayImpl._get(controlPoints_temp, (i - L)))
-        return verb_core_NurbsCurveData(degree,knots_post,controlPoints_post)
+        return verb_core_NurbsCurveData(degree, knots_post, controlPoints_post)
+
+
 verb_eval_Modify._hx_class = verb_eval_Modify
 _hx_classes["verb.eval.Modify"] = verb_eval_Modify
 
@@ -9043,14 +9430,15 @@ _hx_classes["verb.eval.Modify"] = verb_eval_Modify
 class verb_eval_Tess:
     _hx_class_name = "verb.eval.Tess"
     __slots__ = ()
-    _hx_statics = ["rationalCurveRegularSample", "rationalCurveRegularSampleRange", "rationalCurveAdaptiveSample", "rationalCurveAdaptiveSampleRange", "rationalSurfaceNaive", "divideRationalSurfaceAdaptive", "north", "south", "east", "west", "triangulateAdaptiveRefinementNodeTree", "rationalSurfaceAdaptive"]
+    _hx_statics = ["rationalCurveRegularSample", "rationalCurveRegularSampleRange", "rationalCurveAdaptiveSample", "rationalCurveAdaptiveSampleRange",
+                   "rationalSurfaceNaive", "divideRationalSurfaceAdaptive", "north", "south", "east", "west", "triangulateAdaptiveRefinementNodeTree", "rationalSurfaceAdaptive"]
 
     @staticmethod
-    def rationalCurveRegularSample(curve,numSamples,includeU):
-        return verb_eval_Tess.rationalCurveRegularSampleRange(curve,(curve.knots[0] if 0 < len(curve.knots) else None),verb_core_ArrayExtensions.last(curve.knots),numSamples,includeU)
+    def rationalCurveRegularSample(curve, numSamples, includeU):
+        return verb_eval_Tess.rationalCurveRegularSampleRange(curve, (curve.knots[0] if 0 < len(curve.knots) else None), verb_core_ArrayExtensions.last(curve.knots), numSamples, includeU)
 
     @staticmethod
-    def rationalCurveRegularSampleRange(curve,start,end,numSamples,includeU):
+    def rationalCurveRegularSampleRange(curve, start, end, numSamples, includeU):
         if (numSamples < 1):
             numSamples = 2
         p = []
@@ -9063,22 +9451,22 @@ class verb_eval_Tess:
             _g = (_g + 1)
             u = (start + ((span * i)))
             if includeU:
-                x = ([u] + verb_eval_Eval.rationalCurvePoint(curve,u))
+                x = ([u] + verb_eval_Eval.rationalCurvePoint(curve, u))
                 p.append(x)
             else:
-                x1 = verb_eval_Eval.rationalCurvePoint(curve,u)
+                x1 = verb_eval_Eval.rationalCurvePoint(curve, u)
                 p.append(x1)
         return p
 
     @staticmethod
-    def rationalCurveAdaptiveSample(curve,tol = None,includeU = None):
+    def rationalCurveAdaptiveSample(curve, tol=None, includeU=None):
         if (tol is None):
             tol = 1e-6
         if (includeU is None):
             includeU = False
         if (curve.degree == 1):
             if (not includeU):
-                return list(map(verb_eval_Eval.dehomogenize,curve.controlPoints))
+                return list(map(verb_eval_Eval.dehomogenize, curve.controlPoints))
             else:
                 _g = []
                 _g1 = 0
@@ -9089,21 +9477,21 @@ class verb_eval_Tess:
                     x = ([python_internal_ArrayImpl._get(curve.knots, (i + 1))] + verb_eval_Eval.dehomogenize((curve.controlPoints[i] if i >= 0 and i < len(curve.controlPoints) else None)))
                     _g.append(x)
                 return _g
-        return verb_eval_Tess.rationalCurveAdaptiveSampleRange(curve,(curve.knots[0] if 0 < len(curve.knots) else None),verb_core_ArrayExtensions.last(curve.knots),tol,includeU)
+        return verb_eval_Tess.rationalCurveAdaptiveSampleRange(curve, (curve.knots[0] if 0 < len(curve.knots) else None), verb_core_ArrayExtensions.last(curve.knots), tol, includeU)
 
     @staticmethod
-    def rationalCurveAdaptiveSampleRange(curve,start,end,tol,includeU):
-        p1 = verb_eval_Eval.rationalCurvePoint(curve,start)
-        p3 = verb_eval_Eval.rationalCurvePoint(curve,end)
+    def rationalCurveAdaptiveSampleRange(curve, start, end, tol, includeU):
+        p1 = verb_eval_Eval.rationalCurvePoint(curve, start)
+        p3 = verb_eval_Eval.rationalCurvePoint(curve, end)
         t = (0.5 + ((0.2 * python_lib_Random.random())))
         mid = (start + ((((end - start)) * t)))
-        p2 = verb_eval_Eval.rationalCurvePoint(curve,mid)
-        diff = verb_core_Vec.sub(p1,p3)
-        diff2 = verb_core_Vec.sub(p1,p2)
-        if (((verb_core_Vec.dot(diff,diff) < tol) and ((verb_core_Vec.dot(diff2,diff2) > tol))) or (not verb_core_Trig.threePointsAreFlat(p1,p2,p3,tol))):
+        p2 = verb_eval_Eval.rationalCurvePoint(curve, mid)
+        diff = verb_core_Vec.sub(p1, p3)
+        diff2 = verb_core_Vec.sub(p1, p2)
+        if (((verb_core_Vec.dot(diff, diff) < tol) and ((verb_core_Vec.dot(diff2, diff2) > tol))) or (not verb_core_Trig.threePointsAreFlat(p1, p2, p3, tol))):
             exact_mid = (start + ((((end - start)) * 0.5)))
-            left_pts = verb_eval_Tess.rationalCurveAdaptiveSampleRange(curve,start,exact_mid,tol,includeU)
-            right_pts = verb_eval_Tess.rationalCurveAdaptiveSampleRange(curve,exact_mid,end,tol,includeU)
+            left_pts = verb_eval_Tess.rationalCurveAdaptiveSampleRange(curve, start, exact_mid, tol, includeU)
+            right_pts = verb_eval_Tess.rationalCurveAdaptiveSampleRange(curve, exact_mid, end, tol, includeU)
             return (left_pts[0:-1] + right_pts)
         elif includeU:
             return [([start] + p1), ([end] + p3)]
@@ -9111,7 +9499,7 @@ class verb_eval_Tess:
             return [p1, p3]
 
     @staticmethod
-    def rationalSurfaceNaive(surface,divs_u,divs_v):
+    def rationalSurfaceNaive(surface, divs_u, divs_v):
         if (divs_u < 1):
             divs_u = 1
         if (divs_v < 1):
@@ -9141,10 +9529,11 @@ class verb_eval_Tess:
                 pt_u = (i * span_u)
                 pt_v = (j * span_v)
                 uvs.append([pt_u, pt_v])
-                derivs = verb_eval_Eval.rationalSurfaceDerivatives(surface,pt_u,pt_v,1)
+                derivs = verb_eval_Eval.rationalSurfaceDerivatives(surface, pt_u, pt_v, 1)
                 pt = python_internal_ArrayImpl._get((derivs[0] if 0 < len(derivs) else None), 0)
                 points.append(pt)
-                normal = verb_core_Vec.normalized(verb_core_Vec.cross(python_internal_ArrayImpl._get((derivs[1] if 1 < len(derivs) else None), 0),python_internal_ArrayImpl._get((derivs[0] if 0 < len(derivs) else None), 1)))
+                normal = verb_core_Vec.normalized(verb_core_Vec.cross(python_internal_ArrayImpl._get(
+                    (derivs[1] if 1 < len(derivs) else None), 0), python_internal_ArrayImpl._get((derivs[0] if 0 < len(derivs) else None), 1)))
                 normals.append(normal)
         faces = []
         _g = 0
@@ -9165,10 +9554,10 @@ class verb_eval_Tess:
                 acd = [a_i, c_i, d_i]
                 faces.append(abc)
                 faces.append(acd)
-        return verb_core_MeshData(faces,points,normals,uvs)
+        return verb_core_MeshData(faces, points, normals, uvs)
 
     @staticmethod
-    def divideRationalSurfaceAdaptive(surface,options = None):
+    def divideRationalSurfaceAdaptive(surface, options=None):
         if (options is None):
             options = verb_eval_AdaptiveRefinementOptions()
         options.minDivsU = (options.minDivsU if ((options.minDivsU is not None)) else 1)
@@ -9176,10 +9565,12 @@ class verb_eval_Tess:
         options.refine = (options.refine if ((options.refine is not None)) else True)
         minU = (((len(surface.controlPoints) - 1)) * 2)
         minV = (((len((surface.controlPoints[0] if 0 < len(surface.controlPoints) else None)) - 1)) * 2)
+
         def _hx_local_0():
             options.minDivsU = (options.minDivsU if ((options.minDivsU > minU)) else minU)
             return options.minDivsU
         divsU = _hx_local_0()
+
         def _hx_local_1():
             options.minDivsV = (options.minDivsV if ((options.minDivsV > minV)) else minV)
             return options.minDivsV
@@ -9205,9 +9596,10 @@ class verb_eval_Tess:
                 _g2 = (_g2 + 1)
                 u = (umin + ((du * j)))
                 v = (vmin + ((dv * i)))
-                ds = verb_eval_Eval.rationalSurfaceDerivatives(surface,u,v,1)
-                norm = verb_core_Vec.normalized(verb_core_Vec.cross(python_internal_ArrayImpl._get((ds[0] if 0 < len(ds) else None), 1),python_internal_ArrayImpl._get((ds[1] if 1 < len(ds) else None), 0)))
-                x = verb_core_SurfacePoint(python_internal_ArrayImpl._get((ds[0] if 0 < len(ds) else None), 0),norm,[u, v],-1,verb_core_Vec.isZero(norm))
+                ds = verb_eval_Eval.rationalSurfaceDerivatives(surface, u, v, 1)
+                norm = verb_core_Vec.normalized(verb_core_Vec.cross(python_internal_ArrayImpl._get(
+                    (ds[0] if 0 < len(ds) else None), 1), python_internal_ArrayImpl._get((ds[1] if 1 < len(ds) else None), 0)))
+                x = verb_core_SurfacePoint(python_internal_ArrayImpl._get((ds[0] if 0 < len(ds) else None), 0), norm, [u, v], -1, verb_core_Vec.isZero(norm))
                 ptrow.append(x)
             pts.append(ptrow)
         _g = 0
@@ -9220,8 +9612,9 @@ class verb_eval_Tess:
             while (_g2 < _g3):
                 j = _g2
                 _g2 = (_g2 + 1)
-                corners = [python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(pts, ((divsV - i) - 1)), j), python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(pts, ((divsV - i) - 1)), (j + 1)), python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(pts, (divsV - i)), (j + 1)), python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(pts, (divsV - i)), j)]
-                x = verb_eval_AdaptiveRefinementNode(surface,corners)
+                corners = [python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(pts, ((divsV - i) - 1)), j), python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(pts, ((divsV - i) - 1)), (
+                    j + 1)), python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(pts, (divsV - i)), (j + 1)), python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(pts, (divsV - i)), j)]
+                x = verb_eval_AdaptiveRefinementNode(surface, corners)
                 divs.append(x)
         if (not options.refine):
             return divs
@@ -9236,34 +9629,34 @@ class verb_eval_Tess:
                 j = _g2
                 _g2 = (_g2 + 1)
                 ci = ((i * divsU) + j)
-                n = verb_eval_Tess.north(ci,i,j,divsU,divsV,divs)
-                e = verb_eval_Tess.east(ci,i,j,divsU,divsV,divs)
-                s = verb_eval_Tess.south(ci,i,j,divsU,divsV,divs)
-                w = verb_eval_Tess.west(ci,i,j,divsU,divsV,divs)
+                n = verb_eval_Tess.north(ci, i, j, divsU, divsV, divs)
+                e = verb_eval_Tess.east(ci, i, j, divsU, divsV, divs)
+                s = verb_eval_Tess.south(ci, i, j, divsU, divsV, divs)
+                w = verb_eval_Tess.west(ci, i, j, divsU, divsV, divs)
                 (divs[ci] if ci >= 0 and ci < len(divs) else None).neighbors = [s, e, n, w]
                 (divs[ci] if ci >= 0 and ci < len(divs) else None).divide(options)
         return divs
 
     @staticmethod
-    def north(index,i,j,divsU,divsV,divs):
+    def north(index, i, j, divsU, divsV, divs):
         if (i == 0):
             return None
         return python_internal_ArrayImpl._get(divs, (index - divsU))
 
     @staticmethod
-    def south(index,i,j,divsU,divsV,divs):
+    def south(index, i, j, divsU, divsV, divs):
         if (i == ((divsV - 1))):
             return None
         return python_internal_ArrayImpl._get(divs, (index + divsU))
 
     @staticmethod
-    def east(index,i,j,divsU,divsV,divs):
+    def east(index, i, j, divsU, divsV, divs):
         if (j == ((divsU - 1))):
             return None
         return python_internal_ArrayImpl._get(divs, (index + 1))
 
     @staticmethod
-    def west(index,i,j,divsU,divsV,divs):
+    def west(index, i, j, divsU, divsV, divs):
         if (j == 0):
             return None
         return python_internal_ArrayImpl._get(divs, (index - 1))
@@ -9279,11 +9672,13 @@ class verb_eval_Tess:
         return mesh
 
     @staticmethod
-    def rationalSurfaceAdaptive(surface,options = None):
+    def rationalSurfaceAdaptive(surface, options=None):
         if (options is None):
             options = verb_eval_AdaptiveRefinementOptions()
-        arrTrees = verb_eval_Tess.divideRationalSurfaceAdaptive(surface,options)
+        arrTrees = verb_eval_Tess.divideRationalSurfaceAdaptive(surface, options)
         return verb_eval_Tess.triangulateAdaptiveRefinementNodeTree(arrTrees)
+
+
 verb_eval_Tess._hx_class = verb_eval_Tess
 _hx_classes["verb.eval.Tess"] = verb_eval_Tess
 
@@ -9309,6 +9704,8 @@ class verb_eval_AdaptiveRefinementOptions:
         _hx_o.refine = None
         _hx_o.minDivsU = None
         _hx_o.minDivsV = None
+
+
 verb_eval_AdaptiveRefinementOptions._hx_class = verb_eval_AdaptiveRefinementOptions
 _hx_classes["verb.eval.AdaptiveRefinementOptions"] = verb_eval_AdaptiveRefinementOptions
 
@@ -9317,9 +9714,10 @@ class verb_eval_AdaptiveRefinementNode:
     _hx_class_name = "verb.eval.AdaptiveRefinementNode"
     __slots__ = ("srf", "neighbors", "children", "corners", "midPoints", "centerPoint", "splitVert", "splitHoriz", "horizontal", "u05", "v05")
     _hx_fields = ["srf", "neighbors", "children", "corners", "midPoints", "centerPoint", "splitVert", "splitHoriz", "horizontal", "u05", "v05"]
-    _hx_methods = ["isLeaf", "center", "evalCorners", "evalSrf", "getEdgeCorners", "getAllCorners", "midpoint", "hasBadNormals", "fixNormals", "shouldDivide", "divide", "_divide", "triangulate", "triangulateLeaf"]
+    _hx_methods = ["isLeaf", "center", "evalCorners", "evalSrf", "getEdgeCorners", "getAllCorners", "midpoint",
+                   "hasBadNormals", "fixNormals", "shouldDivide", "divide", "_divide", "triangulate", "triangulateLeaf"]
 
-    def __init__(self,srf,corners,neighbors = None):
+    def __init__(self, srf, corners, neighbors=None):
         self.v05 = None
         self.u05 = None
         self.horizontal = None
@@ -9336,7 +9734,8 @@ class verb_eval_AdaptiveRefinementNode:
             u1 = verb_core_ArrayExtensions.last(srf.knotsU)
             v0 = (srf.knotsV[0] if 0 < len(srf.knotsV) else None)
             v1 = verb_core_ArrayExtensions.last(srf.knotsV)
-            self.corners = [verb_core_SurfacePoint.fromUv(u0,v0), verb_core_SurfacePoint.fromUv(u1,v0), verb_core_SurfacePoint.fromUv(u1,v1), verb_core_SurfacePoint.fromUv(u0,v1)]
+            self.corners = [verb_core_SurfacePoint.fromUv(u0, v0), verb_core_SurfacePoint.fromUv(
+                u1, v0), verb_core_SurfacePoint.fromUv(u1, v1), verb_core_SurfacePoint.fromUv(u0, v1)]
 
     def isLeaf(self):
         return (self.children is None)
@@ -9345,28 +9744,31 @@ class verb_eval_AdaptiveRefinementNode:
         if (self.centerPoint is not None):
             return self.centerPoint
         else:
-            return self.evalSrf(self.u05,self.v05)
+            return self.evalSrf(self.u05, self.v05)
 
     def evalCorners(self):
-        self.u05 = (((python_internal_ArrayImpl._get((self.corners[0] if 0 < len(self.corners) else None).uv, 0) + python_internal_ArrayImpl._get((self.corners[2] if 2 < len(self.corners) else None).uv, 0))) / 2)
-        self.v05 = (((python_internal_ArrayImpl._get((self.corners[0] if 0 < len(self.corners) else None).uv, 1) + python_internal_ArrayImpl._get((self.corners[2] if 2 < len(self.corners) else None).uv, 1))) / 2)
+        self.u05 = (((python_internal_ArrayImpl._get((self.corners[0] if 0 < len(self.corners) else None).uv, 0) +
+                      python_internal_ArrayImpl._get((self.corners[2] if 2 < len(self.corners) else None).uv, 0))) / 2)
+        self.v05 = (((python_internal_ArrayImpl._get((self.corners[0] if 0 < len(self.corners) else None).uv, 1) +
+                      python_internal_ArrayImpl._get((self.corners[2] if 2 < len(self.corners) else None).uv, 1))) / 2)
         if ((self.corners[0] if 0 < len(self.corners) else None).point is None):
             c = (self.corners[0] if 0 < len(self.corners) else None)
-            self.evalSrf((c.uv[0] if 0 < len(c.uv) else None),(c.uv[1] if 1 < len(c.uv) else None),c)
+            self.evalSrf((c.uv[0] if 0 < len(c.uv) else None), (c.uv[1] if 1 < len(c.uv) else None), c)
         if ((self.corners[1] if 1 < len(self.corners) else None).point is None):
             c = (self.corners[1] if 1 < len(self.corners) else None)
-            self.evalSrf((c.uv[0] if 0 < len(c.uv) else None),(c.uv[1] if 1 < len(c.uv) else None),c)
+            self.evalSrf((c.uv[0] if 0 < len(c.uv) else None), (c.uv[1] if 1 < len(c.uv) else None), c)
         if ((self.corners[2] if 2 < len(self.corners) else None).point is None):
             c = (self.corners[2] if 2 < len(self.corners) else None)
-            self.evalSrf((c.uv[0] if 0 < len(c.uv) else None),(c.uv[1] if 1 < len(c.uv) else None),c)
+            self.evalSrf((c.uv[0] if 0 < len(c.uv) else None), (c.uv[1] if 1 < len(c.uv) else None), c)
         if ((self.corners[3] if 3 < len(self.corners) else None).point is None):
             c = (self.corners[3] if 3 < len(self.corners) else None)
-            self.evalSrf((c.uv[0] if 0 < len(c.uv) else None),(c.uv[1] if 1 < len(c.uv) else None),c)
+            self.evalSrf((c.uv[0] if 0 < len(c.uv) else None), (c.uv[1] if 1 < len(c.uv) else None), c)
 
-    def evalSrf(self,u,v,srfPt = None):
-        derivs = verb_eval_Eval.rationalSurfaceDerivatives(self.srf,u,v,1)
+    def evalSrf(self, u, v, srfPt=None):
+        derivs = verb_eval_Eval.rationalSurfaceDerivatives(self.srf, u, v, 1)
         pt = python_internal_ArrayImpl._get((derivs[0] if 0 < len(derivs) else None), 0)
-        norm = verb_core_Vec.cross(python_internal_ArrayImpl._get((derivs[0] if 0 < len(derivs) else None), 1),python_internal_ArrayImpl._get((derivs[1] if 1 < len(derivs) else None), 0))
+        norm = verb_core_Vec.cross(python_internal_ArrayImpl._get((derivs[0] if 0 < len(derivs) else None), 1),
+                                   python_internal_ArrayImpl._get((derivs[1] if 1 < len(derivs) else None), 0))
         degen = verb_core_Vec.isZero(norm)
         if (not degen):
             norm = verb_core_Vec.normalized(norm)
@@ -9376,9 +9778,9 @@ class verb_eval_AdaptiveRefinementNode:
             srfPt.normal = norm
             return srfPt
         else:
-            return verb_core_SurfacePoint(pt,norm,[u, v],-1,degen)
+            return verb_core_SurfacePoint(pt, norm, [u, v], -1, degen)
 
-    def getEdgeCorners(self,edgeIndex):
+    def getEdgeCorners(self, edgeIndex):
         if self.isLeaf():
             return [(self.corners[edgeIndex] if edgeIndex >= 0 and edgeIndex < len(self.corners) else None)]
         if self.horizontal:
@@ -9406,7 +9808,7 @@ class verb_eval_AdaptiveRefinementNode:
             pass
         return None
 
-    def getAllCorners(self,edgeIndex):
+    def getAllCorners(self, edgeIndex):
         baseArr = [(self.corners[edgeIndex] if edgeIndex >= 0 and edgeIndex < len(self.corners) else None)]
         if ((self.neighbors[edgeIndex] if edgeIndex >= 0 and edgeIndex < len(self.neighbors) else None) is None):
             return baseArr
@@ -9414,35 +9816,37 @@ class verb_eval_AdaptiveRefinementNode:
         funcIndex = HxOverrides.mod(edgeIndex, 2)
         e = verb_core_Constants.EPSILON
         that = self
+
         def _hx_local_0(c):
             if ((c.uv[0] if 0 < len(c.uv) else None) > ((python_internal_ArrayImpl._get((that.corners[0] if 0 < len(that.corners) else None).uv, 0) + e))):
                 return ((c.uv[0] if 0 < len(c.uv) else None) < ((python_internal_ArrayImpl._get((that.corners[2] if 2 < len(that.corners) else None).uv, 0) - e)))
             else:
                 return False
+
         def _hx_local_1(c):
             if ((c.uv[1] if 1 < len(c.uv) else None) > ((python_internal_ArrayImpl._get((that.corners[0] if 0 < len(that.corners) else None).uv, 1) + e))):
                 return ((c.uv[1] if 1 < len(c.uv) else None) < ((python_internal_ArrayImpl._get((that.corners[2] if 2 < len(that.corners) else None).uv, 1) - e)))
             else:
                 return False
         rangeFuncMap = [_hx_local_0, _hx_local_1]
-        cornercopy = list(filter((rangeFuncMap[funcIndex] if funcIndex >= 0 and funcIndex < len(rangeFuncMap) else None),corners))
+        cornercopy = list(filter((rangeFuncMap[funcIndex] if funcIndex >= 0 and funcIndex < len(rangeFuncMap) else None), corners))
         cornercopy.reverse()
         return (baseArr + cornercopy)
 
-    def midpoint(self,index):
+    def midpoint(self, index):
         if (self.midPoints is None):
             self.midPoints = [None, None, None, None]
         if ((self.midPoints[index] if index >= 0 and index < len(self.midPoints) else None) is not None):
             return (self.midPoints[index] if index >= 0 and index < len(self.midPoints) else None)
         index1 = index
         if (index1 == 0):
-            python_internal_ArrayImpl._set(self.midPoints, 0, self.evalSrf(self.u05,python_internal_ArrayImpl._get((self.corners[0] if 0 < len(self.corners) else None).uv, 1)))
+            python_internal_ArrayImpl._set(self.midPoints, 0, self.evalSrf(self.u05, python_internal_ArrayImpl._get((self.corners[0] if 0 < len(self.corners) else None).uv, 1)))
         elif (index1 == 1):
-            python_internal_ArrayImpl._set(self.midPoints, 1, self.evalSrf(python_internal_ArrayImpl._get((self.corners[1] if 1 < len(self.corners) else None).uv, 0),self.v05))
+            python_internal_ArrayImpl._set(self.midPoints, 1, self.evalSrf(python_internal_ArrayImpl._get((self.corners[1] if 1 < len(self.corners) else None).uv, 0), self.v05))
         elif (index1 == 2):
-            python_internal_ArrayImpl._set(self.midPoints, 2, self.evalSrf(self.u05,python_internal_ArrayImpl._get((self.corners[2] if 2 < len(self.corners) else None).uv, 1)))
+            python_internal_ArrayImpl._set(self.midPoints, 2, self.evalSrf(self.u05, python_internal_ArrayImpl._get((self.corners[2] if 2 < len(self.corners) else None).uv, 1)))
         elif (index1 == 3):
-            python_internal_ArrayImpl._set(self.midPoints, 3, self.evalSrf(python_internal_ArrayImpl._get((self.corners[0] if 0 < len(self.corners) else None).uv, 0),self.v05))
+            python_internal_ArrayImpl._set(self.midPoints, 3, self.evalSrf(python_internal_ArrayImpl._get((self.corners[0] if 0 < len(self.corners) else None).uv, 0), self.v05))
         else:
             pass
         return (self.midPoints[index] if index >= 0 and index < len(self.midPoints) else None)
@@ -9466,7 +9870,7 @@ class verb_eval_AdaptiveRefinementNode:
                 v2 = python_internal_ArrayImpl._get(self.corners, HxOverrides.mod(((i + 3)), l))
                 (self.corners[i] if i >= 0 and i < len(self.corners) else None).normal = (v2.normal if (v1.degen) else v1.normal)
 
-    def shouldDivide(self,options,currentDepth):
+    def shouldDivide(self, options, currentDepth):
         if (currentDepth < options.minDepth):
             return True
         if (currentDepth >= options.maxDepth):
@@ -9474,17 +9878,19 @@ class verb_eval_AdaptiveRefinementNode:
         if self.hasBadNormals():
             self.fixNormals()
             return False
-        self.splitVert = ((verb_core_Vec.normSquared(verb_core_Vec.sub((self.corners[0] if 0 < len(self.corners) else None).normal,(self.corners[1] if 1 < len(self.corners) else None).normal)) > options.normTol) or ((verb_core_Vec.normSquared(verb_core_Vec.sub((self.corners[2] if 2 < len(self.corners) else None).normal,(self.corners[3] if 3 < len(self.corners) else None).normal)) > options.normTol)))
-        self.splitHoriz = ((verb_core_Vec.normSquared(verb_core_Vec.sub((self.corners[1] if 1 < len(self.corners) else None).normal,(self.corners[2] if 2 < len(self.corners) else None).normal)) > options.normTol) or ((verb_core_Vec.normSquared(verb_core_Vec.sub((self.corners[3] if 3 < len(self.corners) else None).normal,(self.corners[0] if 0 < len(self.corners) else None).normal)) > options.normTol)))
+        self.splitVert = ((verb_core_Vec.normSquared(verb_core_Vec.sub((self.corners[0] if 0 < len(self.corners) else None).normal, (self.corners[1] if 1 < len(self.corners) else None).normal)) > options.normTol) or (
+            (verb_core_Vec.normSquared(verb_core_Vec.sub((self.corners[2] if 2 < len(self.corners) else None).normal, (self.corners[3] if 3 < len(self.corners) else None).normal)) > options.normTol)))
+        self.splitHoriz = ((verb_core_Vec.normSquared(verb_core_Vec.sub((self.corners[1] if 1 < len(self.corners) else None).normal, (self.corners[2] if 2 < len(self.corners) else None).normal)) > options.normTol) or (
+            (verb_core_Vec.normSquared(verb_core_Vec.sub((self.corners[3] if 3 < len(self.corners) else None).normal, (self.corners[0] if 0 < len(self.corners) else None).normal)) > options.normTol)))
         if (self.splitVert or self.splitHoriz):
             return True
         center = self.center()
-        if (not ((((verb_core_Vec.normSquared(verb_core_Vec.sub(center.normal,(self.corners[0] if 0 < len(self.corners) else None).normal)) > options.normTol) or ((verb_core_Vec.normSquared(verb_core_Vec.sub(center.normal,(self.corners[1] if 1 < len(self.corners) else None).normal)) > options.normTol))) or ((verb_core_Vec.normSquared(verb_core_Vec.sub(center.normal,(self.corners[2] if 2 < len(self.corners) else None).normal)) > options.normTol))))):
-            return (verb_core_Vec.normSquared(verb_core_Vec.sub(center.normal,(self.corners[3] if 3 < len(self.corners) else None).normal)) > options.normTol)
+        if (not ((((verb_core_Vec.normSquared(verb_core_Vec.sub(center.normal, (self.corners[0] if 0 < len(self.corners) else None).normal)) > options.normTol) or ((verb_core_Vec.normSquared(verb_core_Vec.sub(center.normal, (self.corners[1] if 1 < len(self.corners) else None).normal)) > options.normTol))) or ((verb_core_Vec.normSquared(verb_core_Vec.sub(center.normal, (self.corners[2] if 2 < len(self.corners) else None).normal)) > options.normTol))))):
+            return (verb_core_Vec.normSquared(verb_core_Vec.sub(center.normal, (self.corners[3] if 3 < len(self.corners) else None).normal)) > options.normTol)
         else:
             return True
 
-    def divide(self,options = None):
+    def divide(self, options=None):
         if (options is None):
             options = verb_eval_AdaptiveRefinementOptions()
         if (options.normTol is None):
@@ -9493,11 +9899,11 @@ class verb_eval_AdaptiveRefinementNode:
             options.minDepth = 0
         if (options.maxDepth is None):
             options.maxDepth = 10
-        self._divide(options,0,True)
+        self._divide(options, 0, True)
 
-    def _divide(self,options,currentDepth,horiz):
+    def _divide(self, options, currentDepth, horiz):
         self.evalCorners()
-        if (not self.shouldDivide(options,currentDepth)):
+        if (not self.shouldDivide(options, currentDepth)):
             return
         currentDepth = (currentDepth + 1)
         if (self.splitVert and (not self.splitHoriz)):
@@ -9508,23 +9914,27 @@ class verb_eval_AdaptiveRefinementNode:
         if self.horizontal:
             bott = [(self.corners[0] if 0 < len(self.corners) else None), (self.corners[1] if 1 < len(self.corners) else None), self.midpoint(1), self.midpoint(3)]
             top = [self.midpoint(3), self.midpoint(1), (self.corners[2] if 2 < len(self.corners) else None), (self.corners[3] if 3 < len(self.corners) else None)]
-            self.children = [verb_eval_AdaptiveRefinementNode(self.srf,bott), verb_eval_AdaptiveRefinementNode(self.srf,top)]
-            (self.children[0] if 0 < len(self.children) else None).neighbors = [(self.neighbors[0] if 0 < len(self.neighbors) else None), (self.neighbors[1] if 1 < len(self.neighbors) else None), (self.children[1] if 1 < len(self.children) else None), (self.neighbors[3] if 3 < len(self.neighbors) else None)]
-            (self.children[1] if 1 < len(self.children) else None).neighbors = [(self.children[0] if 0 < len(self.children) else None), (self.neighbors[1] if 1 < len(self.neighbors) else None), (self.neighbors[2] if 2 < len(self.neighbors) else None), (self.neighbors[3] if 3 < len(self.neighbors) else None)]
+            self.children = [verb_eval_AdaptiveRefinementNode(self.srf, bott), verb_eval_AdaptiveRefinementNode(self.srf, top)]
+            (self.children[0] if 0 < len(self.children) else None).neighbors = [(self.neighbors[0] if 0 < len(self.neighbors) else None), (self.neighbors[1] if 1 <
+                                                                                                                                           len(self.neighbors) else None), (self.children[1] if 1 < len(self.children) else None), (self.neighbors[3] if 3 < len(self.neighbors) else None)]
+            (self.children[1] if 1 < len(self.children) else None).neighbors = [(self.children[0] if 0 < len(self.children) else None), (self.neighbors[1] if 1 <
+                                                                                                                                         len(self.neighbors) else None), (self.neighbors[2] if 2 < len(self.neighbors) else None), (self.neighbors[3] if 3 < len(self.neighbors) else None)]
         else:
             left = [(self.corners[0] if 0 < len(self.corners) else None), self.midpoint(0), self.midpoint(2), (self.corners[3] if 3 < len(self.corners) else None)]
             right = [self.midpoint(0), (self.corners[1] if 1 < len(self.corners) else None), (self.corners[2] if 2 < len(self.corners) else None), self.midpoint(2)]
-            self.children = [verb_eval_AdaptiveRefinementNode(self.srf,left), verb_eval_AdaptiveRefinementNode(self.srf,right)]
-            (self.children[0] if 0 < len(self.children) else None).neighbors = [(self.neighbors[0] if 0 < len(self.neighbors) else None), (self.children[1] if 1 < len(self.children) else None), (self.neighbors[2] if 2 < len(self.neighbors) else None), (self.neighbors[3] if 3 < len(self.neighbors) else None)]
-            (self.children[1] if 1 < len(self.children) else None).neighbors = [(self.neighbors[0] if 0 < len(self.neighbors) else None), (self.neighbors[1] if 1 < len(self.neighbors) else None), (self.neighbors[2] if 2 < len(self.neighbors) else None), (self.children[0] if 0 < len(self.children) else None)]
+            self.children = [verb_eval_AdaptiveRefinementNode(self.srf, left), verb_eval_AdaptiveRefinementNode(self.srf, right)]
+            (self.children[0] if 0 < len(self.children) else None).neighbors = [(self.neighbors[0] if 0 < len(self.neighbors) else None), (self.children[1] if 1 <
+                                                                                                                                           len(self.children) else None), (self.neighbors[2] if 2 < len(self.neighbors) else None), (self.neighbors[3] if 3 < len(self.neighbors) else None)]
+            (self.children[1] if 1 < len(self.children) else None).neighbors = [(self.neighbors[0] if 0 < len(self.neighbors) else None), (self.neighbors[1] if 1 <
+                                                                                                                                           len(self.neighbors) else None), (self.neighbors[2] if 2 < len(self.neighbors) else None), (self.children[0] if 0 < len(self.children) else None)]
         _g = 0
         _g1 = self.children
         while (_g < len(_g1)):
             child = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
             _g = (_g + 1)
-            child._divide(options,currentDepth,(not horiz))
+            child._divide(options, currentDepth, (not horiz))
 
-    def triangulate(self,mesh = None):
+    def triangulate(self, mesh=None):
         if (mesh is None):
             mesh = verb_core_MeshData.empty()
         if self.isLeaf():
@@ -9539,7 +9949,7 @@ class verb_eval_AdaptiveRefinementNode:
             x.triangulate(mesh)
         return mesh
 
-    def triangulateLeaf(self,mesh):
+    def triangulateLeaf(self, mesh):
         baseIndex = len(mesh.points)
         uvs = []
         ids = []
@@ -9609,11 +10019,14 @@ class verb_eval_AdaptiveRefinementNode:
         elif (len(uvs) == 5):
             il = len(ids)
             _this = mesh.faces
-            _this.append([(ids[splitid] if splitid >= 0 and splitid < len(ids) else None), python_internal_ArrayImpl._get(ids, HxOverrides.mod(((splitid + 2)), il)), python_internal_ArrayImpl._get(ids, HxOverrides.mod(((splitid + 1)), il))])
+            _this.append([(ids[splitid] if splitid >= 0 and splitid < len(ids) else None), python_internal_ArrayImpl._get(
+                ids, HxOverrides.mod(((splitid + 2)), il)), python_internal_ArrayImpl._get(ids, HxOverrides.mod(((splitid + 1)), il))])
             _this = mesh.faces
-            _this.append([python_internal_ArrayImpl._get(ids, HxOverrides.mod(((splitid + 4)), il)), python_internal_ArrayImpl._get(ids, HxOverrides.mod(((splitid + 3)), il)), (ids[splitid] if splitid >= 0 and splitid < len(ids) else None)])
+            _this.append([python_internal_ArrayImpl._get(ids, HxOverrides.mod(((splitid + 4)), il)), python_internal_ArrayImpl._get(ids,
+                                                                                                                                    HxOverrides.mod(((splitid + 3)), il)), (ids[splitid] if splitid >= 0 and splitid < len(ids) else None)])
             _this = mesh.faces
-            _this.append([(ids[splitid] if splitid >= 0 and splitid < len(ids) else None), python_internal_ArrayImpl._get(ids, HxOverrides.mod(((splitid + 3)), il)), python_internal_ArrayImpl._get(ids, HxOverrides.mod(((splitid + 2)), il))])
+            _this.append([(ids[splitid] if splitid >= 0 and splitid < len(ids) else None), python_internal_ArrayImpl._get(
+                ids, HxOverrides.mod(((splitid + 3)), il)), python_internal_ArrayImpl._get(ids, HxOverrides.mod(((splitid + 2)), il))])
             return mesh
         center = self.center()
         _this = mesh.uvs
@@ -9648,6 +10061,8 @@ class verb_eval_AdaptiveRefinementNode:
         _hx_o.horizontal = None
         _hx_o.u05 = None
         _hx_o.v05 = None
+
+
 verb_eval_AdaptiveRefinementNode._hx_class = verb_eval_AdaptiveRefinementNode
 _hx_classes["verb.eval.AdaptiveRefinementNode"] = verb_eval_AdaptiveRefinementNode
 
@@ -9666,17 +10081,21 @@ class verb_exe_Dispatcher:
         verb_exe_Dispatcher._init = True
 
     @staticmethod
-    def dispatchMethod(classType,methodName,args):
+    def dispatchMethod(classType, methodName, args):
         verb_exe_Dispatcher.init()
         _hx_def = promhx_Deferred()
+
         def _hx_local_0(x):
             _hx_def.resolve(x)
         callback = _hx_local_0
+
         def _hx_local_1(_):
-            r = Reflect.callMethod(classType,Reflect.field(classType,methodName),args)
+            r = Reflect.callMethod(classType, Reflect.field(classType, methodName), args)
             return r
-        verb_exe_Dispatcher._threadPool.addTask(_hx_local_1,None,callback)
+        verb_exe_Dispatcher._threadPool.addTask(_hx_local_1, None, callback)
         return promhx_Promise(_hx_def)
+
+
 verb_exe_Dispatcher._hx_class = verb_exe_Dispatcher
 _hx_classes["verb.exe.Dispatcher"] = verb_exe_Dispatcher
 
@@ -9687,11 +10106,11 @@ class verb_exe_ThreadPool:
     _hx_fields = ["tasks", "nextID"]
     _hx_methods = ["addTask", "blockRunAllTasks"]
 
-    def __init__(self,numThreads):
+    def __init__(self, numThreads):
         self.nextID = 0
         self.tasks = list()
 
-    def addTask(self,task,arg,onFinish):
+    def addTask(self, task, arg, onFinish):
         _this = self.tasks
         x = _hx_AnonObject({'id': self.nextID, 'task': task, 'done': False, 'arg': arg, 'onFinish': onFinish})
         _this.append(x)
@@ -9715,6 +10134,8 @@ class verb_exe_ThreadPool:
     def _hx_empty_init(_hx_o):
         _hx_o.tasks = None
         _hx_o.nextID = None
+
+
 verb_exe_ThreadPool._hx_class = verb_exe_ThreadPool
 _hx_classes["verb.exe.ThreadPool"] = verb_exe_ThreadPool
 
@@ -9724,6 +10145,8 @@ class verb_geom_ICurve:
     __slots__ = ()
     _hx_methods = ["asNurbs", "domain", "point", "derivatives"]
     _hx_interfaces = [verb_core_ISerializable]
+
+
 verb_geom_ICurve._hx_class = verb_geom_ICurve
 _hx_classes["verb.geom.ICurve"] = verb_geom_ICurve
 
@@ -9732,13 +10155,13 @@ class verb_geom_NurbsCurve(verb_core_SerializableBase):
     _hx_class_name = "verb.geom.NurbsCurve"
     __slots__ = ("_data",)
     _hx_fields = ["_data"]
-    _hx_methods = ["degree", "knots", "controlPoints", "weights", "asNurbs", "clone", "domain", "transform", "transformAsync", "point", "pointAsync", "tangent", "tangentAsync", "derivatives", "derivativesAsync", "closestPoint", "closestPointAsync", "closestParam", "closestParamAsync", "length", "lengthAsync", "lengthAtParam", "lengthAtParamAsync", "paramAtLength", "paramAtLengthAsync", "divideByEqualArcLength", "divideByEqualArcLengthAsync", "divideByArcLength", "divideByArcLengthAsync", "split", "splitAsync", "reverse", "reverseAsync", "tessellate", "tessellateAsync"]
+    _hx_methods = ["degree", "knots", "controlPoints", "weights", "asNurbs", "clone", "domain", "transform", "transformAsync", "point", "pointAsync", "tangent", "tangentAsync", "derivatives", "derivativesAsync", "closestPoint", "closestPointAsync", "closestParam", "closestParamAsync",
+                   "length", "lengthAsync", "lengthAtParam", "lengthAtParamAsync", "paramAtLength", "paramAtLengthAsync", "divideByEqualArcLength", "divideByEqualArcLengthAsync", "divideByArcLength", "divideByArcLengthAsync", "split", "splitAsync", "reverse", "reverseAsync", "tessellate", "tessellateAsync"]
     _hx_statics = ["byKnotsControlPointsWeights", "byPoints"]
     _hx_interfaces = [verb_geom_ICurve]
     _hx_super = verb_core_SerializableBase
 
-
-    def __init__(self,data):
+    def __init__(self, data):
         self._data = verb_eval_Check.isValidNurbsCurveData(data)
 
     def degree(self):
@@ -9754,104 +10177,104 @@ class verb_geom_NurbsCurve(verb_core_SerializableBase):
         return verb_eval_Eval.weight1d(self._data.controlPoints)
 
     def asNurbs(self):
-        return verb_core_NurbsCurveData(self.degree(),self.knots(),verb_eval_Eval.homogenize1d(self.controlPoints(),self.weights()))
+        return verb_core_NurbsCurveData(self.degree(), self.knots(), verb_eval_Eval.homogenize1d(self.controlPoints(), self.weights()))
 
     def clone(self):
         return verb_geom_NurbsCurve(self._data)
 
     def domain(self):
-        return verb_core_Interval(verb_core_ArrayExtensions.first(self._data.knots),verb_core_ArrayExtensions.last(self._data.knots))
+        return verb_core_Interval(verb_core_ArrayExtensions.first(self._data.knots), verb_core_ArrayExtensions.last(self._data.knots))
 
-    def transform(self,mat):
-        return verb_geom_NurbsCurve(verb_eval_Modify.rationalCurveTransform(self._data,mat))
+    def transform(self, mat):
+        return verb_geom_NurbsCurve(verb_eval_Modify.rationalCurveTransform(self._data, mat))
 
-    def transformAsync(self,mat):
+    def transformAsync(self, mat):
         def _hx_local_1():
             def _hx_local_0(x):
                 return verb_geom_NurbsCurve(x)
-            return verb_exe_Dispatcher.dispatchMethod(verb_eval_Modify,"rationalCurveTransform",[self._data, mat]).then(_hx_local_0)
+            return verb_exe_Dispatcher.dispatchMethod(verb_eval_Modify, "rationalCurveTransform", [self._data, mat]).then(_hx_local_0)
         return _hx_local_1()
 
-    def point(self,u):
-        return verb_eval_Eval.rationalCurvePoint(self._data,u)
+    def point(self, u):
+        return verb_eval_Eval.rationalCurvePoint(self._data, u)
 
-    def pointAsync(self,u):
-        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Eval,"rationalCurvePoint",[self._data, u])
+    def pointAsync(self, u):
+        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Eval, "rationalCurvePoint", [self._data, u])
 
-    def tangent(self,u):
-        return verb_eval_Eval.rationalCurveTangent(self._data,u)
+    def tangent(self, u):
+        return verb_eval_Eval.rationalCurveTangent(self._data, u)
 
-    def tangentAsync(self,u):
-        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Eval,"rationalCurveTangent",[self._data, u])
+    def tangentAsync(self, u):
+        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Eval, "rationalCurveTangent", [self._data, u])
 
-    def derivatives(self,u,numDerivs = None):
+    def derivatives(self, u, numDerivs=None):
         if (numDerivs is None):
             numDerivs = 1
-        return verb_eval_Eval.rationalCurveDerivatives(self._data,u,numDerivs)
+        return verb_eval_Eval.rationalCurveDerivatives(self._data, u, numDerivs)
 
-    def derivativesAsync(self,u,numDerivs = None):
+    def derivativesAsync(self, u, numDerivs=None):
         if (numDerivs is None):
             numDerivs = 1
-        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Eval,"rationalCurveDerivatives",[self._data, u, numDerivs])
+        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Eval, "rationalCurveDerivatives", [self._data, u, numDerivs])
 
-    def closestPoint(self,pt):
-        return verb_eval_Analyze.rationalCurveClosestPoint(self._data,pt)
+    def closestPoint(self, pt):
+        return verb_eval_Analyze.rationalCurveClosestPoint(self._data, pt)
 
-    def closestPointAsync(self,pt):
-        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Analyze,"rationalCurveClosestPoint",[self._data, pt])
+    def closestPointAsync(self, pt):
+        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Analyze, "rationalCurveClosestPoint", [self._data, pt])
 
-    def closestParam(self,pt):
-        return verb_eval_Analyze.rationalCurveClosestParam(self._data,pt)
+    def closestParam(self, pt):
+        return verb_eval_Analyze.rationalCurveClosestParam(self._data, pt)
 
-    def closestParamAsync(self,pt):
-        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Analyze,"rationalCurveClosestParam",[self._data, pt])
+    def closestParamAsync(self, pt):
+        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Analyze, "rationalCurveClosestParam", [self._data, pt])
 
     def length(self):
         return verb_eval_Analyze.rationalCurveArcLength(self._data)
 
     def lengthAsync(self):
-        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Analyze,"rationalCurveArcLength",[self._data])
+        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Analyze, "rationalCurveArcLength", [self._data])
 
-    def lengthAtParam(self,u):
-        return verb_eval_Analyze.rationalCurveArcLength(self._data,u)
+    def lengthAtParam(self, u):
+        return verb_eval_Analyze.rationalCurveArcLength(self._data, u)
 
     def lengthAtParamAsync(self):
-        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Analyze,"rationalCurveArcLength",[self._data])
+        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Analyze, "rationalCurveArcLength", [self._data])
 
-    def paramAtLength(self,_hx_len,tolerance = None):
-        return verb_eval_Analyze.rationalCurveParamAtArcLength(self._data,_hx_len,tolerance)
+    def paramAtLength(self, _hx_len, tolerance=None):
+        return verb_eval_Analyze.rationalCurveParamAtArcLength(self._data, _hx_len, tolerance)
 
-    def paramAtLengthAsync(self,_hx_len,tolerance = None):
-        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Analyze,"rationalCurveParamAtArcLength",[self._data, _hx_len, tolerance])
+    def paramAtLengthAsync(self, _hx_len, tolerance=None):
+        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Analyze, "rationalCurveParamAtArcLength", [self._data, _hx_len, tolerance])
 
-    def divideByEqualArcLength(self,divisions):
-        return verb_eval_Divide.rationalCurveByEqualArcLength(self._data,divisions)
+    def divideByEqualArcLength(self, divisions):
+        return verb_eval_Divide.rationalCurveByEqualArcLength(self._data, divisions)
 
-    def divideByEqualArcLengthAsync(self,divisions):
-        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Divide,"rationalCurveByEqualArcLength",[self._data, divisions])
+    def divideByEqualArcLengthAsync(self, divisions):
+        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Divide, "rationalCurveByEqualArcLength", [self._data, divisions])
 
-    def divideByArcLength(self,arcLength):
-        return verb_eval_Divide.rationalCurveByArcLength(self._data,arcLength)
+    def divideByArcLength(self, arcLength):
+        return verb_eval_Divide.rationalCurveByArcLength(self._data, arcLength)
 
-    def divideByArcLengthAsync(self,divisions):
-        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Divide,"rationalCurveByArcLength",[self._data, divisions])
+    def divideByArcLengthAsync(self, divisions):
+        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Divide, "rationalCurveByArcLength", [self._data, divisions])
 
-    def split(self,u):
+    def split(self, u):
         def _hx_local_1():
             def _hx_local_0(x):
                 return verb_geom_NurbsCurve(x)
-            return list(map(_hx_local_0,verb_eval_Divide.curveSplit(self._data,u)))
+            return list(map(_hx_local_0, verb_eval_Divide.curveSplit(self._data, u)))
         return _hx_local_1()
 
-    def splitAsync(self,u):
+    def splitAsync(self, u):
         def _hx_local_3():
             def _hx_local_2(cs):
                 def _hx_local_1():
                     def _hx_local_0(x):
                         return verb_geom_NurbsCurve(x)
-                    return list(map(_hx_local_0,cs))
+                    return list(map(_hx_local_0, cs))
                 return _hx_local_1()
-            return verb_exe_Dispatcher.dispatchMethod(verb_eval_Divide,"curveSplit",[self._data, u]).then(_hx_local_2)
+            return verb_exe_Dispatcher.dispatchMethod(verb_eval_Divide, "curveSplit", [self._data, u]).then(_hx_local_2)
         return _hx_local_3()
 
     def reverse(self):
@@ -9861,28 +10284,30 @@ class verb_geom_NurbsCurve(verb_core_SerializableBase):
         def _hx_local_1():
             def _hx_local_0(c):
                 return verb_geom_NurbsCurve(c)
-            return verb_exe_Dispatcher.dispatchMethod(verb_eval_Modify,"curveReverse",[self._data]).then(_hx_local_0)
+            return verb_exe_Dispatcher.dispatchMethod(verb_eval_Modify, "curveReverse", [self._data]).then(_hx_local_0)
         return _hx_local_1()
 
-    def tessellate(self,tolerance = None):
-        return verb_eval_Tess.rationalCurveAdaptiveSample(self._data,tolerance,False)
+    def tessellate(self, tolerance=None):
+        return verb_eval_Tess.rationalCurveAdaptiveSample(self._data, tolerance, False)
 
-    def tessellateAsync(self,tolerance = None):
-        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Tess,"rationalCurveAdaptiveSample",[self._data, tolerance, False])
-
-    @staticmethod
-    def byKnotsControlPointsWeights(degree,knots,controlPoints,weights = None):
-        return verb_geom_NurbsCurve(verb_core_NurbsCurveData(degree,list(knots),verb_eval_Eval.homogenize1d(controlPoints,weights)))
+    def tessellateAsync(self, tolerance=None):
+        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Tess, "rationalCurveAdaptiveSample", [self._data, tolerance, False])
 
     @staticmethod
-    def byPoints(points,degree = None):
+    def byKnotsControlPointsWeights(degree, knots, controlPoints, weights=None):
+        return verb_geom_NurbsCurve(verb_core_NurbsCurveData(degree, list(knots), verb_eval_Eval.homogenize1d(controlPoints, weights)))
+
+    @staticmethod
+    def byPoints(points, degree=None):
         if (degree is None):
             degree = 3
-        return verb_geom_NurbsCurve(verb_eval_Make.rationalInterpCurve(points,degree))
+        return verb_geom_NurbsCurve(verb_eval_Make.rationalInterpCurve(points, degree))
 
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o._data = None
+
+
 verb_geom_NurbsCurve._hx_class = verb_geom_NurbsCurve
 _hx_classes["verb.geom.NurbsCurve"] = verb_geom_NurbsCurve
 
@@ -9896,15 +10321,14 @@ class verb_geom_Arc(verb_geom_NurbsCurve):
     _hx_interfaces = []
     _hx_super = verb_geom_NurbsCurve
 
-
-    def __init__(self,center,xaxis,yaxis,radius,minAngle,maxAngle):
+    def __init__(self, center, xaxis, yaxis, radius, minAngle, maxAngle):
         self._maxAngle = None
         self._minAngle = None
         self._radius = None
         self._yaxis = None
         self._xaxis = None
         self._center = None
-        super().__init__(verb_eval_Make.arc(center,xaxis,yaxis,radius,minAngle,maxAngle))
+        super().__init__(verb_eval_Make.arc(center, xaxis, yaxis, radius, minAngle, maxAngle))
         self._center = center
         self._xaxis = xaxis
         self._yaxis = yaxis
@@ -9938,6 +10362,8 @@ class verb_geom_Arc(verb_geom_NurbsCurve):
         _hx_o._radius = None
         _hx_o._minAngle = None
         _hx_o._maxAngle = None
+
+
 verb_geom_Arc._hx_class = verb_geom_Arc
 _hx_classes["verb.geom.Arc"] = verb_geom_Arc
 
@@ -9951,9 +10377,10 @@ class verb_geom_BezierCurve(verb_geom_NurbsCurve):
     _hx_interfaces = []
     _hx_super = verb_geom_NurbsCurve
 
+    def __init__(self, points, weights=None):
+        super().__init__(verb_eval_Make.rationalBezierCurve(points, weights))
 
-    def __init__(self,points,weights = None):
-        super().__init__(verb_eval_Make.rationalBezierCurve(points,weights))
+
 verb_geom_BezierCurve._hx_class = verb_geom_BezierCurve
 _hx_classes["verb.geom.BezierCurve"] = verb_geom_BezierCurve
 
@@ -9967,9 +10394,10 @@ class verb_geom_Circle(verb_geom_Arc):
     _hx_interfaces = []
     _hx_super = verb_geom_Arc
 
+    def __init__(self, center, xaxis, yaxis, radius):
+        super().__init__(center, xaxis, yaxis, radius, 0, (Math.PI * 2))
 
-    def __init__(self,center,xaxis,yaxis,radius):
-        super().__init__(center,xaxis,yaxis,radius,0,(Math.PI * 2))
+
 verb_geom_Circle._hx_class = verb_geom_Circle
 _hx_classes["verb.geom.Circle"] = verb_geom_Circle
 
@@ -9979,6 +10407,8 @@ class verb_geom_ISurface:
     __slots__ = ()
     _hx_methods = ["asNurbs", "domainU", "domainV", "point", "derivatives"]
     _hx_interfaces = [verb_core_ISerializable]
+
+
 verb_geom_ISurface._hx_class = verb_geom_ISurface
 _hx_classes["verb.geom.ISurface"] = verb_geom_ISurface
 
@@ -9987,13 +10417,13 @@ class verb_geom_NurbsSurface(verb_core_SerializableBase):
     _hx_class_name = "verb.geom.NurbsSurface"
     __slots__ = ("_data",)
     _hx_fields = ["_data"]
-    _hx_methods = ["degreeU", "degreeV", "knotsU", "knotsV", "controlPoints", "weights", "asNurbs", "clone", "domainU", "domainV", "point", "pointAsync", "normal", "normalAsync", "derivatives", "derivativesAsync", "closestParam", "closestParamAsync", "closestPoint", "closestPointAsync", "split", "splitAsync", "reverse", "reverseAsync", "isocurve", "isocurveAsync", "boundaries", "boundariesAsync", "tessellate", "tessellateAsync", "transform", "transformAsync"]
+    _hx_methods = ["degreeU", "degreeV", "knotsU", "knotsV", "controlPoints", "weights", "asNurbs", "clone", "domainU", "domainV", "point", "pointAsync", "normal", "normalAsync", "derivatives", "derivativesAsync", "closestParam",
+                   "closestParamAsync", "closestPoint", "closestPointAsync", "split", "splitAsync", "reverse", "reverseAsync", "isocurve", "isocurveAsync", "boundaries", "boundariesAsync", "tessellate", "tessellateAsync", "transform", "transformAsync"]
     _hx_statics = ["byKnotsControlPointsWeights", "byCorners", "byLoftingCurves"]
     _hx_interfaces = [verb_geom_ISurface]
     _hx_super = verb_core_SerializableBase
 
-
-    def __init__(self,data):
+    def __init__(self, data):
         self._data = verb_eval_Check.isValidNurbsSurfaceData(data)
 
     def degreeU(self):
@@ -10015,63 +10445,65 @@ class verb_geom_NurbsSurface(verb_core_SerializableBase):
         return verb_eval_Eval.weight2d(self._data.controlPoints)
 
     def asNurbs(self):
-        return verb_core_NurbsSurfaceData(self.degreeU(),self.degreeV(),self.knotsU(),self.knotsV(),verb_eval_Eval.homogenize2d(self.controlPoints(),self.weights()))
+        return verb_core_NurbsSurfaceData(self.degreeU(), self.degreeV(), self.knotsU(), self.knotsV(), verb_eval_Eval.homogenize2d(self.controlPoints(), self.weights()))
 
     def clone(self):
         return verb_geom_NurbsSurface(self.asNurbs())
 
     def domainU(self):
-        return verb_core_Interval(verb_core_ArrayExtensions.first(self._data.knotsU),verb_core_ArrayExtensions.last(self._data.knotsU))
+        return verb_core_Interval(verb_core_ArrayExtensions.first(self._data.knotsU), verb_core_ArrayExtensions.last(self._data.knotsU))
 
     def domainV(self):
-        return verb_core_Interval(verb_core_ArrayExtensions.first(self._data.knotsV),verb_core_ArrayExtensions.last(self._data.knotsV))
+        return verb_core_Interval(verb_core_ArrayExtensions.first(self._data.knotsV), verb_core_ArrayExtensions.last(self._data.knotsV))
 
-    def point(self,u,v):
-        return verb_eval_Eval.rationalSurfacePoint(self._data,u,v)
+    def point(self, u, v):
+        return verb_eval_Eval.rationalSurfacePoint(self._data, u, v)
 
-    def pointAsync(self,u,v):
-        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Eval,"rationalSurfacePoint",[self._data, u, v])
+    def pointAsync(self, u, v):
+        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Eval, "rationalSurfacePoint", [self._data, u, v])
 
-    def normal(self,u,v):
-        return verb_eval_Eval.rationalSurfaceNormal(self._data,u,v)
+    def normal(self, u, v):
+        return verb_eval_Eval.rationalSurfaceNormal(self._data, u, v)
 
-    def normalAsync(self,u,v):
-        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Eval,"rationalSurfaceNormal",[self._data, u, v])
+    def normalAsync(self, u, v):
+        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Eval, "rationalSurfaceNormal", [self._data, u, v])
 
-    def derivatives(self,u,v,numDerivs = None):
+    def derivatives(self, u, v, numDerivs=None):
         if (numDerivs is None):
             numDerivs = 1
-        return verb_eval_Eval.rationalSurfaceDerivatives(self._data,u,v,numDerivs)
+        return verb_eval_Eval.rationalSurfaceDerivatives(self._data, u, v, numDerivs)
 
-    def derivativesAsync(self,u,v,numDerivs = None):
+    def derivativesAsync(self, u, v, numDerivs=None):
         if (numDerivs is None):
             numDerivs = 1
-        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Eval,"rationalSurfaceDerivatives",[self._data, u, v, numDerivs])
+        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Eval, "rationalSurfaceDerivatives", [self._data, u, v, numDerivs])
 
-    def closestParam(self,pt):
-        return verb_eval_Analyze.rationalSurfaceClosestParam(self._data,pt)
+    def closestParam(self, pt):
+        return verb_eval_Analyze.rationalSurfaceClosestParam(self._data, pt)
 
-    def closestParamAsync(self,pt):
-        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Analyze,"rationalSurfaceClosestParam",[self._data, pt])
+    def closestParamAsync(self, pt):
+        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Analyze, "rationalSurfaceClosestParam", [self._data, pt])
 
-    def closestPoint(self,pt):
-        return verb_eval_Analyze.rationalSurfaceClosestPoint(self._data,pt)
+    def closestPoint(self, pt):
+        return verb_eval_Analyze.rationalSurfaceClosestPoint(self._data, pt)
 
-    def closestPointAsync(self,pt):
-        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Analyze,"rationalSurfaceClosestPoint",[self._data, pt])
+    def closestPointAsync(self, pt):
+        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Analyze, "rationalSurfaceClosestPoint", [self._data, pt])
 
-    def split(self,u,useV = None):
+    def split(self, u, useV=None):
         if (useV is None):
             useV = False
+
         def _hx_local_1():
             def _hx_local_0(x):
                 return verb_geom_NurbsSurface(x)
-            return list(map(_hx_local_0,verb_eval_Divide.surfaceSplit(self._data,u,useV)))
+            return list(map(_hx_local_0, verb_eval_Divide.surfaceSplit(self._data, u, useV)))
         return _hx_local_1()
 
-    def splitAsync(self,u,useV = None):
+    def splitAsync(self, u, useV=None):
         if (useV is None):
             useV = False
+
         def _hx_local_3():
             def _hx_local_2(s):
                 def _hx_local_1():
@@ -10079,81 +10511,83 @@ class verb_geom_NurbsSurface(verb_core_SerializableBase):
                         return verb_geom_NurbsSurface(x)
                     return HxOverrides.map(s, _hx_local_0)
                 return _hx_local_1()
-            return verb_exe_Dispatcher.dispatchMethod(verb_eval_Divide,"surfaceSplit",[self._data, u, useV]).then(_hx_local_2)
+            return verb_exe_Dispatcher.dispatchMethod(verb_eval_Divide, "surfaceSplit", [self._data, u, useV]).then(_hx_local_2)
         return _hx_local_3()
 
-    def reverse(self,useV = None):
+    def reverse(self, useV=None):
         if (useV is None):
             useV = False
-        return verb_geom_NurbsSurface(verb_eval_Modify.surfaceReverse(self._data,useV))
+        return verb_geom_NurbsSurface(verb_eval_Modify.surfaceReverse(self._data, useV))
 
-    def reverseAsync(self,useV = None):
+    def reverseAsync(self, useV=None):
         if (useV is None):
             useV = False
+
         def _hx_local_1():
             def _hx_local_0(c):
                 return verb_geom_NurbsSurface(c)
-            return verb_exe_Dispatcher.dispatchMethod(verb_eval_Modify,"surfaceReverse",[self._data, useV]).then(_hx_local_0)
+            return verb_exe_Dispatcher.dispatchMethod(verb_eval_Modify, "surfaceReverse", [self._data, useV]).then(_hx_local_0)
         return _hx_local_1()
 
-    def isocurve(self,u,useV = None):
+    def isocurve(self, u, useV=None):
         if (useV is None):
             useV = False
-        return verb_geom_NurbsCurve(verb_eval_Make.surfaceIsocurve(self._data,u,useV))
+        return verb_geom_NurbsCurve(verb_eval_Make.surfaceIsocurve(self._data, u, useV))
 
-    def isocurveAsync(self,u,useV = None):
+    def isocurveAsync(self, u, useV=None):
         if (useV is None):
             useV = False
+
         def _hx_local_1():
             def _hx_local_0(x):
                 return verb_geom_NurbsCurve(x)
-            return verb_exe_Dispatcher.dispatchMethod(verb_eval_Make,"surfaceIsocurve",[self._data, u, useV]).then(_hx_local_0)
+            return verb_exe_Dispatcher.dispatchMethod(verb_eval_Make, "surfaceIsocurve", [self._data, u, useV]).then(_hx_local_0)
         return _hx_local_1()
 
-    def boundaries(self,options = None):
+    def boundaries(self, options=None):
         def _hx_local_1():
             def _hx_local_0(x):
                 return verb_geom_NurbsCurve(x)
-            return list(map(_hx_local_0,verb_eval_Make.surfaceBoundaryCurves(self._data)))
+            return list(map(_hx_local_0, verb_eval_Make.surfaceBoundaryCurves(self._data)))
         return _hx_local_1()
 
-    def boundariesAsync(self,options = None):
+    def boundariesAsync(self, options=None):
         def _hx_local_3():
             def _hx_local_2(cs):
                 def _hx_local_1():
                     def _hx_local_0(x):
                         return verb_geom_NurbsCurve(x)
-                    return list(map(_hx_local_0,cs))
+                    return list(map(_hx_local_0, cs))
                 return _hx_local_1()
-            return verb_exe_Dispatcher.dispatchMethod(verb_eval_Make,"surfaceBoundaryCurves",[self._data]).then(_hx_local_2)
+            return verb_exe_Dispatcher.dispatchMethod(verb_eval_Make, "surfaceBoundaryCurves", [self._data]).then(_hx_local_2)
         return _hx_local_3()
 
-    def tessellate(self,options = None):
-        return verb_eval_Tess.rationalSurfaceAdaptive(self._data,options)
+    def tessellate(self, options=None):
+        return verb_eval_Tess.rationalSurfaceAdaptive(self._data, options)
 
-    def tessellateAsync(self,options = None):
-        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Tess,"rationalSurfaceAdaptive",[self._data, options])
+    def tessellateAsync(self, options=None):
+        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Tess, "rationalSurfaceAdaptive", [self._data, options])
 
-    def transform(self,mat):
-        return verb_geom_NurbsSurface(verb_eval_Modify.rationalSurfaceTransform(self._data,mat))
+    def transform(self, mat):
+        return verb_geom_NurbsSurface(verb_eval_Modify.rationalSurfaceTransform(self._data, mat))
 
-    def transformAsync(self,mat):
+    def transformAsync(self, mat):
         def _hx_local_1():
             def _hx_local_0(x):
                 return verb_geom_NurbsSurface(x)
-            return verb_exe_Dispatcher.dispatchMethod(verb_eval_Modify,"rationalSurfaceTransform",[self._data, mat]).then(_hx_local_0)
+            return verb_exe_Dispatcher.dispatchMethod(verb_eval_Modify, "rationalSurfaceTransform", [self._data, mat]).then(_hx_local_0)
         return _hx_local_1()
 
     @staticmethod
-    def byKnotsControlPointsWeights(degreeU,degreeV,knotsU,knotsV,controlPoints,weights = None):
-        return verb_geom_NurbsSurface(verb_core_NurbsSurfaceData(degreeU,degreeV,knotsU,knotsV,verb_eval_Eval.homogenize2d(controlPoints,weights)))
+    def byKnotsControlPointsWeights(degreeU, degreeV, knotsU, knotsV, controlPoints, weights=None):
+        return verb_geom_NurbsSurface(verb_core_NurbsSurfaceData(degreeU, degreeV, knotsU, knotsV, verb_eval_Eval.homogenize2d(controlPoints, weights)))
 
     @staticmethod
-    def byCorners(point0,point1,point2,point3):
-        return verb_geom_NurbsSurface(verb_eval_Make.fourPointSurface(point0,point1,point2,point3))
+    def byCorners(point0, point1, point2, point3):
+        return verb_geom_NurbsSurface(verb_eval_Make.fourPointSurface(point0, point1, point2, point3))
 
     @staticmethod
-    def byLoftingCurves(curves,degreeV = None):
+    def byLoftingCurves(curves, degreeV=None):
         _g = []
         _g1 = 0
         while (_g1 < len(curves)):
@@ -10161,11 +10595,13 @@ class verb_geom_NurbsSurface(verb_core_SerializableBase):
             _g1 = (_g1 + 1)
             x = c.asNurbs()
             _g.append(x)
-        return verb_geom_NurbsSurface(verb_eval_Make.loftedSurface(_g,degreeV))
+        return verb_geom_NurbsSurface(verb_eval_Make.loftedSurface(_g, degreeV))
 
     @staticmethod
     def _hx_empty_init(_hx_o):
         _hx_o._data = None
+
+
 verb_geom_NurbsSurface._hx_class = verb_geom_NurbsSurface
 _hx_classes["verb.geom.NurbsSurface"] = verb_geom_NurbsSurface
 
@@ -10179,14 +10615,13 @@ class verb_geom_ConicalSurface(verb_geom_NurbsSurface):
     _hx_interfaces = []
     _hx_super = verb_geom_NurbsSurface
 
-
-    def __init__(self,axis,xaxis,base,height,radius):
+    def __init__(self, axis, xaxis, base, height, radius):
         self._radius = None
         self._height = None
         self._base = None
         self._xaxis = None
         self._axis = None
-        super().__init__(verb_eval_Make.conicalSurface(axis,xaxis,base,height,radius))
+        super().__init__(verb_eval_Make.conicalSurface(axis, xaxis, base, height, radius))
         self._axis = axis
         self._xaxis = xaxis
         self._base = base
@@ -10215,6 +10650,8 @@ class verb_geom_ConicalSurface(verb_geom_NurbsSurface):
         _hx_o._base = None
         _hx_o._height = None
         _hx_o._radius = None
+
+
 verb_geom_ConicalSurface._hx_class = verb_geom_ConicalSurface
 _hx_classes["verb.geom.ConicalSurface"] = verb_geom_ConicalSurface
 
@@ -10228,14 +10665,13 @@ class verb_geom_CylindricalSurface(verb_geom_NurbsSurface):
     _hx_interfaces = []
     _hx_super = verb_geom_NurbsSurface
 
-
-    def __init__(self,axis,xaxis,base,height,radius):
+    def __init__(self, axis, xaxis, base, height, radius):
         self._radius = None
         self._height = None
         self._base = None
         self._xaxis = None
         self._axis = None
-        super().__init__(verb_eval_Make.cylindricalSurface(axis,xaxis,base,height,radius))
+        super().__init__(verb_eval_Make.cylindricalSurface(axis, xaxis, base, height, radius))
         self._axis = axis
         self._xaxis = xaxis
         self._base = base
@@ -10264,6 +10700,8 @@ class verb_geom_CylindricalSurface(verb_geom_NurbsSurface):
         _hx_o._base = None
         _hx_o._height = None
         _hx_o._radius = None
+
+
 verb_geom_CylindricalSurface._hx_class = verb_geom_CylindricalSurface
 _hx_classes["verb.geom.CylindricalSurface"] = verb_geom_CylindricalSurface
 
@@ -10277,14 +10715,13 @@ class verb_geom_EllipseArc(verb_geom_NurbsCurve):
     _hx_interfaces = []
     _hx_super = verb_geom_NurbsCurve
 
-
-    def __init__(self,center,xaxis,yaxis,minAngle,maxAngle):
+    def __init__(self, center, xaxis, yaxis, minAngle, maxAngle):
         self._maxAngle = None
         self._minAngle = None
         self._yaxis = None
         self._xaxis = None
         self._center = None
-        super().__init__(verb_eval_Make.ellipseArc(center,xaxis,yaxis,minAngle,maxAngle))
+        super().__init__(verb_eval_Make.ellipseArc(center, xaxis, yaxis, minAngle, maxAngle))
         self._center = center
         self._xaxis = xaxis
         self._yaxis = yaxis
@@ -10313,6 +10750,8 @@ class verb_geom_EllipseArc(verb_geom_NurbsCurve):
         _hx_o._yaxis = None
         _hx_o._minAngle = None
         _hx_o._maxAngle = None
+
+
 verb_geom_EllipseArc._hx_class = verb_geom_EllipseArc
 _hx_classes["verb.geom.EllipseArc"] = verb_geom_EllipseArc
 
@@ -10326,9 +10765,10 @@ class verb_geom_Ellipse(verb_geom_EllipseArc):
     _hx_interfaces = []
     _hx_super = verb_geom_EllipseArc
 
+    def __init__(self, center, xaxis, yaxis):
+        super().__init__(center, xaxis, yaxis, 0, (Math.PI * 2))
 
-    def __init__(self,center,xaxis,yaxis):
-        super().__init__(center,xaxis,yaxis,0,(Math.PI * 2))
+
 verb_geom_Ellipse._hx_class = verb_geom_Ellipse
 _hx_classes["verb.geom.Ellipse"] = verb_geom_Ellipse
 
@@ -10342,11 +10782,10 @@ class verb_geom_ExtrudedSurface(verb_geom_NurbsSurface):
     _hx_interfaces = []
     _hx_super = verb_geom_NurbsSurface
 
-
-    def __init__(self,profile,direction):
+    def __init__(self, profile, direction):
         self._direction = None
         self._profile = None
-        super().__init__(verb_eval_Make.extrudedSurface(verb_core_Vec.normalized(direction),verb_core_Vec.norm(direction),profile.asNurbs()))
+        super().__init__(verb_eval_Make.extrudedSurface(verb_core_Vec.normalized(direction), verb_core_Vec.norm(direction), profile.asNurbs()))
         self._profile = profile
         self._direction = direction
 
@@ -10360,6 +10799,8 @@ class verb_geom_ExtrudedSurface(verb_geom_NurbsSurface):
     def _hx_empty_init(_hx_o):
         _hx_o._profile = None
         _hx_o._direction = None
+
+
 verb_geom_ExtrudedSurface._hx_class = verb_geom_ExtrudedSurface
 _hx_classes["verb.geom.ExtrudedSurface"] = verb_geom_ExtrudedSurface
 
@@ -10370,43 +10811,45 @@ class verb_geom_Intersect:
     _hx_statics = ["curves", "curvesAsync", "curveAndSurface", "curveAndSurfaceAsync", "surfaces", "surfacesAsync"]
 
     @staticmethod
-    def curves(first,second,tol = None):
+    def curves(first, second, tol=None):
         if (tol is None):
             tol = 1e-3
-        return verb_eval_Intersect.curves(first.asNurbs(),second.asNurbs(),tol)
+        return verb_eval_Intersect.curves(first.asNurbs(), second.asNurbs(), tol)
 
     @staticmethod
-    def curvesAsync(first,second,tol = None):
+    def curvesAsync(first, second, tol=None):
         if (tol is None):
             tol = 1e-3
-        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Intersect,"curves",[first.asNurbs(), second.asNurbs(), tol])
+        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Intersect, "curves", [first.asNurbs(), second.asNurbs(), tol])
 
     @staticmethod
-    def curveAndSurface(curve,surface,tol = None):
+    def curveAndSurface(curve, surface, tol=None):
         if (tol is None):
             tol = 1e-3
-        return verb_eval_Intersect.curveAndSurface(curve.asNurbs(),surface.asNurbs(),tol)
+        return verb_eval_Intersect.curveAndSurface(curve.asNurbs(), surface.asNurbs(), tol)
 
     @staticmethod
-    def curveAndSurfaceAsync(curve,surface,tol = None):
+    def curveAndSurfaceAsync(curve, surface, tol=None):
         if (tol is None):
             tol = 1e-3
-        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Intersect,"curveAndSurface",[curve.asNurbs(), surface.asNurbs(), tol])
+        return verb_exe_Dispatcher.dispatchMethod(verb_eval_Intersect, "curveAndSurface", [curve.asNurbs(), surface.asNurbs(), tol])
 
     @staticmethod
-    def surfaces(first,second,tol = None):
+    def surfaces(first, second, tol=None):
         if (tol is None):
             tol = 1e-3
+
         def _hx_local_1():
             def _hx_local_0(cd):
                 return verb_geom_NurbsCurve(cd)
-            return list(map(_hx_local_0,verb_eval_Intersect.surfaces(first.asNurbs(),second.asNurbs(),tol)))
+            return list(map(_hx_local_0, verb_eval_Intersect.surfaces(first.asNurbs(), second.asNurbs(), tol)))
         return _hx_local_1()
 
     @staticmethod
-    def surfacesAsync(first,second,tol = None):
+    def surfacesAsync(first, second, tol=None):
         if (tol is None):
             tol = 1e-3
+
         def _hx_local_3():
             def _hx_local_2(cds):
                 def _hx_local_1():
@@ -10414,8 +10857,10 @@ class verb_geom_Intersect:
                         return verb_geom_NurbsCurve(cd)
                     return HxOverrides.map(cds, _hx_local_0)
                 return _hx_local_1()
-            return verb_exe_Dispatcher.dispatchMethod(verb_eval_Intersect,"surfaces",[first.asNurbs(), second.asNurbs(), tol]).then(_hx_local_2)
+            return verb_exe_Dispatcher.dispatchMethod(verb_eval_Intersect, "surfaces", [first.asNurbs(), second.asNurbs(), tol]).then(_hx_local_2)
         return _hx_local_3()
+
+
 verb_geom_Intersect._hx_class = verb_geom_Intersect
 _hx_classes["verb.geom.Intersect"] = verb_geom_Intersect
 
@@ -10429,8 +10874,7 @@ class verb_geom_Line(verb_geom_NurbsCurve):
     _hx_interfaces = []
     _hx_super = verb_geom_NurbsCurve
 
-
-    def __init__(self,start,end):
+    def __init__(self, start, end):
         self._end = None
         self._start = None
         super().__init__(verb_eval_Make.polyline([start, end]))
@@ -10447,6 +10891,8 @@ class verb_geom_Line(verb_geom_NurbsCurve):
     def _hx_empty_init(_hx_o):
         _hx_o._start = None
         _hx_o._end = None
+
+
 verb_geom_Line._hx_class = verb_geom_Line
 _hx_classes["verb.geom.Line"] = verb_geom_Line
 
@@ -10460,13 +10906,12 @@ class verb_geom_RevolvedSurface(verb_geom_NurbsSurface):
     _hx_interfaces = []
     _hx_super = verb_geom_NurbsSurface
 
-
-    def __init__(self,profile,center,axis,angle):
+    def __init__(self, profile, center, axis, angle):
         self._angle = None
         self._axis = None
         self._center = None
         self._profile = None
-        super().__init__(verb_eval_Make.revolvedSurface(profile.asNurbs(),center,axis,angle))
+        super().__init__(verb_eval_Make.revolvedSurface(profile.asNurbs(), center, axis, angle))
         self._profile = profile
         self._center = center
         self._axis = axis
@@ -10490,6 +10935,8 @@ class verb_geom_RevolvedSurface(verb_geom_NurbsSurface):
         _hx_o._center = None
         _hx_o._axis = None
         _hx_o._angle = None
+
+
 verb_geom_RevolvedSurface._hx_class = verb_geom_RevolvedSurface
 _hx_classes["verb.geom.RevolvedSurface"] = verb_geom_RevolvedSurface
 
@@ -10503,11 +10950,10 @@ class verb_geom_SphericalSurface(verb_geom_NurbsSurface):
     _hx_interfaces = []
     _hx_super = verb_geom_NurbsSurface
 
-
-    def __init__(self,center,radius):
+    def __init__(self, center, radius):
         self._radius = None
         self._center = None
-        super().__init__(verb_eval_Make.sphericalSurface(center,[0, 0, 1],[1, 0, 0],radius))
+        super().__init__(verb_eval_Make.sphericalSurface(center, [0, 0, 1], [1, 0, 0], radius))
         self._center = center
         self._radius = radius
 
@@ -10521,6 +10967,8 @@ class verb_geom_SphericalSurface(verb_geom_NurbsSurface):
     def _hx_empty_init(_hx_o):
         _hx_o._center = None
         _hx_o._radius = None
+
+
 verb_geom_SphericalSurface._hx_class = verb_geom_SphericalSurface
 _hx_classes["verb.geom.SphericalSurface"] = verb_geom_SphericalSurface
 
@@ -10534,11 +10982,10 @@ class verb_geom_SweptSurface(verb_geom_NurbsSurface):
     _hx_interfaces = []
     _hx_super = verb_geom_NurbsSurface
 
-
-    def __init__(self,profile,rail):
+    def __init__(self, profile, rail):
         self._rail = None
         self._profile = None
-        super().__init__(verb_eval_Make.rationalTranslationalSurface(profile.asNurbs(),rail.asNurbs()))
+        super().__init__(verb_eval_Make.rationalTranslationalSurface(profile.asNurbs(), rail.asNurbs()))
         self._profile = profile
         self._rail = rail
 
@@ -10552,6 +10999,8 @@ class verb_geom_SweptSurface(verb_geom_NurbsSurface):
     def _hx_empty_init(_hx_o):
         _hx_o._profile = None
         _hx_o._rail = None
+
+
 verb_geom_SweptSurface._hx_class = verb_geom_SweptSurface
 _hx_classes["verb.geom.SweptSurface"] = verb_geom_SweptSurface
 
@@ -10568,14 +11017,17 @@ haxe_Unserializer.DEFAULT_RESOLVER = haxe__Unserializer_DefaultResolver()
 haxe_Unserializer.BASE64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789%:"
 haxe_Unserializer.CODES = None
 promhx_base_EventLoop.queue = haxe_ds_List()
-python_Boot.keywords = set(["and", "del", "from", "not", "with", "as", "elif", "global", "or", "yield", "assert", "else", "if", "pass", "None", "break", "except", "import", "raise", "True", "class", "exec", "in", "return", "False", "continue", "finally", "is", "try", "def", "for", "lambda", "while"])
+python_Boot.keywords = set(["and", "del", "from", "not", "with", "as", "elif", "global", "or", "yield", "assert", "else", "if", "pass", "None", "break",
+                            "except", "import", "raise", "True", "class", "exec", "in", "return", "False", "continue", "finally", "is", "try", "def", "for", "lambda", "while"])
 python_Boot.prefixLength = len("_hx_")
 verb_core_Binomial.memo = haxe_ds_IntMap()
 verb_core_Constants.TOLERANCE = 1e-6
 verb_core_Constants.EPSILON = 1e-10
 verb_core_Constants.VERSION = "2.0.0"
-verb_eval_Analyze.Tvalues = [[], [], [-0.5773502691896257645091487805019574556476, 0.5773502691896257645091487805019574556476], [0, -0.7745966692414833770358530799564799221665, 0.7745966692414833770358530799564799221665], [-0.3399810435848562648026657591032446872005, 0.3399810435848562648026657591032446872005, -0.8611363115940525752239464888928095050957, 0.8611363115940525752239464888928095050957], [0, -0.5384693101056830910363144207002088049672, 0.5384693101056830910363144207002088049672, -0.9061798459386639927976268782993929651256, 0.9061798459386639927976268782993929651256], [0.6612093864662645136613995950199053470064, -0.6612093864662645136613995950199053470064, -0.2386191860831969086305017216807119354186, 0.2386191860831969086305017216807119354186, -0.9324695142031520278123015544939946091347, 0.9324695142031520278123015544939946091347], [0, 0.4058451513773971669066064120769614633473, -0.4058451513773971669066064120769614633473, -0.7415311855993944398638647732807884070741, 0.7415311855993944398638647732807884070741, -0.9491079123427585245261896840478512624007, 0.9491079123427585245261896840478512624007], [-0.1834346424956498049394761423601839806667, 0.1834346424956498049394761423601839806667, -0.5255324099163289858177390491892463490419, 0.5255324099163289858177390491892463490419, -0.7966664774136267395915539364758304368371, 0.7966664774136267395915539364758304368371, -0.9602898564975362316835608685694729904282, 0.9602898564975362316835608685694729904282], [0, -0.8360311073266357942994297880697348765441, 0.8360311073266357942994297880697348765441, -0.9681602395076260898355762029036728700494, 0.9681602395076260898355762029036728700494, -0.3242534234038089290385380146433366085719, 0.3242534234038089290385380146433366085719, -0.6133714327005903973087020393414741847857, 0.6133714327005903973087020393414741847857], [-0.1488743389816312108848260011297199846175, 0.1488743389816312108848260011297199846175, -0.4333953941292471907992659431657841622000, 0.4333953941292471907992659431657841622000, -0.6794095682990244062343273651148735757692, 0.6794095682990244062343273651148735757692, -0.8650633666889845107320966884234930485275, 0.8650633666889845107320966884234930485275, -0.9739065285171717200779640120844520534282, 0.9739065285171717200779640120844520534282], [0, -0.2695431559523449723315319854008615246796, 0.2695431559523449723315319854008615246796, -0.5190961292068118159257256694586095544802, 0.5190961292068118159257256694586095544802, -0.7301520055740493240934162520311534580496, 0.7301520055740493240934162520311534580496, -0.8870625997680952990751577693039272666316, 0.8870625997680952990751577693039272666316, -0.9782286581460569928039380011228573907714, 0.9782286581460569928039380011228573907714], [-0.1252334085114689154724413694638531299833, 0.1252334085114689154724413694638531299833, -0.3678314989981801937526915366437175612563, 0.3678314989981801937526915366437175612563, -0.5873179542866174472967024189405342803690, 0.5873179542866174472967024189405342803690, -0.7699026741943046870368938332128180759849, 0.7699026741943046870368938332128180759849, -0.9041172563704748566784658661190961925375, 0.9041172563704748566784658661190961925375, -0.9815606342467192506905490901492808229601, 0.9815606342467192506905490901492808229601], [0, -0.2304583159551347940655281210979888352115, 0.2304583159551347940655281210979888352115, -0.4484927510364468528779128521276398678019, 0.4484927510364468528779128521276398678019, -0.6423493394403402206439846069955156500716, 0.6423493394403402206439846069955156500716, -0.8015780907333099127942064895828598903056, 0.8015780907333099127942064895828598903056, -0.9175983992229779652065478365007195123904, 0.9175983992229779652065478365007195123904, -0.9841830547185881494728294488071096110649, 0.9841830547185881494728294488071096110649], [-0.1080549487073436620662446502198347476119, 0.1080549487073436620662446502198347476119, -0.3191123689278897604356718241684754668342, 0.3191123689278897604356718241684754668342, -0.5152486363581540919652907185511886623088, 0.5152486363581540919652907185511886623088, -0.6872929048116854701480198030193341375384, 0.6872929048116854701480198030193341375384, -0.8272013150697649931897947426503949610397, 0.8272013150697649931897947426503949610397, -0.9284348836635735173363911393778742644770, 0.9284348836635735173363911393778742644770, -0.9862838086968123388415972667040528016760, 0.9862838086968123388415972667040528016760], [0, -0.2011940939974345223006283033945962078128, 0.2011940939974345223006283033945962078128, -0.3941513470775633698972073709810454683627, 0.3941513470775633698972073709810454683627, -0.5709721726085388475372267372539106412383, 0.5709721726085388475372267372539106412383, -0.7244177313601700474161860546139380096308, 0.7244177313601700474161860546139380096308, -0.8482065834104272162006483207742168513662, 0.8482065834104272162006483207742168513662, -0.9372733924007059043077589477102094712439, 0.9372733924007059043077589477102094712439, -0.9879925180204854284895657185866125811469, 0.9879925180204854284895657185866125811469], [-0.0950125098376374401853193354249580631303, 0.0950125098376374401853193354249580631303, -0.2816035507792589132304605014604961064860, 0.2816035507792589132304605014604961064860, -0.4580167776572273863424194429835775735400, 0.4580167776572273863424194429835775735400, -0.6178762444026437484466717640487910189918, 0.6178762444026437484466717640487910189918, -0.7554044083550030338951011948474422683538, 0.7554044083550030338951011948474422683538, -0.8656312023878317438804678977123931323873, 0.8656312023878317438804678977123931323873, -0.9445750230732325760779884155346083450911, 0.9445750230732325760779884155346083450911, -0.9894009349916499325961541734503326274262, 0.9894009349916499325961541734503326274262], [0, -0.1784841814958478558506774936540655574754, 0.1784841814958478558506774936540655574754, -0.3512317634538763152971855170953460050405, 0.3512317634538763152971855170953460050405, -0.5126905370864769678862465686295518745829, 0.5126905370864769678862465686295518745829, -0.6576711592166907658503022166430023351478, 0.6576711592166907658503022166430023351478, -0.7815140038968014069252300555204760502239, 0.7815140038968014069252300555204760502239, -0.8802391537269859021229556944881556926234, 0.8802391537269859021229556944881556926234, -0.9506755217687677612227169578958030214433, 0.9506755217687677612227169578958030214433, -0.9905754753144173356754340199406652765077, 0.9905754753144173356754340199406652765077], [-0.0847750130417353012422618529357838117333, 0.0847750130417353012422618529357838117333, -0.2518862256915055095889728548779112301628, 0.2518862256915055095889728548779112301628, -0.4117511614628426460359317938330516370789, 0.4117511614628426460359317938330516370789, -0.5597708310739475346078715485253291369276, 0.5597708310739475346078715485253291369276, -0.6916870430603532078748910812888483894522, 0.6916870430603532078748910812888483894522, -0.8037049589725231156824174550145907971032, 0.8037049589725231156824174550145907971032, -0.8926024664975557392060605911271455154078, 0.8926024664975557392060605911271455154078, -0.9558239495713977551811958929297763099728, 0.9558239495713977551811958929297763099728, -0.9915651684209309467300160047061507702525, 0.9915651684209309467300160047061507702525], [0, -0.1603586456402253758680961157407435495048, 0.1603586456402253758680961157407435495048, -0.3165640999636298319901173288498449178922, 0.3165640999636298319901173288498449178922, -0.4645707413759609457172671481041023679762, 0.4645707413759609457172671481041023679762, -0.6005453046616810234696381649462392798683, 0.6005453046616810234696381649462392798683, -0.7209661773352293786170958608237816296571, 0.7209661773352293786170958608237816296571, -0.8227146565371428249789224867127139017745, 0.8227146565371428249789224867127139017745, -0.9031559036148179016426609285323124878093, 0.9031559036148179016426609285323124878093, -0.9602081521348300308527788406876515266150, 0.9602081521348300308527788406876515266150, -0.9924068438435844031890176702532604935893, 0.9924068438435844031890176702532604935893], [-0.0765265211334973337546404093988382110047, 0.0765265211334973337546404093988382110047, -0.2277858511416450780804961953685746247430, 0.2277858511416450780804961953685746247430, -0.3737060887154195606725481770249272373957, 0.3737060887154195606725481770249272373957, -0.5108670019508270980043640509552509984254, 0.5108670019508270980043640509552509984254, -0.6360536807265150254528366962262859367433, 0.6360536807265150254528366962262859367433, -0.7463319064601507926143050703556415903107, 0.7463319064601507926143050703556415903107, -0.8391169718222188233945290617015206853296, 0.8391169718222188233945290617015206853296, -0.9122344282513259058677524412032981130491, 0.9122344282513259058677524412032981130491, -0.9639719272779137912676661311972772219120, 0.9639719272779137912676661311972772219120, -0.9931285991850949247861223884713202782226, 0.9931285991850949247861223884713202782226], [0, -0.1455618541608950909370309823386863301163, 0.1455618541608950909370309823386863301163, -0.2880213168024010966007925160646003199090, 0.2880213168024010966007925160646003199090, -0.4243421202074387835736688885437880520964, 0.4243421202074387835736688885437880520964, -0.5516188358872198070590187967243132866220, 0.5516188358872198070590187967243132866220, -0.6671388041974123193059666699903391625970, 0.6671388041974123193059666699903391625970, -0.7684399634756779086158778513062280348209, 0.7684399634756779086158778513062280348209, -0.8533633645833172836472506385875676702761, 0.8533633645833172836472506385875676702761, -0.9200993341504008287901871337149688941591, 0.9200993341504008287901871337149688941591, -0.9672268385663062943166222149076951614246, 0.9672268385663062943166222149076951614246, -0.9937521706203895002602420359379409291933, 0.9937521706203895002602420359379409291933], [-0.0697392733197222212138417961186280818222, 0.0697392733197222212138417961186280818222, -0.2078604266882212854788465339195457342156, 0.2078604266882212854788465339195457342156, -0.3419358208920842251581474204273796195591, 0.3419358208920842251581474204273796195591, -0.4693558379867570264063307109664063460953, 0.4693558379867570264063307109664063460953, -0.5876404035069115929588769276386473488776, 0.5876404035069115929588769276386473488776, -0.6944872631866827800506898357622567712673, 0.6944872631866827800506898357622567712673, -0.7878168059792081620042779554083515213881, 0.7878168059792081620042779554083515213881, -0.8658125777203001365364256370193787290847, 0.8658125777203001365364256370193787290847, -0.9269567721871740005206929392590531966353, 0.9269567721871740005206929392590531966353, -0.9700604978354287271239509867652687108059, 0.9700604978354287271239509867652687108059, -0.9942945854823992920730314211612989803930, 0.9942945854823992920730314211612989803930], [0, -0.1332568242984661109317426822417661370104, 0.1332568242984661109317426822417661370104, -0.2641356809703449305338695382833096029790, 0.2641356809703449305338695382833096029790, -0.3903010380302908314214888728806054585780, 0.3903010380302908314214888728806054585780, -0.5095014778460075496897930478668464305448, 0.5095014778460075496897930478668464305448, -0.6196098757636461563850973116495956533871, 0.6196098757636461563850973116495956533871, -0.7186613631319501944616244837486188483299, 0.7186613631319501944616244837486188483299, -0.8048884016188398921511184069967785579414, 0.8048884016188398921511184069967785579414, -0.8767523582704416673781568859341456716389, 0.8767523582704416673781568859341456716389, -0.9329710868260161023491969890384229782357, 0.9329710868260161023491969890384229782357, -0.9725424712181152319560240768207773751816, 0.9725424712181152319560240768207773751816, -0.9947693349975521235239257154455743605736, 0.9947693349975521235239257154455743605736], [-0.0640568928626056260850430826247450385909, 0.0640568928626056260850430826247450385909, -0.1911188674736163091586398207570696318404, 0.1911188674736163091586398207570696318404, -0.3150426796961633743867932913198102407864, 0.3150426796961633743867932913198102407864, -0.4337935076260451384870842319133497124524, 0.4337935076260451384870842319133497124524, -0.5454214713888395356583756172183723700107, 0.5454214713888395356583756172183723700107, -0.6480936519369755692524957869107476266696, 0.6480936519369755692524957869107476266696, -0.7401241915785543642438281030999784255232, 0.7401241915785543642438281030999784255232, -0.8200019859739029219539498726697452080761, 0.8200019859739029219539498726697452080761, -0.8864155270044010342131543419821967550873, 0.8864155270044010342131543419821967550873, -0.9382745520027327585236490017087214496548, 0.9382745520027327585236490017087214496548, -0.9747285559713094981983919930081690617411, 0.9747285559713094981983919930081690617411, -0.9951872199970213601799974097007368118745, 0.9951872199970213601799974097007368118745]]
-verb_eval_Analyze.Cvalues = [[], [], [1.0, 1.0], [0.8888888888888888888888888888888888888888, 0.5555555555555555555555555555555555555555, 0.5555555555555555555555555555555555555555], [0.6521451548625461426269360507780005927646, 0.6521451548625461426269360507780005927646, 0.3478548451374538573730639492219994072353, 0.3478548451374538573730639492219994072353], [0.5688888888888888888888888888888888888888, 0.4786286704993664680412915148356381929122, 0.4786286704993664680412915148356381929122, 0.2369268850561890875142640407199173626432, 0.2369268850561890875142640407199173626432], [0.3607615730481386075698335138377161116615, 0.3607615730481386075698335138377161116615, 0.4679139345726910473898703439895509948116, 0.4679139345726910473898703439895509948116, 0.1713244923791703450402961421727328935268, 0.1713244923791703450402961421727328935268], [0.4179591836734693877551020408163265306122, 0.3818300505051189449503697754889751338783, 0.3818300505051189449503697754889751338783, 0.2797053914892766679014677714237795824869, 0.2797053914892766679014677714237795824869, 0.1294849661688696932706114326790820183285, 0.1294849661688696932706114326790820183285], [0.3626837833783619829651504492771956121941, 0.3626837833783619829651504492771956121941, 0.3137066458778872873379622019866013132603, 0.3137066458778872873379622019866013132603, 0.2223810344533744705443559944262408844301, 0.2223810344533744705443559944262408844301, 0.1012285362903762591525313543099621901153, 0.1012285362903762591525313543099621901153], [0.3302393550012597631645250692869740488788, 0.1806481606948574040584720312429128095143, 0.1806481606948574040584720312429128095143, 0.0812743883615744119718921581105236506756, 0.0812743883615744119718921581105236506756, 0.3123470770400028400686304065844436655987, 0.3123470770400028400686304065844436655987, 0.2606106964029354623187428694186328497718, 0.2606106964029354623187428694186328497718], [0.2955242247147528701738929946513383294210, 0.2955242247147528701738929946513383294210, 0.2692667193099963550912269215694693528597, 0.2692667193099963550912269215694693528597, 0.2190863625159820439955349342281631924587, 0.2190863625159820439955349342281631924587, 0.1494513491505805931457763396576973324025, 0.1494513491505805931457763396576973324025, 0.0666713443086881375935688098933317928578, 0.0666713443086881375935688098933317928578], [0.2729250867779006307144835283363421891560, 0.2628045445102466621806888698905091953727, 0.2628045445102466621806888698905091953727, 0.2331937645919904799185237048431751394317, 0.2331937645919904799185237048431751394317, 0.1862902109277342514260976414316558916912, 0.1862902109277342514260976414316558916912, 0.1255803694649046246346942992239401001976, 0.1255803694649046246346942992239401001976, 0.0556685671161736664827537204425485787285, 0.0556685671161736664827537204425485787285], [0.2491470458134027850005624360429512108304, 0.2491470458134027850005624360429512108304, 0.2334925365383548087608498989248780562594, 0.2334925365383548087608498989248780562594, 0.2031674267230659217490644558097983765065, 0.2031674267230659217490644558097983765065, 0.1600783285433462263346525295433590718720, 0.1600783285433462263346525295433590718720, 0.1069393259953184309602547181939962242145, 0.1069393259953184309602547181939962242145, 0.0471753363865118271946159614850170603170, 0.0471753363865118271946159614850170603170], [0.2325515532308739101945895152688359481566, 0.2262831802628972384120901860397766184347, 0.2262831802628972384120901860397766184347, 0.2078160475368885023125232193060527633865, 0.2078160475368885023125232193060527633865, 0.1781459807619457382800466919960979955128, 0.1781459807619457382800466919960979955128, 0.1388735102197872384636017768688714676218, 0.1388735102197872384636017768688714676218, 0.0921214998377284479144217759537971209236, 0.0921214998377284479144217759537971209236, 0.0404840047653158795200215922009860600419, 0.0404840047653158795200215922009860600419], [0.2152638534631577901958764433162600352749, 0.2152638534631577901958764433162600352749, 0.2051984637212956039659240656612180557103, 0.2051984637212956039659240656612180557103, 0.1855383974779378137417165901251570362489, 0.1855383974779378137417165901251570362489, 0.1572031671581935345696019386238421566056, 0.1572031671581935345696019386238421566056, 0.1215185706879031846894148090724766259566, 0.1215185706879031846894148090724766259566, 0.0801580871597602098056332770628543095836, 0.0801580871597602098056332770628543095836, 0.0351194603317518630318328761381917806197, 0.0351194603317518630318328761381917806197], [0.2025782419255612728806201999675193148386, 0.1984314853271115764561183264438393248186, 0.1984314853271115764561183264438393248186, 0.1861610000155622110268005618664228245062, 0.1861610000155622110268005618664228245062, 0.1662692058169939335532008604812088111309, 0.1662692058169939335532008604812088111309, 0.1395706779261543144478047945110283225208, 0.1395706779261543144478047945110283225208, 0.1071592204671719350118695466858693034155, 0.1071592204671719350118695466858693034155, 0.0703660474881081247092674164506673384667, 0.0703660474881081247092674164506673384667, 0.0307532419961172683546283935772044177217, 0.0307532419961172683546283935772044177217], [0.1894506104550684962853967232082831051469, 0.1894506104550684962853967232082831051469, 0.1826034150449235888667636679692199393835, 0.1826034150449235888667636679692199393835, 0.1691565193950025381893120790303599622116, 0.1691565193950025381893120790303599622116, 0.1495959888165767320815017305474785489704, 0.1495959888165767320815017305474785489704, 0.1246289712555338720524762821920164201448, 0.1246289712555338720524762821920164201448, 0.0951585116824927848099251076022462263552, 0.0951585116824927848099251076022462263552, 0.0622535239386478928628438369943776942749, 0.0622535239386478928628438369943776942749, 0.0271524594117540948517805724560181035122, 0.0271524594117540948517805724560181035122], [0.1794464703562065254582656442618856214487, 0.1765627053669926463252709901131972391509, 0.1765627053669926463252709901131972391509, 0.1680041021564500445099706637883231550211, 0.1680041021564500445099706637883231550211, 0.1540457610768102880814315948019586119404, 0.1540457610768102880814315948019586119404, 0.1351363684685254732863199817023501973721, 0.1351363684685254732863199817023501973721, 0.1118838471934039710947883856263559267358, 0.1118838471934039710947883856263559267358, 0.0850361483171791808835353701910620738504, 0.0850361483171791808835353701910620738504, 0.0554595293739872011294401653582446605128, 0.0554595293739872011294401653582446605128, 0.0241483028685479319601100262875653246916, 0.0241483028685479319601100262875653246916], [0.1691423829631435918406564701349866103341, 0.1691423829631435918406564701349866103341, 0.1642764837458327229860537764659275904123, 0.1642764837458327229860537764659275904123, 0.1546846751262652449254180038363747721932, 0.1546846751262652449254180038363747721932, 0.1406429146706506512047313037519472280955, 0.1406429146706506512047313037519472280955, 0.1225552067114784601845191268002015552281, 0.1225552067114784601845191268002015552281, 0.1009420441062871655628139849248346070628, 0.1009420441062871655628139849248346070628, 0.0764257302548890565291296776166365256053, 0.0764257302548890565291296776166365256053, 0.0497145488949697964533349462026386416808, 0.0497145488949697964533349462026386416808, 0.0216160135264833103133427102664524693876, 0.0216160135264833103133427102664524693876], [0.1610544498487836959791636253209167350399, 0.1589688433939543476499564394650472016787, 0.1589688433939543476499564394650472016787, 0.1527660420658596667788554008976629984610, 0.1527660420658596667788554008976629984610, 0.1426067021736066117757461094419029724756, 0.1426067021736066117757461094419029724756, 0.1287539625393362276755157848568771170558, 0.1287539625393362276755157848568771170558, 0.1115666455473339947160239016817659974813, 0.1115666455473339947160239016817659974813, 0.0914900216224499994644620941238396526609, 0.0914900216224499994644620941238396526609, 0.0690445427376412265807082580060130449618, 0.0690445427376412265807082580060130449618, 0.0448142267656996003328381574019942119517, 0.0448142267656996003328381574019942119517, 0.0194617882297264770363120414644384357529, 0.0194617882297264770363120414644384357529], [0.1527533871307258506980843319550975934919, 0.1527533871307258506980843319550975934919, 0.1491729864726037467878287370019694366926, 0.1491729864726037467878287370019694366926, 0.1420961093183820513292983250671649330345, 0.1420961093183820513292983250671649330345, 0.1316886384491766268984944997481631349161, 0.1316886384491766268984944997481631349161, 0.1181945319615184173123773777113822870050, 0.1181945319615184173123773777113822870050, 0.1019301198172404350367501354803498761666, 0.1019301198172404350367501354803498761666, 0.0832767415767047487247581432220462061001, 0.0832767415767047487247581432220462061001, 0.0626720483341090635695065351870416063516, 0.0626720483341090635695065351870416063516, 0.0406014298003869413310399522749321098790, 0.0406014298003869413310399522749321098790, 0.0176140071391521183118619623518528163621, 0.0176140071391521183118619623518528163621], [0.1460811336496904271919851476833711882448, 0.1445244039899700590638271665537525436099, 0.1445244039899700590638271665537525436099, 0.1398873947910731547221334238675831108927, 0.1398873947910731547221334238675831108927, 0.1322689386333374617810525744967756043290, 0.1322689386333374617810525744967756043290, 0.1218314160537285341953671771257335983563, 0.1218314160537285341953671771257335983563, 0.1087972991671483776634745780701056420336, 0.1087972991671483776634745780701056420336, 0.0934444234560338615532897411139320884835, 0.0934444234560338615532897411139320884835, 0.0761001136283793020170516533001831792261, 0.0761001136283793020170516533001831792261, 0.0571344254268572082836358264724479574912, 0.0571344254268572082836358264724479574912, 0.0369537897708524937999506682993296661889, 0.0369537897708524937999506682993296661889, 0.0160172282577743333242246168584710152658, 0.0160172282577743333242246168584710152658], [0.1392518728556319933754102483418099578739, 0.1392518728556319933754102483418099578739, 0.1365414983460151713525738312315173965863, 0.1365414983460151713525738312315173965863, 0.1311735047870623707329649925303074458757, 0.1311735047870623707329649925303074458757, 0.1232523768105124242855609861548144719594, 0.1232523768105124242855609861548144719594, 0.1129322960805392183934006074217843191142, 0.1129322960805392183934006074217843191142, 0.1004141444428809649320788378305362823508, 0.1004141444428809649320788378305362823508, 0.0859416062170677274144436813727028661891, 0.0859416062170677274144436813727028661891, 0.0697964684245204880949614189302176573987, 0.0697964684245204880949614189302176573987, 0.0522933351526832859403120512732112561121, 0.0522933351526832859403120512732112561121, 0.0337749015848141547933022468659129013491, 0.0337749015848141547933022468659129013491, 0.0146279952982722006849910980471854451902, 0.0146279952982722006849910980471854451902], [0.1336545721861061753514571105458443385831, 0.1324620394046966173716424647033169258050, 0.1324620394046966173716424647033169258050, 0.1289057221880821499785953393997936532597, 0.1289057221880821499785953393997936532597, 0.1230490843067295304675784006720096548158, 0.1230490843067295304675784006720096548158, 0.1149966402224113649416435129339613014914, 0.1149966402224113649416435129339613014914, 0.1048920914645414100740861850147438548584, 0.1048920914645414100740861850147438548584, 0.0929157660600351474770186173697646486034, 0.0929157660600351474770186173697646486034, 0.0792814117767189549228925247420432269137, 0.0792814117767189549228925247420432269137, 0.0642324214085258521271696151589109980391, 0.0642324214085258521271696151589109980391, 0.0480376717310846685716410716320339965612, 0.0480376717310846685716410716320339965612, 0.0309880058569794443106942196418845053837, 0.0309880058569794443106942196418845053837, 0.0134118594871417720813094934586150649766, 0.0134118594871417720813094934586150649766], [0.1279381953467521569740561652246953718517, 0.1279381953467521569740561652246953718517, 0.1258374563468282961213753825111836887264, 0.1258374563468282961213753825111836887264, 0.1216704729278033912044631534762624256070, 0.1216704729278033912044631534762624256070, 0.1155056680537256013533444839067835598622, 0.1155056680537256013533444839067835598622, 0.1074442701159656347825773424466062227946, 0.1074442701159656347825773424466062227946, 0.0976186521041138882698806644642471544279, 0.0976186521041138882698806644642471544279, 0.0861901615319532759171852029837426671850, 0.0861901615319532759171852029837426671850, 0.0733464814110803057340336152531165181193, 0.0733464814110803057340336152531165181193, 0.0592985849154367807463677585001085845412, 0.0592985849154367807463677585001085845412, 0.0442774388174198061686027482113382288593, 0.0442774388174198061686027482113382288593, 0.0285313886289336631813078159518782864491, 0.0285313886289336631813078159518782864491, 0.0123412297999871995468056670700372915759, 0.0123412297999871995468056670700372915759]]
+verb_eval_Analyze.Tvalues = [[], [], [-0.5773502691896257645091487805019574556476, 0.5773502691896257645091487805019574556476], [0, -0.7745966692414833770358530799564799221665, 0.7745966692414833770358530799564799221665], [-0.3399810435848562648026657591032446872005, 0.3399810435848562648026657591032446872005, -0.8611363115940525752239464888928095050957, 0.8611363115940525752239464888928095050957], [0, -0.5384693101056830910363144207002088049672, 0.5384693101056830910363144207002088049672, -0.9061798459386639927976268782993929651256, 0.9061798459386639927976268782993929651256], [0.6612093864662645136613995950199053470064, -0.6612093864662645136613995950199053470064, -0.2386191860831969086305017216807119354186, 0.2386191860831969086305017216807119354186, -0.9324695142031520278123015544939946091347, 0.9324695142031520278123015544939946091347], [0, 0.4058451513773971669066064120769614633473, -0.4058451513773971669066064120769614633473, -0.7415311855993944398638647732807884070741, 0.7415311855993944398638647732807884070741, -0.9491079123427585245261896840478512624007, 0.9491079123427585245261896840478512624007], [-0.1834346424956498049394761423601839806667, 0.1834346424956498049394761423601839806667, -0.5255324099163289858177390491892463490419, 0.5255324099163289858177390491892463490419, -0.7966664774136267395915539364758304368371, 0.7966664774136267395915539364758304368371, -0.9602898564975362316835608685694729904282, 0.9602898564975362316835608685694729904282], [0, -0.8360311073266357942994297880697348765441, 0.8360311073266357942994297880697348765441, -0.9681602395076260898355762029036728700494, 0.9681602395076260898355762029036728700494, -0.3242534234038089290385380146433366085719, 0.3242534234038089290385380146433366085719, -0.6133714327005903973087020393414741847857, 0.6133714327005903973087020393414741847857], [-0.1488743389816312108848260011297199846175, 0.1488743389816312108848260011297199846175, -0.4333953941292471907992659431657841622000, 0.4333953941292471907992659431657841622000, -0.6794095682990244062343273651148735757692, 0.6794095682990244062343273651148735757692, -0.8650633666889845107320966884234930485275, 0.8650633666889845107320966884234930485275, -0.9739065285171717200779640120844520534282, 0.9739065285171717200779640120844520534282], [0, -0.2695431559523449723315319854008615246796, 0.2695431559523449723315319854008615246796, -0.5190961292068118159257256694586095544802, 0.5190961292068118159257256694586095544802, -0.7301520055740493240934162520311534580496, 0.7301520055740493240934162520311534580496, -0.8870625997680952990751577693039272666316, 0.8870625997680952990751577693039272666316, -0.9782286581460569928039380011228573907714, 0.9782286581460569928039380011228573907714], [-0.1252334085114689154724413694638531299833, 0.1252334085114689154724413694638531299833, -0.3678314989981801937526915366437175612563, 0.3678314989981801937526915366437175612563, -0.5873179542866174472967024189405342803690, 0.5873179542866174472967024189405342803690, -0.7699026741943046870368938332128180759849, 0.7699026741943046870368938332128180759849, -0.9041172563704748566784658661190961925375, 0.9041172563704748566784658661190961925375, -0.9815606342467192506905490901492808229601, 0.9815606342467192506905490901492808229601], [0, -0.2304583159551347940655281210979888352115, 0.2304583159551347940655281210979888352115, -0.4484927510364468528779128521276398678019, 0.4484927510364468528779128521276398678019, -0.6423493394403402206439846069955156500716, 0.6423493394403402206439846069955156500716, -0.8015780907333099127942064895828598903056, 0.8015780907333099127942064895828598903056, -0.9175983992229779652065478365007195123904, 0.9175983992229779652065478365007195123904, -0.9841830547185881494728294488071096110649, 0.9841830547185881494728294488071096110649], [-0.1080549487073436620662446502198347476119, 0.1080549487073436620662446502198347476119, -0.3191123689278897604356718241684754668342, 0.3191123689278897604356718241684754668342, -0.5152486363581540919652907185511886623088, 0.5152486363581540919652907185511886623088, -0.6872929048116854701480198030193341375384, 0.6872929048116854701480198030193341375384, -0.8272013150697649931897947426503949610397, 0.8272013150697649931897947426503949610397, -0.9284348836635735173363911393778742644770, 0.9284348836635735173363911393778742644770, -0.9862838086968123388415972667040528016760, 0.9862838086968123388415972667040528016760], [0, -0.2011940939974345223006283033945962078128, 0.2011940939974345223006283033945962078128, -0.3941513470775633698972073709810454683627, 0.3941513470775633698972073709810454683627, -0.5709721726085388475372267372539106412383, 0.5709721726085388475372267372539106412383, -0.7244177313601700474161860546139380096308, 0.7244177313601700474161860546139380096308, -0.8482065834104272162006483207742168513662, 0.8482065834104272162006483207742168513662, -0.9372733924007059043077589477102094712439, 0.9372733924007059043077589477102094712439, -0.9879925180204854284895657185866125811469, 0.9879925180204854284895657185866125811469], [-0.0950125098376374401853193354249580631303, 0.0950125098376374401853193354249580631303, -0.2816035507792589132304605014604961064860, 0.2816035507792589132304605014604961064860, -0.4580167776572273863424194429835775735400, 0.4580167776572273863424194429835775735400, -0.6178762444026437484466717640487910189918, 0.6178762444026437484466717640487910189918, -0.7554044083550030338951011948474422683538, 0.7554044083550030338951011948474422683538, -0.8656312023878317438804678977123931323873, 0.8656312023878317438804678977123931323873, -0.9445750230732325760779884155346083450911, 0.9445750230732325760779884155346083450911, -0.9894009349916499325961541734503326274262, 0.9894009349916499325961541734503326274262], [0, -0.1784841814958478558506774936540655574754, 0.1784841814958478558506774936540655574754, -0.3512317634538763152971855170953460050405, 0.3512317634538763152971855170953460050405, -0.5126905370864769678862465686295518745829, 0.5126905370864769678862465686295518745829, -0.6576711592166907658503022166430023351478, 0.6576711592166907658503022166430023351478, -0.7815140038968014069252300555204760502239, 0.7815140038968014069252300555204760502239, -0.8802391537269859021229556944881556926234, 0.8802391537269859021229556944881556926234, -0.9506755217687677612227169578958030214433, 0.9506755217687677612227169578958030214433, -0.9905754753144173356754340199406652765077,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         0.9905754753144173356754340199406652765077], [-0.0847750130417353012422618529357838117333, 0.0847750130417353012422618529357838117333, -0.2518862256915055095889728548779112301628, 0.2518862256915055095889728548779112301628, -0.4117511614628426460359317938330516370789, 0.4117511614628426460359317938330516370789, -0.5597708310739475346078715485253291369276, 0.5597708310739475346078715485253291369276, -0.6916870430603532078748910812888483894522, 0.6916870430603532078748910812888483894522, -0.8037049589725231156824174550145907971032, 0.8037049589725231156824174550145907971032, -0.8926024664975557392060605911271455154078, 0.8926024664975557392060605911271455154078, -0.9558239495713977551811958929297763099728, 0.9558239495713977551811958929297763099728, -0.9915651684209309467300160047061507702525, 0.9915651684209309467300160047061507702525], [0, -0.1603586456402253758680961157407435495048, 0.1603586456402253758680961157407435495048, -0.3165640999636298319901173288498449178922, 0.3165640999636298319901173288498449178922, -0.4645707413759609457172671481041023679762, 0.4645707413759609457172671481041023679762, -0.6005453046616810234696381649462392798683, 0.6005453046616810234696381649462392798683, -0.7209661773352293786170958608237816296571, 0.7209661773352293786170958608237816296571, -0.8227146565371428249789224867127139017745, 0.8227146565371428249789224867127139017745, -0.9031559036148179016426609285323124878093, 0.9031559036148179016426609285323124878093, -0.9602081521348300308527788406876515266150, 0.9602081521348300308527788406876515266150, -0.9924068438435844031890176702532604935893, 0.9924068438435844031890176702532604935893], [-0.0765265211334973337546404093988382110047, 0.0765265211334973337546404093988382110047, -0.2277858511416450780804961953685746247430, 0.2277858511416450780804961953685746247430, -0.3737060887154195606725481770249272373957, 0.3737060887154195606725481770249272373957, -0.5108670019508270980043640509552509984254, 0.5108670019508270980043640509552509984254, -0.6360536807265150254528366962262859367433, 0.6360536807265150254528366962262859367433, -0.7463319064601507926143050703556415903107, 0.7463319064601507926143050703556415903107, -0.8391169718222188233945290617015206853296, 0.8391169718222188233945290617015206853296, -0.9122344282513259058677524412032981130491, 0.9122344282513259058677524412032981130491, -0.9639719272779137912676661311972772219120, 0.9639719272779137912676661311972772219120, -0.9931285991850949247861223884713202782226, 0.9931285991850949247861223884713202782226], [0, -0.1455618541608950909370309823386863301163, 0.1455618541608950909370309823386863301163, -0.2880213168024010966007925160646003199090, 0.2880213168024010966007925160646003199090, -0.4243421202074387835736688885437880520964, 0.4243421202074387835736688885437880520964, -0.5516188358872198070590187967243132866220, 0.5516188358872198070590187967243132866220, -0.6671388041974123193059666699903391625970, 0.6671388041974123193059666699903391625970, -0.7684399634756779086158778513062280348209, 0.7684399634756779086158778513062280348209, -0.8533633645833172836472506385875676702761, 0.8533633645833172836472506385875676702761, -0.9200993341504008287901871337149688941591, 0.9200993341504008287901871337149688941591, -0.9672268385663062943166222149076951614246, 0.9672268385663062943166222149076951614246, -0.9937521706203895002602420359379409291933, 0.9937521706203895002602420359379409291933], [-0.0697392733197222212138417961186280818222, 0.0697392733197222212138417961186280818222, -0.2078604266882212854788465339195457342156, 0.2078604266882212854788465339195457342156, -0.3419358208920842251581474204273796195591, 0.3419358208920842251581474204273796195591, -0.4693558379867570264063307109664063460953, 0.4693558379867570264063307109664063460953, -0.5876404035069115929588769276386473488776, 0.5876404035069115929588769276386473488776, -0.6944872631866827800506898357622567712673, 0.6944872631866827800506898357622567712673, -0.7878168059792081620042779554083515213881, 0.7878168059792081620042779554083515213881, -0.8658125777203001365364256370193787290847, 0.8658125777203001365364256370193787290847, -0.9269567721871740005206929392590531966353, 0.9269567721871740005206929392590531966353, -0.9700604978354287271239509867652687108059, 0.9700604978354287271239509867652687108059, -0.9942945854823992920730314211612989803930, 0.9942945854823992920730314211612989803930], [0, -0.1332568242984661109317426822417661370104, 0.1332568242984661109317426822417661370104, -0.2641356809703449305338695382833096029790, 0.2641356809703449305338695382833096029790, -0.3903010380302908314214888728806054585780, 0.3903010380302908314214888728806054585780, -0.5095014778460075496897930478668464305448, 0.5095014778460075496897930478668464305448, -0.6196098757636461563850973116495956533871, 0.6196098757636461563850973116495956533871, -0.7186613631319501944616244837486188483299, 0.7186613631319501944616244837486188483299, -0.8048884016188398921511184069967785579414, 0.8048884016188398921511184069967785579414, -0.8767523582704416673781568859341456716389, 0.8767523582704416673781568859341456716389, -0.9329710868260161023491969890384229782357, 0.9329710868260161023491969890384229782357, -0.9725424712181152319560240768207773751816, 0.9725424712181152319560240768207773751816, -0.9947693349975521235239257154455743605736, 0.9947693349975521235239257154455743605736], [-0.0640568928626056260850430826247450385909, 0.0640568928626056260850430826247450385909, -0.1911188674736163091586398207570696318404, 0.1911188674736163091586398207570696318404, -0.3150426796961633743867932913198102407864, 0.3150426796961633743867932913198102407864, -0.4337935076260451384870842319133497124524, 0.4337935076260451384870842319133497124524, -0.5454214713888395356583756172183723700107, 0.5454214713888395356583756172183723700107, -0.6480936519369755692524957869107476266696, 0.6480936519369755692524957869107476266696, -0.7401241915785543642438281030999784255232, 0.7401241915785543642438281030999784255232, -0.8200019859739029219539498726697452080761, 0.8200019859739029219539498726697452080761, -0.8864155270044010342131543419821967550873, 0.8864155270044010342131543419821967550873, -0.9382745520027327585236490017087214496548, 0.9382745520027327585236490017087214496548, -0.9747285559713094981983919930081690617411, 0.9747285559713094981983919930081690617411, -0.9951872199970213601799974097007368118745, 0.9951872199970213601799974097007368118745]]
+verb_eval_Analyze.Cvalues = [[], [], [1.0, 1.0], [0.8888888888888888888888888888888888888888, 0.5555555555555555555555555555555555555555, 0.5555555555555555555555555555555555555555], [0.6521451548625461426269360507780005927646, 0.6521451548625461426269360507780005927646, 0.3478548451374538573730639492219994072353, 0.3478548451374538573730639492219994072353], [0.5688888888888888888888888888888888888888, 0.4786286704993664680412915148356381929122, 0.4786286704993664680412915148356381929122, 0.2369268850561890875142640407199173626432, 0.2369268850561890875142640407199173626432], [0.3607615730481386075698335138377161116615, 0.3607615730481386075698335138377161116615, 0.4679139345726910473898703439895509948116, 0.4679139345726910473898703439895509948116, 0.1713244923791703450402961421727328935268, 0.1713244923791703450402961421727328935268], [0.4179591836734693877551020408163265306122, 0.3818300505051189449503697754889751338783, 0.3818300505051189449503697754889751338783, 0.2797053914892766679014677714237795824869, 0.2797053914892766679014677714237795824869, 0.1294849661688696932706114326790820183285, 0.1294849661688696932706114326790820183285], [0.3626837833783619829651504492771956121941, 0.3626837833783619829651504492771956121941, 0.3137066458778872873379622019866013132603, 0.3137066458778872873379622019866013132603, 0.2223810344533744705443559944262408844301, 0.2223810344533744705443559944262408844301, 0.1012285362903762591525313543099621901153, 0.1012285362903762591525313543099621901153], [0.3302393550012597631645250692869740488788, 0.1806481606948574040584720312429128095143, 0.1806481606948574040584720312429128095143, 0.0812743883615744119718921581105236506756, 0.0812743883615744119718921581105236506756, 0.3123470770400028400686304065844436655987, 0.3123470770400028400686304065844436655987, 0.2606106964029354623187428694186328497718, 0.2606106964029354623187428694186328497718], [0.2955242247147528701738929946513383294210, 0.2955242247147528701738929946513383294210, 0.2692667193099963550912269215694693528597, 0.2692667193099963550912269215694693528597, 0.2190863625159820439955349342281631924587, 0.2190863625159820439955349342281631924587, 0.1494513491505805931457763396576973324025, 0.1494513491505805931457763396576973324025, 0.0666713443086881375935688098933317928578, 0.0666713443086881375935688098933317928578], [0.2729250867779006307144835283363421891560, 0.2628045445102466621806888698905091953727, 0.2628045445102466621806888698905091953727, 0.2331937645919904799185237048431751394317, 0.2331937645919904799185237048431751394317, 0.1862902109277342514260976414316558916912, 0.1862902109277342514260976414316558916912, 0.1255803694649046246346942992239401001976, 0.1255803694649046246346942992239401001976, 0.0556685671161736664827537204425485787285, 0.0556685671161736664827537204425485787285], [0.2491470458134027850005624360429512108304, 0.2491470458134027850005624360429512108304, 0.2334925365383548087608498989248780562594, 0.2334925365383548087608498989248780562594, 0.2031674267230659217490644558097983765065, 0.2031674267230659217490644558097983765065, 0.1600783285433462263346525295433590718720, 0.1600783285433462263346525295433590718720, 0.1069393259953184309602547181939962242145, 0.1069393259953184309602547181939962242145, 0.0471753363865118271946159614850170603170, 0.0471753363865118271946159614850170603170], [0.2325515532308739101945895152688359481566, 0.2262831802628972384120901860397766184347, 0.2262831802628972384120901860397766184347, 0.2078160475368885023125232193060527633865, 0.2078160475368885023125232193060527633865, 0.1781459807619457382800466919960979955128, 0.1781459807619457382800466919960979955128, 0.1388735102197872384636017768688714676218, 0.1388735102197872384636017768688714676218, 0.0921214998377284479144217759537971209236, 0.0921214998377284479144217759537971209236, 0.0404840047653158795200215922009860600419, 0.0404840047653158795200215922009860600419], [0.2152638534631577901958764433162600352749, 0.2152638534631577901958764433162600352749, 0.2051984637212956039659240656612180557103, 0.2051984637212956039659240656612180557103, 0.1855383974779378137417165901251570362489, 0.1855383974779378137417165901251570362489, 0.1572031671581935345696019386238421566056, 0.1572031671581935345696019386238421566056, 0.1215185706879031846894148090724766259566, 0.1215185706879031846894148090724766259566, 0.0801580871597602098056332770628543095836, 0.0801580871597602098056332770628543095836, 0.0351194603317518630318328761381917806197, 0.0351194603317518630318328761381917806197], [0.2025782419255612728806201999675193148386, 0.1984314853271115764561183264438393248186, 0.1984314853271115764561183264438393248186, 0.1861610000155622110268005618664228245062, 0.1861610000155622110268005618664228245062, 0.1662692058169939335532008604812088111309, 0.1662692058169939335532008604812088111309, 0.1395706779261543144478047945110283225208, 0.1395706779261543144478047945110283225208, 0.1071592204671719350118695466858693034155, 0.1071592204671719350118695466858693034155, 0.0703660474881081247092674164506673384667, 0.0703660474881081247092674164506673384667, 0.0307532419961172683546283935772044177217, 0.0307532419961172683546283935772044177217], [0.1894506104550684962853967232082831051469, 0.1894506104550684962853967232082831051469, 0.1826034150449235888667636679692199393835, 0.1826034150449235888667636679692199393835, 0.1691565193950025381893120790303599622116, 0.1691565193950025381893120790303599622116, 0.1495959888165767320815017305474785489704, 0.1495959888165767320815017305474785489704, 0.1246289712555338720524762821920164201448, 0.1246289712555338720524762821920164201448, 0.0951585116824927848099251076022462263552, 0.0951585116824927848099251076022462263552, 0.0622535239386478928628438369943776942749, 0.0622535239386478928628438369943776942749, 0.0271524594117540948517805724560181035122, 0.0271524594117540948517805724560181035122], [0.1794464703562065254582656442618856214487, 0.1765627053669926463252709901131972391509, 0.1765627053669926463252709901131972391509, 0.1680041021564500445099706637883231550211, 0.1680041021564500445099706637883231550211, 0.1540457610768102880814315948019586119404, 0.1540457610768102880814315948019586119404, 0.1351363684685254732863199817023501973721, 0.1351363684685254732863199817023501973721, 0.1118838471934039710947883856263559267358, 0.1118838471934039710947883856263559267358, 0.0850361483171791808835353701910620738504, 0.0850361483171791808835353701910620738504, 0.0554595293739872011294401653582446605128, 0.0554595293739872011294401653582446605128,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          0.0241483028685479319601100262875653246916, 0.0241483028685479319601100262875653246916], [0.1691423829631435918406564701349866103341, 0.1691423829631435918406564701349866103341, 0.1642764837458327229860537764659275904123, 0.1642764837458327229860537764659275904123, 0.1546846751262652449254180038363747721932, 0.1546846751262652449254180038363747721932, 0.1406429146706506512047313037519472280955, 0.1406429146706506512047313037519472280955, 0.1225552067114784601845191268002015552281, 0.1225552067114784601845191268002015552281, 0.1009420441062871655628139849248346070628, 0.1009420441062871655628139849248346070628, 0.0764257302548890565291296776166365256053, 0.0764257302548890565291296776166365256053, 0.0497145488949697964533349462026386416808, 0.0497145488949697964533349462026386416808, 0.0216160135264833103133427102664524693876, 0.0216160135264833103133427102664524693876], [0.1610544498487836959791636253209167350399, 0.1589688433939543476499564394650472016787, 0.1589688433939543476499564394650472016787, 0.1527660420658596667788554008976629984610, 0.1527660420658596667788554008976629984610, 0.1426067021736066117757461094419029724756, 0.1426067021736066117757461094419029724756, 0.1287539625393362276755157848568771170558, 0.1287539625393362276755157848568771170558, 0.1115666455473339947160239016817659974813, 0.1115666455473339947160239016817659974813, 0.0914900216224499994644620941238396526609, 0.0914900216224499994644620941238396526609, 0.0690445427376412265807082580060130449618, 0.0690445427376412265807082580060130449618, 0.0448142267656996003328381574019942119517, 0.0448142267656996003328381574019942119517, 0.0194617882297264770363120414644384357529, 0.0194617882297264770363120414644384357529], [0.1527533871307258506980843319550975934919, 0.1527533871307258506980843319550975934919, 0.1491729864726037467878287370019694366926, 0.1491729864726037467878287370019694366926, 0.1420961093183820513292983250671649330345, 0.1420961093183820513292983250671649330345, 0.1316886384491766268984944997481631349161, 0.1316886384491766268984944997481631349161, 0.1181945319615184173123773777113822870050, 0.1181945319615184173123773777113822870050, 0.1019301198172404350367501354803498761666, 0.1019301198172404350367501354803498761666, 0.0832767415767047487247581432220462061001, 0.0832767415767047487247581432220462061001, 0.0626720483341090635695065351870416063516, 0.0626720483341090635695065351870416063516, 0.0406014298003869413310399522749321098790, 0.0406014298003869413310399522749321098790, 0.0176140071391521183118619623518528163621, 0.0176140071391521183118619623518528163621], [0.1460811336496904271919851476833711882448, 0.1445244039899700590638271665537525436099, 0.1445244039899700590638271665537525436099, 0.1398873947910731547221334238675831108927, 0.1398873947910731547221334238675831108927, 0.1322689386333374617810525744967756043290, 0.1322689386333374617810525744967756043290, 0.1218314160537285341953671771257335983563, 0.1218314160537285341953671771257335983563, 0.1087972991671483776634745780701056420336, 0.1087972991671483776634745780701056420336, 0.0934444234560338615532897411139320884835, 0.0934444234560338615532897411139320884835, 0.0761001136283793020170516533001831792261, 0.0761001136283793020170516533001831792261, 0.0571344254268572082836358264724479574912, 0.0571344254268572082836358264724479574912, 0.0369537897708524937999506682993296661889, 0.0369537897708524937999506682993296661889, 0.0160172282577743333242246168584710152658, 0.0160172282577743333242246168584710152658], [0.1392518728556319933754102483418099578739, 0.1392518728556319933754102483418099578739, 0.1365414983460151713525738312315173965863, 0.1365414983460151713525738312315173965863, 0.1311735047870623707329649925303074458757, 0.1311735047870623707329649925303074458757, 0.1232523768105124242855609861548144719594, 0.1232523768105124242855609861548144719594, 0.1129322960805392183934006074217843191142, 0.1129322960805392183934006074217843191142, 0.1004141444428809649320788378305362823508, 0.1004141444428809649320788378305362823508, 0.0859416062170677274144436813727028661891, 0.0859416062170677274144436813727028661891, 0.0697964684245204880949614189302176573987, 0.0697964684245204880949614189302176573987, 0.0522933351526832859403120512732112561121, 0.0522933351526832859403120512732112561121, 0.0337749015848141547933022468659129013491, 0.0337749015848141547933022468659129013491, 0.0146279952982722006849910980471854451902, 0.0146279952982722006849910980471854451902], [0.1336545721861061753514571105458443385831, 0.1324620394046966173716424647033169258050, 0.1324620394046966173716424647033169258050, 0.1289057221880821499785953393997936532597, 0.1289057221880821499785953393997936532597, 0.1230490843067295304675784006720096548158, 0.1230490843067295304675784006720096548158, 0.1149966402224113649416435129339613014914, 0.1149966402224113649416435129339613014914, 0.1048920914645414100740861850147438548584, 0.1048920914645414100740861850147438548584, 0.0929157660600351474770186173697646486034, 0.0929157660600351474770186173697646486034, 0.0792814117767189549228925247420432269137, 0.0792814117767189549228925247420432269137, 0.0642324214085258521271696151589109980391, 0.0642324214085258521271696151589109980391, 0.0480376717310846685716410716320339965612, 0.0480376717310846685716410716320339965612, 0.0309880058569794443106942196418845053837, 0.0309880058569794443106942196418845053837, 0.0134118594871417720813094934586150649766, 0.0134118594871417720813094934586150649766], [0.1279381953467521569740561652246953718517, 0.1279381953467521569740561652246953718517, 0.1258374563468282961213753825111836887264, 0.1258374563468282961213753825111836887264, 0.1216704729278033912044631534762624256070, 0.1216704729278033912044631534762624256070, 0.1155056680537256013533444839067835598622, 0.1155056680537256013533444839067835598622, 0.1074442701159656347825773424466062227946, 0.1074442701159656347825773424466062227946, 0.0976186521041138882698806644642471544279, 0.0976186521041138882698806644642471544279, 0.0861901615319532759171852029837426671850, 0.0861901615319532759171852029837426671850, 0.0733464814110803057340336152531165181193, 0.0733464814110803057340336152531165181193, 0.0592985849154367807463677585001085845412, 0.0592985849154367807463677585001085845412, 0.0442774388174198061686027482113382288593, 0.0442774388174198061686027482113382288593, 0.0285313886289336631813078159518782864491, 0.0285313886289336631813078159518782864491, 0.0123412297999871995468056670700372915759, 0.0123412297999871995468056670700372915759]]
 verb_exe_Dispatcher.THREADS = 1
 verb_exe_Dispatcher._init = False
 
