@@ -2,7 +2,7 @@ import compas
 from compas.utilities import flatten
 from compas_rhino.artists import BaseArtist
 from compas_nurbs.utilities import reshape
-from compas_nurbs import NurbsSurface
+from compas_nurbs import RationalSurface
 
 if compas.IPY:
     import Rhino.Geometry as rg
@@ -25,7 +25,7 @@ def surface_from_rhino_surface(rhino_surface):
     count_v = len(knot_vector_v) - 1 - degree[1]
     points = reshape(points, (count_u, count_v))
     weights = reshape(weights, (count_u, count_v))
-    return NurbsSurface(points, degree, knot_vector, weights=weights)
+    return RationalSurface(points, degree, knot_vector, weights=weights)
 
 
 class CurveArtist(BaseArtist):
