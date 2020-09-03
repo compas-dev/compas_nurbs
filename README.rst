@@ -25,12 +25,15 @@ Links
 -----
 * NURBS-Python_
 * Sverchok_
+* Verb_
 
 
 .. _NURBS-Python: https://github.com/orbingol/NURBS-Python
 .. _NumPy: https://numpy.org/
 .. _Rhino3D: https://www.rhino3d.com/
 .. _Sverchok: https://github.com/nortikin/sverchok
+.. _Verb: http://verbnurbs.com/
+
 
 
 **compas_nurbs** runs on Python x.x and x.x.
