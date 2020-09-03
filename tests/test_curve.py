@@ -2,7 +2,7 @@ import numpy as np
 import rhino3dm
 from compas.geometry import allclose
 from compas_nurbs import Curve
-from compas_nurbs import NurbsCurve
+from compas_nurbs import RationalCurve
 from compas_nurbs.evaluators import create_curve
 from compas_nurbs.evaluators import evaluate_curve
 from compas_nurbs.evaluators import evaluate_curve_derivatives
@@ -78,7 +78,7 @@ def test_nurbs_curve():
     weights = [0.5, 1.1, 0.7, 2., 4., 0.3, 0.1, 0.3, 0.4, 0.5, 1.4, 3.]
 
     # create curve
-    curve = NurbsCurve(control_points, degree, weights=weights)
+    curve = RationalCurve(control_points, degree, weights=weights)
     curve_geomdl = create_curve(control_points, degree, curve.knot_vector, True, weights)
     curve_rhino = rhino_curve_from_curve(curve)
 

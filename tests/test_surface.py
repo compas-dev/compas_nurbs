@@ -4,7 +4,7 @@ from compas.geometry import close
 from compas.geometry import allclose
 
 from compas_nurbs import Surface
-from compas_nurbs import NurbsSurface
+from compas_nurbs import RationalSurface
 from compas_nurbs.evaluators import create_surface
 from compas_nurbs.evaluators import evaluate_surface
 from compas_nurbs.evaluators import evaluate_surface_derivatives
@@ -93,7 +93,7 @@ def test_nurbs_surface():
                          [[6, 0, 0], [6, 4, -3], [6, 8, 0.]]]
     degree = (3, 2)
     weights = [[0.2, 0.1, 0.3], [0.1, 0.7, 1.2], [1.2, 2., 0.4], [0.1, 1.1, 0.5]]
-    surface = NurbsSurface(control_points_2d, degree, weights=weights)
+    surface = RationalSurface(control_points_2d, degree, weights=weights)
 
     # create surfaces
     srf_geomdl = create_surface(control_points_2d, surface.degree, surface.knot_vector, rational=True, weights=weights)

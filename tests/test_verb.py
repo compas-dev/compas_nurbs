@@ -1,5 +1,5 @@
-from compas_nurbs import NurbsSurface, Surface
-from compas_nurbs import NurbsCurve, Curve
+from compas_nurbs import RationalSurface, Surface
+from compas_nurbs import RationalCurve, Curve
 from compas_nurbs.backends.verb import verb_core_NurbsSurfaceData
 from compas_nurbs.backends.verb import verb_geom_NurbsSurface
 from compas_nurbs.backends.verb import verb_geom_NurbsCurve
@@ -20,7 +20,7 @@ def test_nurbs_surface():
 
     degree = (3, 2)
     weights = [[0.2, 0.1, 0.3], [0.1, 0.7, 1.2], [1.2, 2., 0.4], [0.1, 1.1, 0.5]]
-    surface = NurbsSurface(control_points_2d, degree, weights=weights)
+    surface = RationalSurface(control_points_2d, degree, weights=weights)
     #surface = Surface(control_points_2d, degree)
 
     params_u = linspace(0., 1., 5)
