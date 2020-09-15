@@ -39,6 +39,16 @@ Links
 **compas_nurbs** runs on Python x.x and x.x.
 
 
+
++----------+-------+---------+-------+---------+-------+---------+-------+---------+-------+---------+-------+---------+-------+---------+
+|          | Evaluation      | Interpolation   | Approximation   | Split, Trim     | ClosestParameter| BoundingBox     | Intersections   |
+|          +-------+---------+-------+---------+-------+---------+-------+---------+-------+---------+-------+---------+-------+---------+
+| Library  | Curve | Surface | Curve | Surface | Curve | Surface | Curve | Surface | Curve | Surface | Curve | Surface | Curve | Surface |
++==========+=======+=========+=======+=========+=======+=========+=======+=========+=======+=========+=======+=========+=======+=========+
+| verb     |  [X]  |   [X]   |  [X]  |   [ ]   |  [ ]  |   [ ]   |  [X]  |   [X]   |  [ ]  |   [ ]   |  [ ]  |   [ ]   |  [ ]  |   [ ]   |
++----------+-------+---------+-------+---------+-------+---------+-------+---------+-------+---------+-------+---------+-------+---------+
+
+
 Curve Interpolation
 -------------------
 * Global curve interpolation, curve interpolation with end derivatives
