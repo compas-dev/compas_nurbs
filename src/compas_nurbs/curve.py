@@ -9,18 +9,13 @@ from compas.geometry import Plane
 from compas_nurbs.bspline import BSpline
 
 if not compas.IPY:
-    from compas_nurbs.evaluators_numpy import create_curve
-    from compas_nurbs.evaluators_numpy import evaluate_curve
-    from compas_nurbs.evaluators_numpy import evaluate_curve_derivatives
-    from compas_nurbs.operations_numpy import curve_tangents
-    from compas_nurbs.operations_numpy import curve_frames
-    from compas_nurbs.operations_numpy import curve_curvatures
-    from compas_nurbs.fitting_numpy import interpolate_curve
-else:
     from compas_nurbs.evaluators import create_curve
     from compas_nurbs.evaluators import evaluate_curve
     from compas_nurbs.evaluators import evaluate_curve_derivatives
     from compas_nurbs.operations import curve_tangents
+    from compas_nurbs.operations import curve_frames
+    from compas_nurbs.operations import curve_curvatures
+    from compas_nurbs.fitting import interpolate_curve
 
 
 class CurveCurvature(object):
@@ -73,7 +68,8 @@ class Curve(BSpline):
         super(Curve, self).__init__(control_points, degree, knot_vector, rational, weights)
 
     def _build_backend(self):
-        self._curve = create_curve(self.control_points, self.degree, self.knot_vector, self.rational, self.weights)
+        if not compas.IPY:
+            self._curve = create_curve(self.control_points, self.degree, self.knot_vector, self.rational, self.weights)
 
     # ==========================================================================
     # constructors
