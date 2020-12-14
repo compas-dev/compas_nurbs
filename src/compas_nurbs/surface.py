@@ -3,16 +3,13 @@ import compas
 from compas.geometry import Shape, Vector, Point
 
 from compas_nurbs.bspline import BSpline
+from compas_nurbs.curve import Curve
 
 if not compas.IPY:
-    from compas_nurbs.evaluators_numpy import evaluate_surface
-    from compas_nurbs.evaluators_numpy import evaluate_surface_derivatives
-    from compas_nurbs.evaluators_numpy import calculate_surface_curvature
-    from compas_nurbs.operations_numpy import surface_normals
-else:
-    from compas_nurbs.evaluators import create_surface
     from compas_nurbs.evaluators import evaluate_surface
     from compas_nurbs.evaluators import evaluate_surface_derivatives
+    from compas_nurbs.evaluators import calculate_surface_curvature
+    from compas_nurbs.operations import surface_normals
 
 
 # https://mcneel.github.io/rhino3dm/python/api/Surface.html
@@ -74,19 +71,30 @@ class Surface(BSpline, Shape):
         super(Surface, self).__init__(control_points, degree, knot_vector, rational, weights)
 
     def _build_backend(self):
-        if compas.IPY:
-            self._surface = create_surface(self.control_points, self.degree, self.knot_vector, self.rational, self.weights)
-        else:
-            self._surface = self  # no numpy surface
+        self._surface = self  # no numpy surface
 
     # ==========================================================================
     # constructors
     # ==========================================================================
 
     @classmethod
-    def from_curves(cls, curves):
+    def loft_from_curves(cls, curves, degree_v, knot_vector_v=None):
         # compute_rhino3d.Brep.CreateFromLoft(curves, start, end, loftType, closed, multiple=False)
-        pass
+        # control_points, degree, knot_vector=None, rational=False, weights=None
+        # TODO: check if curves have the same amount of control points.. if not, add knots
+        degree_u = curves[0].degree
+        knot_vector_u = curves[0].knot_vector
+        knot_vector_v = None
+        control_points = []
+        count_u = len(curves[0].control_points)
+        for i in range(count_u):
+            points = [crv.control_points[i] for crv in curves]
+            c = Curve.from_points(points, degree_v)
+            control_points.append(c.control_points)
+            knot_vector_v = c.knot_vector
+        # Rhino lofts into the opposite direction (u=>v)
+        return cls(control_points, (degree_u, degree_v), (knot_vector_u, knot_vector_v))
+        
 
     @classmethod
     def from_points(cls, points):
