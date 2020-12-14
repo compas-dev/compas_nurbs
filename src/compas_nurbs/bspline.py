@@ -9,10 +9,7 @@ from compas_nurbs.knot_vectors import knot_vector_uniform
 from compas_nurbs.knot_vectors import normalize_knot_vector
 from compas_nurbs.knot_vectors import check_knot_vector
 
-if not compas.IPY:
-    from collections.abc import Iterable
-else:
-    from collections import Iterable
+from collections import Iterable
 
 
 class BSpline(Primitive):
