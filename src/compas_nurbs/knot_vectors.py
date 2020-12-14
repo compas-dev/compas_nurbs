@@ -214,7 +214,7 @@ def knot_vector_and_params(points, degree, knot_style, extended=False, periodic=
     """
 
     if knot_style == CurveKnotStyle.Uniform:
-        uk = equally_spaced_parameters(len(points)) if degree <= 3 else bezier_spaced_parameters(len(points))
+        uk = equally_spaced_parameters(len(points))
     elif knot_style == CurveKnotStyle.Chord:
         uk = chord_spaced_parameters(points)
     elif knot_style == CurveKnotStyle.ChordSquareRoot:
@@ -225,10 +225,10 @@ def knot_vector_and_params(points, degree, knot_style, extended=False, periodic=
     if extended:  # extend parameters for end derivatives estimation
         uk = [uk[0], 0.] + uk[1:-1] + [1., uk[-1]]
 
-    if knot_style == CurveKnotStyle.Uniform:
-        kv = knot_vector_uniform(len(uk), degree)
-    else:
-        kv = knot_vector_from_params(degree, uk)
+    #if knot_style == CurveKnotStyle.Uniform:
+    #    kv = knot_vector_uniform(len(uk), degree)
+    #else:
+    kv = knot_vector_from_params(degree, uk)
 
     return kv, uk
 
