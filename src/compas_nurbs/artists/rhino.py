@@ -58,7 +58,22 @@ class SurfaceArtist(BaseArtist):
         knots_u = self.surface.knot_vector[0][1:-1]
         knots_v = self.surface.knot_vector[1][1:-1]
         degree = self.surface.degree
-        return rs.AddNurbsSurface(point_count, points, knots_u, knots_v, degree, weights)
+        #return rs.AddNurbsSurface(point_count, points, knots_u, knots_v, degree, weights)
+        ns = rg.NurbsSurface.Create(3, weights is not None, degree[0] + 1, degree[1] + 1, point_count[0], point_count[1])
+        index = 0
+        for i in range(point_count[0]):
+            for j in range(point_count[1]):
+                if weights:
+                    cp = rg.ControlPoint(points[index], weights[index])
+                    ns.Points.SetControlPoint(i,j,cp)
+                else:
+                    cp = rg.ControlPoint(points[index])
+                    ns.Points.SetControlPoint(i,j,cp)
+                index += 1
+        for i in range(ns.KnotsU.Count): ns.KnotsU[i] = knots_u[i]
+        for i in range(ns.KnotsV.Count): ns.KnotsV[i] = knots_v[i]
+        assert(ns.IsValid)
+        return ns
 
     def draw_points(self):
         return rs.AddPoints(self.surface.control_points)
