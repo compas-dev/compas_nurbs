@@ -78,20 +78,25 @@ class Surface(BSpline, Shape):
     # ==========================================================================
 
     @classmethod
-    def loft_from_curves(cls, curves, degree_v, knot_vector_v=None):
+    def loft_from_curves(cls, curves, degree_v=3):
         # compute_rhino3d.Brep.CreateFromLoft(curves, start, end, loftType, closed, multiple=False)
         # control_points, degree, knot_vector=None, rational=False, weights=None
         # TODO: check if curves have the same amount of control points.. if not, add knots
+
+        """
+        curves = verb_eval_Modify.unifyCurveKnotVectors(curves)
+        """
         degree_u = curves[0].degree
         knot_vector_u = curves[0].knot_vector
-        knot_vector_v = None
+        degree_v = min(degree_v, len(curves) - 1)
         control_points = []
         count_u = len(curves[0].control_points)
+        knot_vector_v = []
         for i in range(count_u):
             points = [crv.control_points[i] for crv in curves]
             c = Curve.from_points(points, degree_v)
             control_points.append(c.control_points)
-            knot_vector_v = c.knot_vector
+            knot_vector_v = knot_vector_v or c.knot_vector
         # Rhino lofts into the opposite direction (u=>v)
         return cls(control_points, (degree_u, degree_v), (knot_vector_u, knot_vector_v))
         
