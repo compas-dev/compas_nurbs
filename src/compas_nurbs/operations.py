@@ -32,6 +32,26 @@ def curve_is_planar(curve):
     return is_planar, np.take(curve.control_points, [ix, iy], axis=1)
 
 
+def unify_curves(curves):
+    """
+    """
+    # 1. Raise degree to maximum degree
+    max_degree = max([crv.degree for crv in curves])
+    knot_vector = curves[0].knot_vector
+    for crv in curves:
+        if crv.degree != max_degree:
+            raise NotImplementedError("Sorry, lofting curves of different degrees is currently not yet implemented")
+        if crv.knot_vector != knot_vector:
+            raise NotImplementedError("Sorry, lofting curves with different knot vectors is currently not yet implemented")
+    # curve_elevate_degree(curve, final_degree)
+    # unify knot vector
+    return curves
+
+
+def curve_elevate_degree(curve, final_degree):
+    raise NotImplementedError
+
+
 def surface_normals(surface, params):
     skl = surface.derivatives_at(params, order=1)
     vectors = np.cross(skl[:, 1, 0], skl[:, 0, 1])
