@@ -171,6 +171,7 @@ def test(ctx, doctest=False):
         pytest_args.append('--doctest-modules')
     ctx.run(" ".join(pytest_args))
 
+
 @task(help={
       'release_type': 'Type of release follows semver rules. Must be one of: major, minor, patch.'})
 def release(ctx, release_type):
