@@ -151,7 +151,7 @@ def evaluate_surface_derivatives(surface, params, order=1):
             dimension = 4
             SKL = [[[0.0 for _ in range(dimension)] for _ in range(order + 1)] for _ in range(order + 1)]
             for k in range(0, order + 1):
-                for l in range(0, order + 1):
+                for l in range(0, order + 1):  # noqa E741
                     v = list(SKLw[k, l])[:]
                     for j in range(1, l + 1):
                         v[:] = [tmp - (binomial_coefficient(l, j) * SKLw[0][j][-1] * drv) for tmp, drv in zip(v, SKL[k][l - j])]
