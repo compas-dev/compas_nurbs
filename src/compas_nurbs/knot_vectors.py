@@ -225,9 +225,9 @@ def knot_vector_and_params(points, degree, knot_style, extended=False, periodic=
     if extended:  # extend parameters for end derivatives estimation
         uk = [uk[0], 0.] + uk[1:-1] + [1., uk[-1]]
 
-    #if knot_style == CurveKnotStyle.Uniform:
+    # if knot_style == CurveKnotStyle.Uniform:
     #    kv = knot_vector_uniform(len(uk), degree)
-    #else:
+    # else:
     kv = knot_vector_from_params(degree, uk)
 
     return kv, uk
