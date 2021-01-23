@@ -1,24 +1,47 @@
+import os
+import json
 import rhino3dm
+from geomdl import BSpline
+from geomdl import NURBS
+from geomdl import compatibility
 
 from compas.geometry import close
 from compas.geometry import allclose
+from compas.utilities import flatten
 
+
+from compas_nurbs import DATA
+from compas_nurbs import Curve
 from compas_nurbs import Surface
 from compas_nurbs import RationalSurface
-from compas_nurbs.evaluators import create_surface
-from compas_nurbs.evaluators import evaluate_surface
-from compas_nurbs.evaluators import evaluate_surface_derivatives
 from compas_nurbs.utilities import linspace
 
 
-def rhino_surface_from_surface(surface, rational=False):
+def geomdl_surface_from_surface(surface):
+
+    srf = NURBS.Surface() if surface.rational else BSpline.Surface()
+    srf.degree_u, srf.degree_v = surface.degree
+
+    if surface.rational:
+        control_points = list(flatten(surface.control_points))
+        ctrlptsw = compatibility.combine_ctrlpts_weights(control_points, list(flatten(surface.weights)))
+        srf.ctrlpts_size_u, srf.ctrlpts_size_v = surface.count
+        srf.ctrlptsw = ctrlptsw
+    else:
+        srf.ctrlpts2d = surface.control_points
+
+    srf.knotvector_u, srf.knotvector_v = surface.knot_vector
+    return srf
+
+
+def rhino_surface_from_surface(surface):
     degree_u, degree_v = surface.degree
     count_u, count_v = surface.count
     knot_vector_u, knot_vector_v = surface.knot_vector
-    srf_rhino = rhino3dm.NurbsSurface.Create(3, rational, degree_u + 1, degree_v + 1, count_u, count_v)
+    srf_rhino = rhino3dm.NurbsSurface.Create(3, surface.rational, degree_u + 1, degree_v + 1, count_u, count_v)
     for u, l in enumerate(surface.control_points):
         for v, (x, y, z) in enumerate(l):
-            if rational:
+            if surface.rational:
                 srf_rhino.Points[(u, v)] = rhino3dm.Point4d(x, y, z, surface.weights[u][v])
             else:
                 srf_rhino.Points[(u, v)] = rhino3dm.Point4d(x, y, z, 1.)
@@ -42,8 +65,8 @@ def test_surface():
     surface = Surface(control_points_2d, (degree_u, degree_v))
 
     # create surfaces
-    srf_geomdl = create_surface(control_points_2d, surface.degree, surface.knot_vector)
-    srf_rhino = rhino_surface_from_surface(surface, rational=False)
+    srf_geomdl = geomdl_surface_from_surface(surface)
+    srf_rhino = rhino_surface_from_surface(surface)
 
     params_u = linspace(0., 1., 5)
     params_v = linspace(0., 1., 5)
@@ -51,21 +74,21 @@ def test_surface():
 
     # points
     points = surface.points_at(params)
-    geomdl_points = evaluate_surface(srf_geomdl, params)
+    geomdl_points = srf_geomdl.evaluate_list(params)
     rhino_points = [srf_rhino.PointAt(*p) for p in params]
     rhino_points = [[p.X, p.Y, p.Z] for p in rhino_points]
     assert(allclose(points, geomdl_points))
     assert(allclose(points, rhino_points))
 
     # derivatives
-    geomdl_derivatives = evaluate_surface_derivatives(srf_geomdl, params, order=1)
+    geomdl_derivatives = [srf_geomdl.derivatives(u, v, order=1) for u, v in params]
     assert(allclose(geomdl_derivatives, surface.derivatives_at(params)))
 
     # normals
     normals = surface.normals_at(params)
     rhino_normals = [srf_rhino.NormalAt(*p) for p in params]
     rhino_normals = [[p.X, p.Y, p.Z] for p in rhino_normals]
-    geomdl_normals = [srf_geomdl.normal(p)[1] for p in params]
+    geomdl_normals = [srf_geomdl.normal(p) for p in params]
     assert(allclose(normals, geomdl_normals))
     assert(allclose(normals, rhino_normals))
 
@@ -96,8 +119,8 @@ def test_nurbs_surface():
     surface = RationalSurface(control_points_2d, degree, weights=weights)
 
     # create surfaces
-    srf_geomdl = create_surface(control_points_2d, surface.degree, surface.knot_vector, rational=True, weights=weights)
-    # srf_rhino = rhino_surface_from_surface(surface, rational=True)
+    srf_geomdl = geomdl_surface_from_surface(surface)
+    srf_rhino = rhino_surface_from_surface(surface)  # This curve is wrong
 
     params_u = linspace(0., 1., 5)
     params_v = linspace(0., 1., 5)
@@ -105,7 +128,10 @@ def test_nurbs_surface():
 
     # points
     points = surface.points_at(params)
-    geomdl_points = evaluate_surface(srf_geomdl, params)
+    geomdl_points = srf_geomdl.evaluate_list(params)
+    # The following point evaluation is not correct.
+    # rhino_points = [srf_rhino.PointAt(*p) for p in params]
+    # rhino_points = [[p.X, p.Y, p.Z] for p in rhino_points]
     rhino_points = [[0.0, 0.0, 0.0], [0.0, 1.77778, -0.33333], [0.0, 4.57143, -1.28571], [0.0, 6.85714, -2.31429], [0.0, 8.0, -3.0], [2.58947, 0.0, 0.85263],
                     [2.66072, 2.90039, 0.24467], [2.51172, 4.70621, -0.0269], [2.23804, 6.30153, -0.18823], [1.84305, 8.0, -0.30269], [3.71429, 0.0, 0.42857],
                     [3.67137, 2.70161, -0.00907], [3.52817, 4.19718, -0.07394], [3.25543, 5.67391, 0.05707], [2.67857, 8.0, 0.48214], [4.07735, 0.0, 0.14917],
@@ -116,12 +142,12 @@ def test_nurbs_surface():
 
     # derivatives
     derivatives = surface.derivatives_at(params, order=1)
-    geomdl_derivatives = evaluate_surface_derivatives(srf_geomdl, params, order=1)
+    geomdl_derivatives = [srf_geomdl.derivatives(u, v, order=1) for u, v in params]
     assert(allclose(geomdl_derivatives, derivatives))
 
     # normals
     normals = surface.normals_at(params)
-    geomdl_normals = [srf_geomdl.normal(p)[1] for p in params]
+    geomdl_normals = [srf_geomdl.normal(p) for p in params]
     rhino_normals = [[-0.94868, 0.0, 0.31623], [-0.66692, 0.19846, 0.71822], [-0.66732, 0.27485, 0.6922], [-0.72062, 0.3195, 0.61533], [-0.76822, 0.38411, 0.51215],
                      [0.15402, 0.21472, 0.96446], [0.09377, 0.17701, 0.97973], [-0.11239, 0.1064, 0.98795], [-0.47128, -0.02486, 0.88163], [-0.77464, -0.16308, 0.61102],
                      [0.56231, 0.15519, 0.81223], [0.45653, 0.11718, 0.88196], [0.28774, 0.01626, 0.95757], [-0.05787, -0.15166, 0.98674], [-0.50649, -0.30352, 0.80706],
@@ -141,6 +167,16 @@ def test_nurbs_surface():
     assert(close(curvature.mean, rhino_curvature['mean']))
 
 
+def test_loft_surface():
+    filepath = os.path.join(DATA, "curves2loft.json")
+    curves = []
+    with open(filepath, 'r') as f:
+        data = json.load(f)
+    curves = [Curve.from_data(d) for d in data]
+    #surface = Surface.loft_from_curves(curves, degree_v=3)
+
+
 if __name__ == "__main__":
     test_surface()
     test_nurbs_surface()
+    test_loft_surface()
