@@ -1,31 +1,10 @@
 import compas
 from compas.utilities import flatten
 from compas_rhino.artists import BaseArtist
-from compas_nurbs.utilities import reshape
-from compas_nurbs import RationalSurface
 
 if compas.IPY:
     import Rhino.Geometry as rg
     import rhinoscriptsyntax as rs
-
-
-def surface_from_rhino_surface(rhino_surface):
-    """TODO: where does this go?
-    """
-    S = rhino_surface
-    knot_vector_u = list(S.KnotsU)
-    knot_vector_v = list(S.KnotsV)
-    knot_vector_u = [knot_vector_u[0]] + knot_vector_u + [knot_vector_u[-1]]
-    knot_vector_v = [knot_vector_v[0]] + knot_vector_v + [knot_vector_v[-1]]
-    degree = S.Degree(0), S.Degree(1)
-    points = [[p.X, p.Y, p.Z] for p in S.Points]
-    weights = [p.Weight for p in S.Points]
-    knot_vector = [knot_vector_u, knot_vector_v]
-    count_u = len(knot_vector_u) - 1 - degree[0]
-    count_v = len(knot_vector_v) - 1 - degree[1]
-    points = reshape(points, (count_u, count_v))
-    weights = reshape(weights, (count_u, count_v))
-    return RationalSurface(points, degree, knot_vector, weights=weights)
 
 
 class CurveArtist(BaseArtist):
@@ -58,20 +37,21 @@ class SurfaceArtist(BaseArtist):
         knots_u = self.surface.knot_vector[0][1:-1]
         knots_v = self.surface.knot_vector[1][1:-1]
         degree = self.surface.degree
-        #return rs.AddNurbsSurface(point_count, points, knots_u, knots_v, degree, weights)
         ns = rg.NurbsSurface.Create(3, weights is not None, degree[0] + 1, degree[1] + 1, point_count[0], point_count[1])
         index = 0
         for i in range(point_count[0]):
             for j in range(point_count[1]):
                 if weights:
                     cp = rg.ControlPoint(points[index], weights[index])
-                    ns.Points.SetControlPoint(i,j,cp)
+                    ns.Points.SetControlPoint(i, j, cp)
                 else:
                     cp = rg.ControlPoint(points[index])
-                    ns.Points.SetControlPoint(i,j,cp)
+                    ns.Points.SetControlPoint(i, j, cp)
                 index += 1
-        for i in range(ns.KnotsU.Count): ns.KnotsU[i] = knots_u[i]
-        for i in range(ns.KnotsV.Count): ns.KnotsV[i] = knots_v[i]
+        for i in range(ns.KnotsU.Count):
+            ns.KnotsU[i] = knots_u[i]
+        for i in range(ns.KnotsV.Count):
+            ns.KnotsV[i] = knots_v[i]
         assert(ns.IsValid)
         return ns
 
