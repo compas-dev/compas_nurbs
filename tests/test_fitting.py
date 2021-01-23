@@ -5,8 +5,8 @@ from scipy import interpolate  # noqa: F401
 
 from compas.geometry import allclose
 
-from compas_nurbs.fitting_numpy import global_curve_interpolation_with_end_derivatives
-from compas_nurbs.fitting_numpy import global_curve_interpolation
+from compas_nurbs.fitting import global_curve_interpolation_with_end_derivatives
+from compas_nurbs.fitting import global_curve_interpolation
 from compas_nurbs.knot_vectors import knot_vector_and_params
 from compas_nurbs.knot_vectors import CurveKnotStyle
 
