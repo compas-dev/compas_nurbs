@@ -3,10 +3,9 @@ import compas
 from compas.geometry import Point
 from compas.geometry import Vector
 from compas.geometry import Frame
-from compas.geometry import Circle
-from compas.geometry import Plane
 
 from compas_nurbs.bspline import BSpline
+from compas_nurbs.curvature import CurveCurvature
 
 if not compas.IPY:
     from compas_nurbs.evaluators import create_curve
@@ -16,22 +15,6 @@ if not compas.IPY:
     from compas_nurbs.operations import curve_frames
     from compas_nurbs.operations import curve_curvatures
     from compas_nurbs.fitting import interpolate_curve
-
-
-class CurveCurvature(object):
-    def __init__(self, normal, binormal, tangent, curvature, center, radius):
-        self.normal = Vector(*normal)
-        self.binormal = Vector(*binormal)
-        self.tangent = Vector(*tangent)
-        self.frame = Frame()
-        self.curvature = curvature
-        self.center = center
-        self.radius = radius
-
-    @property
-    def osculating_circle(self):
-        radius = 1. / self.curvature
-        return Circle(Plane(self.center, self.binormal), radius)
 
 
 class Curve(BSpline):
@@ -166,8 +149,9 @@ class Curve(BSpline):
         True
         """
         derivatives = self.derivatives_at(params, order=2)
-        k = curve_curvatures(derivatives)
-        return list(k)
+        curvatures = curve_curvatures(derivatives)
+        frames = self.frames_at(params)
+        return [CurveCurvature(curvature, frame) for curvature, frame in zip(curvatures, frames)]
 
     def frames_at(self, params):
         """Evaluates the curve's frames at the given parametric positions.

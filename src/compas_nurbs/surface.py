@@ -4,37 +4,14 @@ from compas.geometry import Shape, Vector, Point
 
 from compas_nurbs.bspline import BSpline
 from compas_nurbs.curve import Curve
+from compas_nurbs.curvature import SurfaceCurvature
+from compas_nurbs.operations import unify_curves
 
 if not compas.IPY:
     from compas_nurbs.evaluators import evaluate_surface
     from compas_nurbs.evaluators import evaluate_surface_derivatives
     from compas_nurbs.evaluators import calculate_surface_curvature
     from compas_nurbs.operations import surface_normals
-
-
-# https://mcneel.github.io/rhino3dm/python/api/Surface.html
-
-
-class SurfaceCurvature(object):
-    """A container class with several surface curvature quantities.
-
-    - principal curvature directions
-    - principal curvature values (kappa)
-    - mean curvature
-    - gauss curvature
-    - normal
-    """
-
-    def __init__(self, kappa, direction, normal, mean, gauss):
-        self.normal = Vector(*normal)
-        self.kappa = list(kappa)
-        self.direction = [Vector(*d) for d in direction]
-        self.mean = mean
-        self.gauss = gauss
-
-    @property
-    def osculating_circle(self):
-        pass
 
 
 class Surface(BSpline, Shape):
@@ -79,13 +56,9 @@ class Surface(BSpline, Shape):
 
     @classmethod
     def loft_from_curves(cls, curves, degree_v=3):
-        # compute_rhino3d.Brep.CreateFromLoft(curves, start, end, loftType, closed, multiple=False)
-        # control_points, degree, knot_vector=None, rational=False, weights=None
-        # TODO: check if curves have the same amount of control points.. if not, add knots
-
+        """Creates a :class:`Surface` by lofting between curves.
         """
-        curves = verb_eval_Modify.unifyCurveKnotVectors(curves)
-        """
+        curves = unify_curves(curves)
         degree_u = curves[0].degree
         knot_vector_u = curves[0].knot_vector
         degree_v = min(degree_v, len(curves) - 1)
@@ -99,7 +72,6 @@ class Surface(BSpline, Shape):
             knot_vector_v = knot_vector_v or c.knot_vector
         # Rhino lofts into the opposite direction (u=>v)
         return cls(control_points, (degree_u, degree_v), (knot_vector_u, knot_vector_v))
-        
 
     @classmethod
     def from_points(cls, points):
