@@ -1,6 +1,5 @@
 import compas
 
-from compas.geometry import Point
 from compas.geometry import Primitive
 
 from compas_nurbs.utilities import prod
@@ -9,7 +8,11 @@ from compas_nurbs.knot_vectors import knot_vector_uniform
 from compas_nurbs.knot_vectors import normalize_knot_vector
 from compas_nurbs.knot_vectors import check_knot_vector
 
-from collections import Iterable
+from collections.abc import Iterable
+
+if not compas.IPY:
+    import numpy as np
+    from compas.geometry import transform_points_numpy
 
 
 class BSpline(Primitive):
@@ -117,7 +120,9 @@ class BSpline(Primitive):
     # ==========================================================================
 
     def transform(self, transformation):
-        Point.transform_collection(self.control_points, transformation)  # TODO more dimen?
+        xyz = np.array(self.control_points)
+        xyz = transform_points_numpy(xyz.reshape(-1, xyz.shape[-1]), transformation)  # TODO more dimen?
+        self.control_points = xyz.reshape(self.count + [3])
         self._build_backend()
 
     def get_bounding_box(self):
