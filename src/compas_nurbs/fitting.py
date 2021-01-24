@@ -164,14 +164,14 @@ def interpolate_curve(points, degree, knot_style=0, start_derivative=None, end_d
     """
     if knot_style not in [CurveKnotStyle.Uniform, CurveKnotStyle.Chord, CurveKnotStyle.ChordSquareRoot]:
         raise ValueError("Please pass a valid knot style: [0, 1, 2].")
-    if start_derivative and end_derivative:
+    if start_derivative is not None and end_derivative is not None:
         return global_curve_interpolation_with_end_derivatives(points,
                                                                degree,
                                                                start_derivative,
                                                                end_derivative,
                                                                knot_style,
                                                                periodic=periodic)
-    elif start_derivative or end_derivative:
+    elif start_derivative is not None or end_derivative is not None:
         raise ValueError("Please pass start- AND end derivatives")
     else:
         return global_curve_interpolation(points, degree, knot_style=knot_style, periodic=periodic)
