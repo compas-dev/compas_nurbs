@@ -1,5 +1,3 @@
-import os
-import json
 import rhino3dm
 from geomdl import BSpline
 from geomdl import NURBS
@@ -9,8 +7,6 @@ from compas.geometry import close
 from compas.geometry import allclose
 from compas.utilities import flatten
 
-
-from compas_nurbs import DATA
 from compas_nurbs import Curve
 from compas_nurbs import Surface
 from compas_nurbs import RationalSurface
@@ -18,11 +14,8 @@ from compas_nurbs.utilities import linspace
 
 
 def geomdl_surface_from_surface(surface):
-    """Returns a 
-    """
     srf = NURBS.Surface() if surface.rational else BSpline.Surface()
     srf.degree_u, srf.degree_v = surface.degree
-
     if surface.rational:
         control_points = list(flatten(surface.control_points))
         ctrlptsw = compatibility.combine_ctrlpts_weights(control_points, list(flatten(surface.weights)))
@@ -30,7 +23,6 @@ def geomdl_surface_from_surface(surface):
         srf.ctrlptsw = ctrlptsw
     else:
         srf.ctrlpts2d = surface.control_points
-
     srf.knotvector_u, srf.knotvector_v = surface.knot_vector
     return srf
 
@@ -107,7 +99,7 @@ def test_surface():
 def test_nurbs_surface():
     """Testing NurbsSurface against other libraries.
 
-    Unfortunately the rhino3dm Nurbs Curve does not return the correct result.
+    Unfortunately the rhino3dm Nurbs Surface does not return the correct result.
     Instead rhino_* results for comparison are copied from Rhino directly.
     """
     # settings
@@ -121,7 +113,7 @@ def test_nurbs_surface():
 
     # create surfaces
     srf_geomdl = geomdl_surface_from_surface(surface)
-    srf_rhino = rhino_surface_from_surface(surface)  # This curve is wrong
+    # srf_rhino = rhino_surface_from_surface(surface)  # This surface is wrong
 
     params_u = linspace(0., 1., 5)
     params_v = linspace(0., 1., 5)
@@ -130,9 +122,6 @@ def test_nurbs_surface():
     # points
     points = surface.points_at(params)
     geomdl_points = srf_geomdl.evaluate_list(params)
-    # The following point evaluation is not correct.
-    # rhino_points = [srf_rhino.PointAt(*p) for p in params]
-    # rhino_points = [[p.X, p.Y, p.Z] for p in rhino_points]
     rhino_points = [[0.0, 0.0, 0.0], [0.0, 1.77778, -0.33333], [0.0, 4.57143, -1.28571], [0.0, 6.85714, -2.31429], [0.0, 8.0, -3.0], [2.58947, 0.0, 0.85263],
                     [2.66072, 2.90039, 0.24467], [2.51172, 4.70621, -0.0269], [2.23804, 6.30153, -0.18823], [1.84305, 8.0, -0.30269], [3.71429, 0.0, 0.42857],
                     [3.67137, 2.70161, -0.00907], [3.52817, 4.19718, -0.07394], [3.25543, 5.67391, 0.05707], [2.67857, 8.0, 0.48214], [4.07735, 0.0, 0.14917],
@@ -169,12 +158,18 @@ def test_nurbs_surface():
 
 
 def test_loft_surface():
-    filepath = os.path.join(DATA, "curves2loft.json")
     curves = []
-    with open(filepath, 'r') as f:
-        data = json.load(f)
-    curves = [Curve.from_data(d) for d in data]
-    #surface = Surface.loft_from_curves(curves, degree_v=3)
+    control_points = [(-24.265, 2.447, 0.000), (-16.799, -7.922, 0.000), (-15.554, 2.613, 0.000), (-2.198, -9.333, 0.000),
+                      (-0.456, -2.447, 0.000), (13.646, 4.936, 0.000), (19.370, 0.124, 0.000), (16.550, -8.669, 0.000)]
+    curves.append(Curve(control_points, 7))
+    control_points = [(-22.606, -7.673, 14.030), (-18.458, 0.456, 14.030), (-8.337, -3.609, 14.030), (-5.434, 6.097, 14.030),
+                      (7.673, 0.622, 14.030), (9.167, -6.512, 14.030), (19.868, -3.692, 14.030)]
+    curves.append(Curve(control_points, 3))
+    control_points = [(-24.845, -9.250, 28.148), (-16.052, 19.536, 28.148), (0.041, -16.799, 28.148), (3.526, 18.209, 28.148),
+                      (8.503, 9.167, 28.148), (11.158, 4.687, 28.148), (18.043, -16.882, 28.148), (22.606, -2.696, 28.148)]
+    curves.append(Curve(control_points, 7))
+    # loft surface with curves of different degrees and knot vectors
+    # surface = Surface.loft_from_curves(curves, degree_v=3)
 
 
 if __name__ == "__main__":
