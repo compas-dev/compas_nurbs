@@ -18,7 +18,8 @@ from compas_nurbs.utilities import linspace
 
 
 def geomdl_surface_from_surface(surface):
-
+    """Returns a 
+    """
     srf = NURBS.Surface() if surface.rational else BSpline.Surface()
     srf.degree_u, srf.degree_v = surface.degree
 
