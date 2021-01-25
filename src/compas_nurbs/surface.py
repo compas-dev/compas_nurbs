@@ -57,6 +57,22 @@ class Surface(BSpline, Shape):
     @classmethod
     def loft_from_curves(cls, curves, degree_v=3):
         """Creates a :class:`Surface` by lofting between curves.
+
+        Parameters
+        ----------
+        curves: list of :class:`Curve`
+            A list of curves.
+        degree_v : int
+            The degree of the resulting surface in v-direction.
+        
+        Returns
+        -------
+        :class:`Surface`
+            The resulting surface.
+        
+        Examples
+        --------
+        >>>
         """
         curves = unify_curves(curves)
         degree_u = curves[0].degree
@@ -136,12 +152,7 @@ class Surface(BSpline, Shape):
         Returns
         -------
         :class:`SurfaceCurvature`
-            A container class with several surface curvature quantities, such as
-            - principal curvature directions
-            - principal curvature values (kappa)
-            - mean curvature
-            - gauss curvature
-            - normal
+            A curvature object with several curvature quantities.
 
         Examples
         --------
