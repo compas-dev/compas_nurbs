@@ -44,7 +44,8 @@ class Curve(BSpline):
     --------
     >>> control_points = [(0.6, 0.4, 0.0), (0.2, 2.5, 0.0), (6.0, 2.1, 0.0), (4.7, 4.5, 0.0)]
     >>> knot_vector = [0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0]
-    >>> curve = Curve(control_points, 3, knot_vector)
+    >>> degree = 3
+    >>> curve = Curve(control_points, degree, knot_vector)
     """
 
     def __init__(self, control_points, degree, knot_vector=None, rational=False, weights=None):
@@ -79,7 +80,13 @@ class Curve(BSpline):
         Returns
         -------
         :class:`Curve`
-            The interpolated Curve.
+            The interpolated curve.
+        
+        Examples
+        --------
+        >>> points = [(0, 0, 0), (3, 4, 0), (-1, 4, 0), (-4, 0, 0), (-4, -3, 0)]
+        >>> curve = Curve.from_points(points, 3, knot_style=0)
+
         """
         cpts, kv = interpolate_curve(points, degree, knot_style, start_derivative, end_derivative, periodic)
         return cls(cpts, degree, kv)
@@ -139,8 +146,8 @@ class Curve(BSpline):
 
         Returns
         -------
-        list of float
-            Curvature values of the curve at the given parametric positions.
+        :class:`CurveCurvature`     
+            A curvature object with several curvature quantities.
 
         Examples
         --------
@@ -176,6 +183,35 @@ class Curve(BSpline):
         return [Frame(pt, xaxis, yaxis) for pt, xaxis, yaxis in zip(points, tangents, normals)]
 
     def derivatives_at(self, params, order=1):
+        """Evaluates the n-th order curve derivatives at the given parametric positions.
+
+        The output of this method is a list of n-th order derivatives. If order is 0,
+        then it will only output the evaluated point. Similarly, if order is 2, then
+        it will output the evaluated point, the 1st derivative and the 2nd derivative.
+
+        Parameters
+        ----------
+        params: list of float
+        order: int
+            The derivative order.
+
+        Returns
+        -------
+        :class:`numpy.array`
+            A two-dimensional array.
+
+        Examples
+        --------
+        >>> curve.derivatives_at([0.5], order=0)
+        array([[[-0.75,  3.  ,  0.  ]]])
+        >>> curve.derivatives_at([0.5], order=1)
+        array([[[ -0.75,   3.  ,   0.  ],
+                [-10.5 ,  -6.  ,   0.  ]]])
+        >>> curve.derivatives_at([0.5], order=2)
+        array([[[ -0.75,   3.  ,   0.  ],
+                [-10.5 ,  -6.  ,   0.  ],
+                [  6.  , -24.  ,   0.  ]]])
+        """
         return evaluate_curve_derivatives(self, params, order=order)
 
     # ==========================================================================
@@ -184,8 +220,17 @@ class Curve(BSpline):
 
     def reverse(self):
         """Reverses the curve.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        >>> control_points = [(0, 0, 0), (3, 4, 0), (-1, 4, 0), (-4, 0, 0), (-4, -3, 0)]
+        >>> curve = Curve(control_points, 3)
+        >>> curve.reverse()
         """
-        self.knot_vector = list(reversed(self.knot_vector))
         self.control_points = list(reversed(self.control_points))
         self.weights = list(reversed(self.weights))
         self._build_backend()
@@ -223,6 +268,7 @@ class RationalCurve(Curve):
 
     @property
     def weighted_control_points(self):
+        """The weighted control points."""
         return [[w * x, w * y, w * z, w] for (x, y, z), w in zip(self.control_points, self.weights)]
 
 
