@@ -81,7 +81,7 @@ class Curve(BSpline):
         -------
         :class:`Curve`
             The interpolated curve.
-        
+
         Examples
         --------
         >>> points = [(0, 0, 0), (3, 4, 0), (-1, 4, 0), (-4, 0, 0), (-4, -3, 0)]
@@ -146,7 +146,7 @@ class Curve(BSpline):
 
         Returns
         -------
-        :class:`CurveCurvature`     
+        :class:`CurveCurvature`
             A curvature object with several curvature quantities.
 
         Examples
@@ -238,18 +238,6 @@ class Curve(BSpline):
     # ==========================================================================
     # queries
     # ==========================================================================
-
-    @property
-    def is_linear(self):
-        raise NotImplementedError
-
-    @property
-    def is_periodic(self):
-        raise NotImplementedError
-
-    @property
-    def is_planar(self):
-        raise NotImplementedError
 
 
 class RationalCurve(Curve):

@@ -14,60 +14,19 @@ compas_nurbs: NURBS for COMPAS
 
 .. end-badges
 
-This package is inspirated and partly builds upon the NURBS-Python_ package, however uses a NumPy_-based backend for better performance if using CPython.
-It provides wrappers about the different backends, which are streamlined with the COMPAS API.
+This package is inspirated by the NURBS-Python_ package, however uses a NumPy_-based backend for better performance.
 
 ``Curve``, and ``Surface`` are non-uniform non-rational B-Spline geometries (NUBS), ``RationalCurve``, and ``RationalSurface`` are 
 non-uniform rational B-Spline Geometries (NURBS). They all built upon the class ``BSpline``.
 Coordinates have to be in 3D space (x, y, z).
 
-Links
------
-* NURBS-Python_
-* Sverchok_
-* Verb_
-
+Please refer to the Documentation_ for details.
 
 .. _NURBS-Python: https://github.com/orbingol/NURBS-Python
 .. _NumPy: https://numpy.org/
-.. _Rhino3D: https://www.rhino3d.com/
-.. _Sverchok: https://github.com/nortikin/sverchok
-.. _Verb: http://verbnurbs.com/
-
-
+.. _Documentation: https://gramaziokohler.github.io/compas_nurbs/latest/
 
 **compas_nurbs** runs on Python x.x and x.x.
-
-
-
-+----------+-------+---------+-------+---------+-------+---------+-------+---------+-------+---------+-------+---------+-------+---------+
-|          | Evaluation      | Interpolation   | Approximation   | Split, Trim     | ClosestParameter| BoundingBox     | Intersections   |
-|          +-------+---------+-------+---------+-------+---------+-------+---------+-------+---------+-------+---------+-------+---------+
-| Library  | Curve | Surface | Curve | Surface | Curve | Surface | Curve | Surface | Curve | Surface | Curve | Surface | Curve | Surface |
-+==========+=======+=========+=======+=========+=======+=========+=======+=========+=======+=========+=======+=========+=======+=========+
-| verb     |  [X]  |   [X]   |  [X]  |   [ ]   |  [ ]  |   [ ]   |  [X]  |   [X]   |  [ ]  |   [ ]   |  [ ]  |   [ ]   |  [ ]  |   [ ]   |
-+----------+-------+---------+-------+---------+-------+---------+-------+---------+-------+---------+-------+---------+-------+---------+
-
-
-Curve Interpolation
--------------------
-* Global curve interpolation, curve interpolation with end derivatives
-* Different possibilities for knot vector : uniform, chord, chord square root
-* TODO: use interpolate.splprep for degree <= 5, however strange behaviour detected (check function test_scipy_interpolation in test_fitting.py)
-* Comparison test with Rhino interpolation reveil that Rhino has bezier-spaced knots for degree >= 5, uniform knotstyle.
-* TODO: Curve approximation
-
-Surface Interpolation
----------------------
-* Still TODO, use scipy.interpolate.bisplrep?
-* Surface approximation
-
-Operations and queries TODO's:
-------------------------------
-* split, trim, ...
-* ``Curve.parameter_at``, ``Surface.parameter_at`` 
-* bounding_box
-* intersect
 
 
 Requirements

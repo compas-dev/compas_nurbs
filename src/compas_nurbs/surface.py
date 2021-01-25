@@ -64,12 +64,12 @@ class Surface(BSpline, Shape):
             A list of curves.
         degree_v : int
             The degree of the resulting surface in v-direction.
-        
+
         Returns
         -------
         :class:`Surface`
             The resulting surface.
-        
+
         Examples
         --------
         >>>
@@ -185,12 +185,10 @@ class Surface(BSpline, Shape):
 
         Returns
         -------
-        list of list of list
+        :class:`numpy.array`
+            A two-dimensional array.
         """
         return evaluate_surface_derivatives(self._surface, params, order=order)
-
-    def isocurve_at(self,):
-        raise NotImplementedError
 
     # ==========================================================================
     # operations
@@ -203,9 +201,6 @@ class Surface(BSpline, Shape):
     # ==========================================================================
     # serialisation
     # ==========================================================================
-
-    def to_obj(self):
-        raise NotImplementedError
 
 
 class RationalSurface(Surface):
