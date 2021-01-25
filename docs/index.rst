@@ -23,4 +23,5 @@ compas_nurbs: NURBS for COMPAS
    gettingstarted
    examples
    api
+   contributing
    license
