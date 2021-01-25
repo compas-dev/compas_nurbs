@@ -96,7 +96,7 @@ def test_surface():
     assert(close(curvature.mean, rhino_curvature['mean']))
 
 
-def test_nurbs_surface():
+def test_rational_surface():
     """Testing NurbsSurface against other libraries.
 
     Unfortunately the rhino3dm Nurbs Surface does not return the correct result.
@@ -168,11 +168,11 @@ def test_loft_surface():
     control_points = [(-24.845, -9.250, 28.148), (-16.052, 19.536, 28.148), (0.041, -16.799, 28.148), (3.526, 18.209, 28.148),
                       (8.503, 9.167, 28.148), (11.158, 4.687, 28.148), (18.043, -16.882, 28.148), (22.606, -2.696, 28.148)]
     curves.append(Curve(control_points, 7))
-    # loft surface with curves of different degrees and knot vectors
+    # TODO: loft surface with curves of different degrees and knot vectors
     # surface = Surface.loft_from_curves(curves, degree_v=3)
 
 
 if __name__ == "__main__":
     test_surface()
-    test_nurbs_surface()
+    test_rational_surface()
     test_loft_surface()
