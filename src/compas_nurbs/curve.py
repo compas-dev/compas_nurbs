@@ -144,9 +144,11 @@ class Curve(BSpline):
 
         Examples
         --------
-        >>> curvature = curve.curvatures_at([0.0, 0.5])
-        >>> allclose(curvature, [0.042667, 0.162835])
+        >>> curvature = curve.curvatures_at([0.5])[0]
+        >>> close(curvature.curvature, 0.162835)
         True
+        >>> curvature.osculating_circle
+        Circle(Plane(Point(2.297, -2.332, 0.000), Vector(0.000, 0.000, 1.000)), 6.141172894211785)
         """
         derivatives = self.derivatives_at(params, order=2)
         curvatures = curve_curvatures(derivatives)
@@ -227,6 +229,7 @@ class RationalCurve(Curve):
 if __name__ == '__main__':
     import doctest
     from compas.geometry import allclose  # noqa: F401
+    from compas.geometry import close  # noqa: F401
     control_points = [(0, 0, 0), (3, 4, 0), (-1, 4, 0), (-4, 0, 0), (-4, -3, 0)]
     curve = Curve(control_points, 3)
     doctest.testmod(globs=globals())
