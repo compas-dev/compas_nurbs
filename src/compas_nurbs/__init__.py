@@ -8,6 +8,14 @@ Curve
 .. autoclass:: Curve
    :members:
 
+
+RationalCurve
+-------------
+
+.. autoclass:: RationalCurve
+   :members:
+
+
 Surface
 -------
 
@@ -15,14 +23,8 @@ Surface
    :members:
 
 
-RationalCurve
-----------
-
-.. autoclass:: RationalCurve
-   :members:
-
 RationalSurface
-------------
+---------------
 
 .. autoclass:: RationalSurface
    :members:
@@ -39,4 +41,4 @@ from .surface import RationalSurface
 HERE = os.path.dirname(__file__)
 DATA = os.path.join(HERE, "data")
 
-__all__ = ['Curve', 'Surface', 'RationalCurve', 'RationalSurface']
+__all__ = ['Curve', 'RationalCurve', 'Surface', 'RationalSurface']
