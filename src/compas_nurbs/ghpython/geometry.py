@@ -9,7 +9,6 @@ if compas.RHINO:
     from compas_rhino.geometry import RhinoCurve as BaseRhinoCurve
     from compas_rhino.geometry import RhinoSurface as BaseRhinoSurface
 
-
     class RhinoCurve(BaseRhinoCurve):
 
         @classmethod
@@ -27,7 +26,6 @@ if compas.RHINO:
                 return Curve(control_points, self.geometry.Degree, knot_vector)
             else:
                 return RationalCurve(control_points, self.geometry.Degree, knot_vector, weights=weights)
-
 
     class RhinoSurface(BaseRhinoSurface):
 

@@ -22,7 +22,6 @@ if compas.RHINO:
         def draw_points(self):
             return rs.AddPoints(self.curve.control_points)
 
-
     class SurfaceArtist(BaseArtist):
         """
         """
