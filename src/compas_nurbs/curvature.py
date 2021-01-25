@@ -5,7 +5,7 @@ from compas.geometry import Plane
 
 
 class CurveCurvature(object):
-    """
+    """A container class with several curve curvature quantities.
     """
 
     def __init__(self, curvature, frame):
@@ -36,12 +36,6 @@ class CurveCurvature(object):
 
 class SurfaceCurvature(object):
     """A container class with several surface curvature quantities.
-
-    - principal curvature directions
-    - principal curvature values (kappa)
-    - mean curvature
-    - gauss curvature
-    - normal
     """
 
     def __init__(self, kappa, direction, normal, mean, gauss):
