@@ -81,4 +81,4 @@ Releasing this project
 Credits
 -------------
 
-This package was created by Romana Rust <rust@arch.ethz.ch> `@romanaru <https://github.com/romanarust>`_ at `@gramaziokohler <https://github.com/gramaziokohler>`_
+This package was created by Romana Rust <rust@arch.ethz.ch> `@romanarust <https://github.com/romanarust>`_ at `@gramaziokohler <https://github.com/gramaziokohler>`_
