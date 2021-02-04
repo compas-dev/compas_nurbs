@@ -1,27 +1,41 @@
-******************************
-compas_nurbs: NURBS for COMPAS
-******************************
+****************
+NURBS for COMPAS
+****************
 
 .. start-badges
 
 .. image:: https://img.shields.io/badge/License-MIT-blue.svg
-    :target: https://github.com/gramaziokohler/compas_nurbs/blob/master/LICENSE
+    :target: https://github.com/gramaziokohler/compas_nurbs/blob/main/LICENSE
     :alt: License MIT
 
-.. image:: https://travis-ci.org/gramaziokohler/compas_nurbs.svg?branch=master
+.. image:: https://travis-ci.org/gramaziokohler/compas_nurbs.svg?branch=main
     :target: https://travis-ci.org/gramaziokohler/compas_nurbs
     :alt: Travis CI
 
 .. end-badges
 
+This package is insipred by the NURBS-Python_ package, however uses a NumPy_-based backend for better performance.
+
+``Curve``, and ``Surface`` are non-uniform non-rational B-Spline geometries (NUBS), ``RationalCurve``, and ``RationalSurface`` are
+non-uniform rational B-Spline Geometries (NURBS). They all built upon the class ``BSpline``.
+Coordinates have to be in 3D space (x, y, z).
 
 .. toctree::
    :maxdepth: 3
    :titlesonly:
 
-   readme
+   Introduction <self>
    gettingstarted
    examples
    api
    contributing
    license
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+
+.. _NURBS-Python: https://github.com/orbingol/NURBS-Python
+.. _NumPy: https://numpy.org/
+.. _Documentation: https://gramaziokohler.github.io/compas_nurbs/latest/

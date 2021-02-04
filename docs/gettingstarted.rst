@@ -15,17 +15,27 @@ On Mac
 
 .. code-block:: bash
 
-    conda create -n nurbs python=3.7 python.app COMPAS">=0.16.3"
-    conda activate nurbs
-    pip install -e .
+    conda config --add channels conda-forge
+    conda create -n ENV_NAME compas python.app
+    conda activate ENV_NAME
+    pip install compas_nurbs
 
 On Windows
 ----------
 
 .. code-block:: bash
 
-    conda create -n nurbs python=3.7 COMPAS">=0.16.3"
-    conda activate nurbs
-    pip install -e .
+    conda config --add channels conda-forge
+    conda create -n ENV_NAME compas
+    conda activate ENV_NAME
+    pip install compas_nurbs
 
 
+Once the installation is completed, you can verify your setup.
+Start Python from the command prompt and run the following:
+
+::
+
+    >>> import compas_nurbs
+
+You are ready to use **COMPAS NURBS**!

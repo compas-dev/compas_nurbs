@@ -7,7 +7,7 @@ import sphinx_compas_theme
 # -- General configuration ------------------------------------------------
 
 project = 'COMPAS NURBS'
-copyright = '2020, Gramazio Kohler Research - ETH Zurich'
+copyright = '2020 - ETH Zurich, Gramazio Kohler Research'
 author = 'Romana Rust'
 release = '0.1.0'
 
@@ -121,7 +121,7 @@ plot_html_show_formats = False
 
 intersphinx_mapping = {
     'python': ('https://docs.python.org/', None),
-    'compas': ('https://compas-dev.github.io/compas'),
+    'compas': ('https://compas.dev/compas/latest/', None),
 }
 
 

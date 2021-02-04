@@ -22,12 +22,12 @@ class BSpline(Primitive):
     """
 
     def __init__(self, control_points, degree, knot_vector, rational, weights=None):
-        self.degree = degree  # (degree_u, degree_v) for surfaces
+        self.degree = degree                                              # (degree_u, degree_v) for surfaces
         self.__rational = rational
         self.__pdim = len(degree) if isinstance(degree, Iterable) else 1
-        self.control_points = control_points  # 2d for surfaces
-        self.knot_vector = knot_vector  # (knotvector_u, knotvector_v) for surfaces
-        self.weights = weights  # 2d for surfaces
+        self.control_points = control_points                              # 2d for surfaces
+        self.knot_vector = knot_vector                                    # (knotvector_u, knotvector_v) for surfaces
+        self.weights = weights                                            # 2d for surfaces
         self._build_backend()
 
     def _build_backend(self):  # needs to be overwritten by derivative classes

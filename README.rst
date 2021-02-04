@@ -1,22 +1,22 @@
 ============================================================
-compas_nurbs: NURBS for COMPAS
+NURBS for COMPAS
 ============================================================
 
 .. start-badges
 
 .. image:: https://img.shields.io/badge/License-MIT-blue.svg
-    :target: https://github.com/gramaziokohler/compas_nurbs/blob/master/LICENSE
+    :target: https://github.com/gramaziokohler/compas_nurbs/blob/main/LICENSE
     :alt: License MIT
 
-.. image:: https://travis-ci.org/gramaziokohler/compas_nurbs.svg?branch=master
+.. image:: https://travis-ci.org/gramaziokohler/compas_nurbs.svg?branch=main
     :target: https://travis-ci.org/gramaziokohler/compas_nurbs
     :alt: Travis CI
 
 .. end-badges
 
-This package is inspirated by the NURBS-Python_ package, however uses a NumPy_-based backend for better performance.
+This package is insipred by the NURBS-Python_ package, however uses a NumPy_-based backend for better performance.
 
-``Curve``, and ``Surface`` are non-uniform non-rational B-Spline geometries (NUBS), ``RationalCurve``, and ``RationalSurface`` are 
+``Curve``, and ``Surface`` are non-uniform non-rational B-Spline geometries (NUBS), ``RationalCurve``, and ``RationalSurface`` are
 non-uniform rational B-Spline Geometries (NURBS). They all built upon the class ``BSpline``.
 Coordinates have to be in 3D space (x, y, z).
 
@@ -26,20 +26,30 @@ Please refer to the Documentation_ for details.
 .. _NumPy: https://numpy.org/
 .. _Documentation: https://gramaziokohler.github.io/compas_nurbs/latest/
 
-**compas_nurbs** runs on Python x.x and x.x.
+**COMPAS NURBS** runs on Python x.x and x.x.
 
 
-Requirements
-------------
+Gettng Started
+--------------
 
-.. Write requirements instructions here
+The recommended way to install **COMPAS NURBS** is to use a `Anaconda/conda <https://conda.io/docs/>`_ environment:
+
+::
+
+    conda config --add channels conda-forge
+    conda create -n ENV_NAME compas
+    conda activate ENV_NAME
+    pip install compas_nurbs
 
 
-Installation
-------------
+Once the installation is completed, you can verify your setup.
+Start Python from the command prompt and run the following:
 
-.. Write installation instructions here
+::
 
+    >>> import compas_nurbs
+
+You are ready to use **COMPAS NURBS**!
 
 Contributing
 ------------
@@ -52,7 +62,7 @@ Make sure you setup your local development environment correctly:
 ::
 
     pip install -r requirements-dev.txt
-    invoke add-to-rhino
+    python -m compas_rhino.install
 
 **You're ready to start working!**
 
@@ -63,7 +73,6 @@ command line to ease recurring operations:
 * ``invoke check``: Run various code and documentation style checks.
 * ``invoke docs``: Generate documentation.
 * ``invoke test``: Run all tests and checks in one swift command.
-* ``invoke add-to-rhino``: Make the project accessible from Rhino.
 * ``invoke``: Show available tasks.
 
 For more details, check the `Contributor's Guide <CONTRIBUTING.rst>`_.
@@ -72,11 +81,22 @@ For more details, check the `Contributor's Guide <CONTRIBUTING.rst>`_.
 Releasing this project
 ----------------------
 
-.. Write releasing instructions here
+Ready to release a new version of **COMPAS NURBS**? Here's how to do it:
 
+* We use `semver <https://semver.org/>`_, i.e. we bump versions as follows:
 
-.. end of optional sections
-..
+  * ``patch``: bugfixes.
+  * ``minor``: backwards-compatible features added.
+  * ``major``: backwards-incompatible changes.
+
+* Update the ``CHANGELOG.rst`` with all novelty!
+* Ready? Release everything in one command:
+
+::
+
+    invoke release [patch|minor|major]
+
+* Celebrate! 💃
 
 Credits
 -------------
