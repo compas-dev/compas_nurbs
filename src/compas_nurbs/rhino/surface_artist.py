@@ -41,7 +41,6 @@ class SurfaceArtist(BaseArtist):
 
         sc.doc.Objects.AddSurface(ns)
 
-
     def draw_points(self):
         return rs.AddPoints(self.surface.control_points)
 

@@ -15,6 +15,7 @@ if not compas.IPY:
 else:
     from collections import Iterable
 
+
 class BSpline(Primitive):
     """A base class for rational and non-rational B-Spline geometry.
 
