@@ -11,7 +11,6 @@ from setuptools import find_packages, setup
 
 requirements = [
     'compas>=1.0,<2.0',
-    'rhino3dm',
 ]
 keywords_list = ['compas', 'nurbs', 'rhino', 'bspline']
 

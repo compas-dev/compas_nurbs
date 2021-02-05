@@ -3,12 +3,13 @@ bump2version >=0.5.11
 check-manifest >=0.36
 doc8
 flake8
-geomdl                                    # Used only for testing
+geomdl                                   # Used only for testing
 invoke >=0.14
 isort
 pydocstyle
 pylint
 pytest
+rhino3dm                                 # Used only for testing
 sphinx >=1.6
 sphinx_compas_theme >=0.13
 -e .
