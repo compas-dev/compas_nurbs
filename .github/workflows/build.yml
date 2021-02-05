@@ -36,7 +36,7 @@ jobs:
           invoke lint
       - name: Test import
         run: |
-          python -m compas_nurbs
+          python -c "import compas_nurbs;print(compas_nurbs.__version__)"
       - name: Test with pytest
         run: |
           invoke test
