@@ -1,20 +1,21 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 
-import codecs
 import contextlib
 import glob
 import os
 import sys
 from shutil import rmtree
-from xml.dom.minidom import parse
 
-from invoke import Collection, Exit, task
+from invoke import Exit
+from invoke import task
 
 try:
     input = raw_input
 except NameError:
     pass
+
+
 BASE_FOLDER = os.path.dirname(__file__)
 
 
@@ -53,42 +54,6 @@ def confirm(question):
             return True
 
         print('Focus, kid! It is either (y)es or (n)o', file=sys.stderr)
-
-
-# The IronPython install code is based on gh_python_remote
-# https://github.com/Digital-Structures/ghpythonremote
-# MIT License
-# Copyright (c) 2017 Pierre Cuvilliers, Caitlin Mueller, Massachusetts Institute of Technology
-def get_ironpython_path(rhino_version):
-    appdata_path = os.getenv('APPDATA', '')
-    ironpython_settings_path = os.path.join(appdata_path, 'McNeel', 'Rhinoceros', rhino_version, 'Plug-ins',
-                                            'IronPython (814d908a-e25c-493d-97e9-ee3861957f49)', 'settings')
-
-    if not os.path.isdir(ironpython_settings_path):
-        return None
-
-    return ironpython_settings_path
-
-
-def replaceText(node, newText):
-    if node.firstChild.nodeType != node.TEXT_NODE:
-        raise Exception("Node does not contain text")
-
-    node.firstChild.replaceWholeText(newText)
-
-
-def updateSearchPaths(settings_file, python_source_path):
-    with codecs.open(settings_file, 'r', encoding="ascii", errors="ignore") as file_handle:
-        doc = parse(file_handle)
-
-    for entry in doc.getElementsByTagName('entry'):
-        if entry.getAttribute('key') == 'SearchPaths':
-            current_paths = entry.firstChild.data
-            if python_source_path not in current_paths:
-                replaceText(entry, current_paths + ';' + python_source_path)
-
-    with codecs.open(settings_file, 'w', encoding='utf-8') as file_handle:
-        doc.writexml(file_handle)
 
 
 @task(default=True)
@@ -134,42 +99,96 @@ def clean(ctx, docs=True, bytecode=True, builds=True):
 
 @task(help={
       'rebuild': 'True to clean all previously built docs before starting, otherwise False.',
+      'doctest': 'True to run doctests, otherwise False.',
       'check_links': 'True to check all web links in docs for validity, otherwise False.'})
-def docs(ctx, rebuild=True, doctest=False, check_links=False):
+def docs(ctx, rebuild=False, doctest=False, check_links=False):
     """Builds package's HTML documentation."""
     if rebuild:
         clean(ctx)
-    if doctest:
-        ctx.run('sphinx-build -b doctest docs dist/docs')
-    ctx.run('sphinx-build -b html docs dist/docs')
-    if check_links:
-        ctx.run('sphinx-build -b linkcheck docs dist/docs')
+
+    with chdir(BASE_FOLDER):
+        if doctest:
+            testdocs(ctx, rebuild=rebuild)
+
+        opts = '-E' if rebuild else ''
+        ctx.run('sphinx-build {} -b html docs dist/docs'.format(opts))
+
+        if check_links:
+            linkcheck(ctx, rebuild=rebuild)
+
+
+@task()
+def lint(ctx):
+    """Check the consistency of coding style."""
+    log.write('Running flake8 python linter...')
+    ctx.run('flake8 src')
+
+
+@task()
+def testdocs(ctx, rebuild=False):
+    """Test the examples in the docstrings."""
+    log.write('Running doctest...')
+    opts = '-E' if rebuild else ''
+    ctx.run('sphinx-build {} -b doctest docs dist/docs'.format(opts))
+
+
+@task()
+def linkcheck(ctx, rebuild=False):
+    """Check links in documentation."""
+    log.write('Running link check...')
+    opts = '-E' if rebuild else ''
+    ctx.run('sphinx-build {} -b linkcheck docs dist/docs'.format(opts))
 
 
 @task()
 def check(ctx):
     """Check the consistency of documentation, coding style and a few other things."""
-    log.write('Checking ReStructuredText formatting...')
-    ctx.run('python setup.py check --strict --metadata --restructuredtext')
+    with chdir(BASE_FOLDER):
+        lint(ctx)
 
-    log.write('Running flake8 python linter...')
-    ctx.run('flake8 src setup.py')
+        log.write('Checking MANIFEST.in...')
+        ctx.run('check-manifest')
 
-    #log.write('Checking python imports...')
-    #ctx.run('isort --check-only --diff --recursive src tests setup.py')
-
-    log.write('Checking MANIFEST.in...')
-    ctx.run('check-manifest')
+        log.write('Checking ReStructuredText formatting...')
+        ctx.run('python setup.py check --strict --metadata --restructuredtext')
 
 
 @task(help={
       'checks': 'True to run all checks before testing, otherwise False.'})
-def test(ctx, doctest=False):
+def test(ctx, checks=False, doctest=False):
     """Run all tests."""
-    pytest_args = ['pytest']
-    if doctest:
-        pytest_args.append('--doctest-modules')
-    ctx.run(" ".join(pytest_args))
+    if checks:
+        check(ctx)
+
+    with chdir(BASE_FOLDER):
+        cmd = ['pytest']
+        if doctest:
+            cmd.append('--doctest-modules')
+
+        ctx.run(' '.join(cmd))
+
+
+@task
+def prepare_changelog(ctx):
+    """Prepare changelog for next release."""
+    UNRELEASED_CHANGELOG_TEMPLATE = '\nUnreleased\n----------\n\n**Added**\n\n**Changed**\n\n**Fixed**\n\n**Deprecated**\n\n**Removed**\n'
+
+    with chdir(BASE_FOLDER):
+        # Preparing changelog for next release
+        with open('CHANGELOG.rst', 'r+') as changelog:
+            content = changelog.read()
+            start_index = content.index('----------')
+            start_index = content.rindex('\n', 0, start_index - 1)
+            last_version = content[start_index:start_index + 11].strip()
+
+            if last_version == 'Unreleased':
+                log.write('Already up-to-date')
+                return
+
+            changelog.seek(0)
+            changelog.write(content[0:start_index] + UNRELEASED_CHANGELOG_TEMPLATE + content[start_index:])
+
+        ctx.run('git add CHANGELOG.rst && git commit -m "Prepare changelog for next release"')
 
 
 @task(help={
@@ -179,53 +198,26 @@ def release(ctx, release_type):
     if release_type not in ('patch', 'minor', 'major'):
         raise Exit('The release type parameter is invalid.\nMust be one of: major, minor, patch')
 
-    ctx.run('bumpversion %s --verbose' % release_type)
-    ctx.run('invoke docs test')
+    # Run checks
+    ctx.run('invoke check test')
+
+    # Bump version and git tag it
+    ctx.run('bump2version %s --verbose' % release_type)
+
+    # Build project
     ctx.run('python setup.py clean --all sdist bdist_wheel')
 
-    if confirm('You are about to upload the release to pypi.org. Are you sure? [y/N]'):
-        files = ['dist/*.whl', 'dist/*.gz', 'dist/*.zip']
-        dist_files = ' '.join([pattern for f in files for pattern in glob.glob(f)])
+    # Prepare changelog for next release
+    prepare_changelog(ctx)
 
-        if len(dist_files):
-            ctx.run('twine upload --skip-existing %s' % dist_files)
-        else:
-            raise Exit('No files found to release')
+    # Clean up local artifacts
+    clean(ctx)
+
+    # Upload to pypi
+    if confirm('Everything is ready. You are about to push to git which will trigger a release to pypi.org. Are you sure? [y/N]'):
+        ctx.run('git push --tags && git push')
     else:
-        raise Exit('Aborted release')
-
-
-@task()
-def add_to_rhino(ctx):
-    """Adds the current project to Rhino Python search paths."""
-    try:
-        python_source_path = os.path.join(os.getcwd(), 'src')
-        rhino_setting_per_version = [
-            ('5.0', 'settings.xml'), ('6.0', 'settings-Scheme__Default.xml')]
-        setting_files_updated = 0
-
-        for version, filename in rhino_setting_per_version:
-            ironpython_path = get_ironpython_path(version)
-
-            if not ironpython_path:
-                continue
-
-            settings_file = os.path.join(ironpython_path, filename)
-            if not os.path.isfile(settings_file):
-                log.warn('IronPython settings for Rhino ' + version + ' not found')
-            else:
-                updateSearchPaths(settings_file, python_source_path)
-                log.write('Updated search path for Rhino ' + version)
-                setting_files_updated += 1
-
-        if setting_files_updated == 0:
-            raise Exit('[ERROR] No Rhino settings file found\n' +
-                       'Could not automatically make this project available to IronPython\n' +
-                       'To add manually, open EditPythonScript on Rhinoceros, go to Tools -> Options\n' +
-                       'and add the project path to the module search paths')
-
-    except RuntimeError as error:
-        raise Exit(error)
+        raise Exit('You need to manually revert the tag/commits created.')
 
 
 @contextlib.contextmanager

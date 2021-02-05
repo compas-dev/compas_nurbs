@@ -1,18 +1,19 @@
 import compas
-
 from compas.geometry import Primitive
 
-from compas_nurbs.utilities import prod
-from compas_nurbs.utilities import reshape
+from compas_nurbs.knot_vectors import check_knot_vector
 from compas_nurbs.knot_vectors import knot_vector_uniform
 from compas_nurbs.knot_vectors import normalize_knot_vector
-from compas_nurbs.knot_vectors import check_knot_vector
-
-from collections.abc import Iterable
+from compas_nurbs.utilities import prod
+from compas_nurbs.utilities import reshape
 
 if not compas.IPY:
+    from collections.abc import Iterable
+
     import numpy as np
     from compas.geometry import transform_points_numpy
+else:
+    from collections import Iterable
 
 
 class BSpline(Primitive):
@@ -22,12 +23,12 @@ class BSpline(Primitive):
     """
 
     def __init__(self, control_points, degree, knot_vector, rational, weights=None):
-        self.degree = degree  # (degree_u, degree_v) for surfaces
+        self.degree = degree                                              # (degree_u, degree_v) for surfaces
         self.__rational = rational
         self.__pdim = len(degree) if isinstance(degree, Iterable) else 1
-        self.control_points = control_points  # 2d for surfaces
-        self.knot_vector = knot_vector  # (knotvector_u, knotvector_v) for surfaces
-        self.weights = weights  # 2d for surfaces
+        self.control_points = control_points                              # 2d for surfaces
+        self.knot_vector = knot_vector                                    # (knotvector_u, knotvector_v) for surfaces
+        self.weights = weights                                            # 2d for surfaces
         self._build_backend()
 
     def _build_backend(self):  # needs to be overwritten by derivative classes

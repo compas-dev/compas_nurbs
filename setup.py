@@ -9,10 +9,10 @@ from os.path import abspath, basename, dirname, join, splitext
 
 from setuptools import find_packages, setup
 
-# NOTE: Write dependencies (i.e. http://python-packaging.readthedocs.io/en/latest/dependencies.html)
-requirements = ['cython', 'compas']
-# NOTE: Write a list of keywords (i.e. ['ros', 'ros-bridge', 'robotics', 'websockets'])
-keywords_list = []
+requirements = [
+    'compas>=1.0,<2.0',
+]
+keywords_list = ['compas', 'nurbs', 'rhino', 'bspline']
 
 here = abspath(dirname(__file__))
 
@@ -54,12 +54,12 @@ setup(
         'Operating System :: POSIX',
         'Operating System :: Microsoft :: Windows',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: Implementation :: CPython',
         'Topic :: Scientific/Engineering',
     ],
