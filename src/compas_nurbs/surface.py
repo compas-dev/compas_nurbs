@@ -5,13 +5,13 @@ from compas.geometry import Shape, Vector, Point
 from compas_nurbs.bspline import BSpline
 from compas_nurbs.curve import Curve
 from compas_nurbs.curvature import SurfaceCurvature
-from compas_nurbs.operations import unify_curves
 
 if not compas.IPY:
     from compas_nurbs.evaluators import evaluate_surface
     from compas_nurbs.evaluators import evaluate_surface_derivatives
     from compas_nurbs.evaluators import calculate_surface_curvature
     from compas_nurbs.operations import surface_normals
+    from compas_nurbs.operations import unify_curves
 
 
 class Surface(BSpline, Shape):

@@ -1,19 +1,19 @@
 import compas
-
 from compas.geometry import Primitive
 
-from compas_nurbs.utilities import prod
-from compas_nurbs.utilities import reshape
+from compas_nurbs.knot_vectors import check_knot_vector
 from compas_nurbs.knot_vectors import knot_vector_uniform
 from compas_nurbs.knot_vectors import normalize_knot_vector
-from compas_nurbs.knot_vectors import check_knot_vector
-
-from collections.abc import Iterable
+from compas_nurbs.utilities import prod
+from compas_nurbs.utilities import reshape
 
 if not compas.IPY:
+    from collections.abc import Iterable
+
     import numpy as np
     from compas.geometry import transform_points_numpy
-
+else:
+    from collections import Iterable
 
 class BSpline(Primitive):
     """A base class for rational and non-rational B-Spline geometry.
