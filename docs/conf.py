@@ -9,7 +9,7 @@ import sphinx_compas_theme
 project = 'COMPAS NURBS'
 copyright = '2020 - ETH Zurich, Gramazio Kohler Research'
 author = 'Romana Rust'
-release = '0.1.0'
+release = '0.2.0'
 
 version = '.'.join(release.split('.')[0:2])
 

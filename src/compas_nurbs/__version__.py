@@ -1,7 +1,7 @@
 __title__ = 'compas_nurbs'
 __description__ = 'NURBS for COMPAS'
 __url__ = 'https://github.com/gramaziokohler/compas_nurbs'
-__version__ = '0.1.0'
+__version__ = '0.2.0'
 __author__ = 'Gramazio Kohler Research'
 __author_email__ = 'gramaziokohler@arch.ethz.ch'
 __license__ = 'MIT license'
