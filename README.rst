@@ -29,7 +29,7 @@ Please refer to the Documentation_ for details.
 **COMPAS NURBS** runs on Python x.x and x.x.
 
 
-Gettng Started
+Getting Started
 --------------
 
 The recommended way to install **COMPAS NURBS** is to use a `Anaconda/conda <https://conda.io/docs/>`_ environment:
