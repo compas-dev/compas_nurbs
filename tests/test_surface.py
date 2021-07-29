@@ -172,7 +172,28 @@ def test_loft_surface():
     # surface = Surface.loft_from_curves(curves, degree_v=3)
 
 
+def test_isocurve():
+    control_points_2d = [[[0, 0, 0], [0, 4, 0.], [0, 8, -3]],
+                         [[2, 0, 6], [2, 4, 0.], [2, 8, 0.]],
+                         [[4, 0, 0], [4, 4, 0.], [4, 8, 3.]],
+                         [[6, 0, 0], [6, 4, -3], [6, 8, 0.]]]
+    degree_u = 3
+    degree_v = 2
+    surface = Surface(control_points_2d, (degree_u, degree_v))
+    
+    curve = surface.isocurve(0, 0.5)
+    assert(allclose(curve.knot_vector, [0.0, 0.0, 0.0, 1.0, 1.0, 1.0]))
+    assert(allclose(curve.control_points, [[3.0, 0.0, 2.25], [3.0, 4.0, -0.375], [3.0, 8.0, 0.75]]))
+    assert(curve.degree == 2)
+
+    curve = surface.isocurve(1, 0.5)
+    assert(allclose(curve.knot_vector, [0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0]))
+    assert(allclose(curve.control_points, [[0.0, 4.0, -0.75], [2.0, 4.0, 1.5], [4.0, 4.0, 0.75], [6.0, 4.0, -1.5]]))
+    assert(curve.degree == 3)
+
+
 if __name__ == "__main__":
     test_surface()
     test_rational_surface()
     test_loft_surface()
+    test_isocurve()
