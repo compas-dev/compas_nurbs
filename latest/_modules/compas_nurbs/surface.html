@@ -93,6 +93,7 @@
     <span class="kn">from</span> <span class="nn">compas_nurbs.evaluators</span> <span class="kn">import</span> <span class="n">calculate_surface_curvature</span>
     <span class="kn">from</span> <span class="nn">compas_nurbs.operations</span> <span class="kn">import</span> <span class="n">surface_normals</span>
     <span class="kn">from</span> <span class="nn">compas_nurbs.operations</span> <span class="kn">import</span> <span class="n">unify_curves</span>
+    <span class="kn">from</span> <span class="nn">compas_nurbs.operations</span> <span class="kn">import</span> <span class="n">surface_isocurve</span>
 
 
 <div class="viewcode-block" id="Surface"><a class="viewcode-back" href="../../api/compas_nurbs.html#compas_nurbs.Surface">[docs]</a><span class="k">class</span> <span class="nc">Surface</span><span class="p">(</span><span class="n">BSpline</span><span class="p">,</span> <span class="n">Shape</span><span class="p">):</span>
@@ -269,7 +270,7 @@
 <span class="sd">        :class:`numpy.array`</span>
 <span class="sd">            A two-dimensional array.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">evaluate_surface_derivatives</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_surface</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">evaluate_surface_derivatives</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_surface</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># operations</span>
@@ -278,6 +279,28 @@
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># queries</span>
     <span class="c1"># ==========================================================================</span>
+
+<div class="viewcode-block" id="Surface.isocurve"><a class="viewcode-back" href="../../api/compas_nurbs.html#compas_nurbs.Surface.isocurve">[docs]</a>    <span class="k">def</span> <span class="nf">isocurve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; curve = surface.isocurve(0, 0.5)</span>
+<span class="sd">        &gt;&gt;&gt; allclose(curve.knot_vector, [0.0, 0.0, 0.0, 1.0, 1.0, 1.0])</span>
+<span class="sd">        True</span>
+<span class="sd">        &gt;&gt;&gt; allclose(curve.control_points, [[3.0, 0.0, 2.25], [3.0, 4.0, -0.375], [3.0, 8.0, 0.75]])</span>
+<span class="sd">        True</span>
+<span class="sd">        &gt;&gt;&gt; curve.degree == 2</span>
+<span class="sd">        True</span>
+<span class="sd">        &gt;&gt;&gt; curve = surface.isocurve(1, 0.5)</span>
+<span class="sd">        &gt;&gt;&gt; allclose(curve.knot_vector, [0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0])</span>
+<span class="sd">        True</span>
+<span class="sd">        &gt;&gt;&gt; allclose(curve.control_points, [[0.0, 4.0, -0.75], [2.0, 4.0, 1.5], [4.0, 4.0, 0.75], [6.0, 4.0, -1.5]])</span>
+<span class="sd">        True</span>
+<span class="sd">        &gt;&gt;&gt; curve.degree == 3</span>
+<span class="sd">        True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">surface_isocurve</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_surface</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span></div></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># serialisation</span>

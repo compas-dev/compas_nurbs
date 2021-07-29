@@ -82,13 +82,13 @@
 
         
         
-        <span class="target" id="module-compas_nurbs"></span><div class="section" id="main-concepts">
-<h1>Main concepts<a class="headerlink" href="#main-concepts" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="curve">
-<h2>Curve<a class="headerlink" href="#curve" title="Permalink to this headline">¶</a></h2>
+        <span class="target" id="module-compas_nurbs"></span><section id="main-concepts">
+<h1>Main concepts</h1>
+<section id="curve">
+<h2>Curve</h2>
 <dl class="py class">
-<dt id="compas_nurbs.Curve">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_nurbs.</span></code><code class="sig-name descname"><span class="pre">Curve</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">control_points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">knot_vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rational</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/curve.html#Curve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_nurbs.Curve" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="compas_nurbs.Curve">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_nurbs.</span></span><span class="sig-name descname"><span class="pre">Curve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">control_points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">knot_vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rational</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/curve.html#Curve"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_nurbs.bspline.BSpline</span></code></p>
 <p>A non-uniform non-rational B-Spline curve.</p>
 <dl class="field-list simple">
@@ -116,8 +116,8 @@
 </code></pre></div>
 </div>
 <dl class="py method">
-<dt id="compas_nurbs.Curve.curvatures_at">
-<code class="sig-name descname"><span class="pre">curvatures_at</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/curve.html#Curve.curvatures_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_nurbs.Curve.curvatures_at" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="compas_nurbs.Curve.curvatures_at">
+<span class="sig-name descname"><span class="pre">curvatures_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/curve.html#Curve.curvatures_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Evaluates the curvature at the given parametric positions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -138,8 +138,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt id="compas_nurbs.Curve.derivatives_at">
-<code class="sig-name descname"><span class="pre">derivatives_at</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/curve.html#Curve.derivatives_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_nurbs.Curve.derivatives_at" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="compas_nurbs.Curve.derivatives_at">
+<span class="sig-name descname"><span class="pre">derivatives_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/curve.html#Curve.derivatives_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Evaluates the n-th order curve derivatives at the given parametric positions.</p>
 <p>The output of this method is a list of n-th order derivatives. If order is 0,
 then it will only output the evaluated point. Similarly, if order is 2, then
@@ -170,8 +170,8 @@ it will output the evaluated point, the 1st derivative and the 2nd derivative.</
 </dd></dl>
 
 <dl class="py method">
-<dt id="compas_nurbs.Curve.frames_at">
-<code class="sig-name descname"><span class="pre">frames_at</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/curve.html#Curve.frames_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_nurbs.Curve.frames_at" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="compas_nurbs.Curve.frames_at">
+<span class="sig-name descname"><span class="pre">frames_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/curve.html#Curve.frames_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Evaluates the curve’s frames at the given parametric positions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -189,8 +189,8 @@ it will output the evaluated point, the 1st derivative and the 2nd derivative.</
 </dd></dl>
 
 <dl class="py method">
-<dt id="compas_nurbs.Curve.from_points">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_points</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">knot_style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_derivative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_derivative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periodic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/curve.html#Curve.from_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_nurbs.Curve.from_points" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="compas_nurbs.Curve.from_points">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">knot_style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_derivative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_derivative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periodic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/curve.html#Curve.from_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Constructs an interpolated curve.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -215,8 +215,8 @@ Defaults to 0, uniform.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="compas_nurbs.Curve.points_at">
-<code class="sig-name descname"><span class="pre">points_at</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/curve.html#Curve.points_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_nurbs.Curve.points_at" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="compas_nurbs.Curve.points_at">
+<span class="sig-name descname"><span class="pre">points_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/curve.html#Curve.points_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Evaluates the curve’s points at the given parametric positions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -234,8 +234,8 @@ Defaults to 0, uniform.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="compas_nurbs.Curve.reverse">
-<code class="sig-name descname"><span class="pre">reverse</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/curve.html#Curve.reverse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_nurbs.Curve.reverse" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="compas_nurbs.Curve.reverse">
+<span class="sig-name descname"><span class="pre">reverse</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/curve.html#Curve.reverse"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Reverses the curve.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -251,8 +251,8 @@ Defaults to 0, uniform.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="compas_nurbs.Curve.tangents_at">
-<code class="sig-name descname"><span class="pre">tangents_at</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/curve.html#Curve.tangents_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_nurbs.Curve.tangents_at" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="compas_nurbs.Curve.tangents_at">
+<span class="sig-name descname"><span class="pre">tangents_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/curve.html#Curve.tangents_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Evaluates the unit tangent vector at the given parametric positions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -271,13 +271,13 @@ Defaults to 0, uniform.</p></li>
 
 </dd></dl>
 
-</div>
-<div class="section" id="rationalcurve">
-<h2>RationalCurve<a class="headerlink" href="#rationalcurve" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="rationalcurve">
+<h2>RationalCurve</h2>
 <dl class="py class">
-<dt id="compas_nurbs.RationalCurve">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_nurbs.</span></code><code class="sig-name descname"><span class="pre">RationalCurve</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">control_points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">knot_vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/curve.html#RationalCurve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_nurbs.RationalCurve" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_nurbs.curve.Curve</span></code></p>
+<dt class="sig sig-object py" id="compas_nurbs.RationalCurve">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_nurbs.</span></span><span class="sig-name descname"><span class="pre">RationalCurve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">control_points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">knot_vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/curve.html#RationalCurve"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#compas_nurbs.Curve" title="compas_nurbs.curve.Curve"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_nurbs.curve.Curve</span></code></a></p>
 <p>A non-uniform rational B-Spline curve (NURBS-Curve).</p>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">control_points</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>
@@ -285,21 +285,21 @@ Defaults to 0, uniform.</p></li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">curve</span> <span class="o">=</span> <span class="n">Curve</span><span class="p">(</span><span class="n">control_points</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">)</span>
 </code></pre></div>
 </div>
-<dl class="py method">
-<dt id="compas_nurbs.RationalCurve.weighted_control_points">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">weighted_control_points</span></code><a class="headerlink" href="#compas_nurbs.RationalCurve.weighted_control_points" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="compas_nurbs.RationalCurve.weighted_control_points">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">weighted_control_points</span></span></dt>
 <dd><p>The weighted control points.</p>
 </dd></dl>
 
 </dd></dl>
 
-</div>
-<div class="section" id="surface">
-<h2>Surface<a class="headerlink" href="#surface" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="surface">
+<h2>Surface</h2>
 <dl class="py class">
-<dt id="compas_nurbs.Surface">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_nurbs.</span></code><code class="sig-name descname"><span class="pre">Surface</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">control_points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">knot_vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rational</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/surface.html#Surface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_nurbs.Surface" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_nurbs.bspline.BSpline</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.shapes._shape.Shape</span></code></p>
+<dt class="sig sig-object py" id="compas_nurbs.Surface">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_nurbs.</span></span><span class="sig-name descname"><span class="pre">Surface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">control_points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">knot_vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rational</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/surface.html#Surface"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_nurbs.bspline.BSpline</span></code>, <a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Shape.html#compas.geometry.Shape" title="(in COMPAS v1.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.shapes._shape.Shape</span></code></a></p>
 <p>A base class for n-variate B-spline (non-rational) surfaces.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -325,8 +325,8 @@ Defaults to 0, uniform.</p></li>
 </code></pre></div>
 </div>
 <dl class="py method">
-<dt id="compas_nurbs.Surface.curvatures_at">
-<code class="sig-name descname"><span class="pre">curvatures_at</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/surface.html#Surface.curvatures_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_nurbs.Surface.curvatures_at" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="compas_nurbs.Surface.curvatures_at">
+<span class="sig-name descname"><span class="pre">curvatures_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/surface.html#Surface.curvatures_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Evaluates the surface’ curvature at the given parametric positions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -354,8 +354,8 @@ Defaults to 0, uniform.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="compas_nurbs.Surface.derivatives_at">
-<code class="sig-name descname"><span class="pre">derivatives_at</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/surface.html#Surface.derivatives_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_nurbs.Surface.derivatives_at" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="compas_nurbs.Surface.derivatives_at">
+<span class="sig-name descname"><span class="pre">derivatives_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/surface.html#Surface.derivatives_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Evaluates n-th order surface derivatives at the given (u, v) parameter pairs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -371,13 +371,35 @@ Defaults to 0, uniform.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="compas_nurbs.Surface.from_points">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_points</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/surface.html#Surface.from_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_nurbs.Surface.from_points" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="compas_nurbs.Surface.from_points">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/surface.html#Surface.from_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="compas_nurbs.Surface.loft_from_curves">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">loft_from_curves</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">curves</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree_v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/surface.html#Surface.loft_from_curves"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_nurbs.Surface.loft_from_curves" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="compas_nurbs.Surface.isocurve">
+<span class="sig-name descname"><span class="pre">isocurve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">direction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/surface.html#Surface.isocurve"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p class="rubric">Examples</p>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">curve</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">isocurve</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">allclose</span><span class="p">(</span><span class="n">curve</span><span class="o">.</span><span class="n">knot_vector</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">allclose</span><span class="p">(</span><span class="n">curve</span><span class="o">.</span><span class="n">control_points</span><span class="p">,</span> <span class="p">[[</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.25</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.375</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">]])</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">curve</span><span class="o">.</span><span class="n">degree</span> <span class="o">==</span> <span class="mi">2</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">curve</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">isocurve</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">allclose</span><span class="p">(</span><span class="n">curve</span><span class="o">.</span><span class="n">knot_vector</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">allclose</span><span class="p">(</span><span class="n">curve</span><span class="o">.</span><span class="n">control_points</span><span class="p">,</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.75</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">4.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">],</span> <span class="p">[</span><span class="mf">6.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.5</span><span class="p">]])</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">curve</span><span class="o">.</span><span class="n">degree</span> <span class="o">==</span> <span class="mi">3</span>
+<span class="go">True</span>
+</code></pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="compas_nurbs.Surface.loft_from_curves">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">loft_from_curves</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">curves</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree_v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/surface.html#Surface.loft_from_curves"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Creates a <a class="reference internal" href="#compas_nurbs.Surface" title="compas_nurbs.Surface"><code class="xref py py-class docutils literal notranslate"><span class="pre">Surface</span></code></a> by lofting between curves.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -397,8 +419,8 @@ Defaults to 0, uniform.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="compas_nurbs.Surface.normals_at">
-<code class="sig-name descname"><span class="pre">normals_at</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/surface.html#Surface.normals_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_nurbs.Surface.normals_at" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="compas_nurbs.Surface.normals_at">
+<span class="sig-name descname"><span class="pre">normals_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/surface.html#Surface.normals_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Evaluates the surface’s normals at the given parametric positions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -417,8 +439,8 @@ Defaults to 0, uniform.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="compas_nurbs.Surface.points_at">
-<code class="sig-name descname"><span class="pre">points_at</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/surface.html#Surface.points_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_nurbs.Surface.points_at" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="compas_nurbs.Surface.points_at">
+<span class="sig-name descname"><span class="pre">points_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/surface.html#Surface.points_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Evaluates the surface’s points at the given parametric positions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -438,22 +460,22 @@ Defaults to 0, uniform.</p></li>
 
 </dd></dl>
 
-</div>
-<div class="section" id="rationalsurface">
-<h2>RationalSurface<a class="headerlink" href="#rationalsurface" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="rationalsurface">
+<h2>RationalSurface</h2>
 <dl class="py class">
-<dt id="compas_nurbs.RationalSurface">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_nurbs.</span></code><code class="sig-name descname"><span class="pre">RationalSurface</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">control_points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">knot_vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rational</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/surface.html#RationalSurface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_nurbs.RationalSurface" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_nurbs.surface.Surface</span></code></p>
-<dl class="py method">
-<dt id="compas_nurbs.RationalSurface.weighted_control_points">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">weighted_control_points</span></code><a class="headerlink" href="#compas_nurbs.RationalSurface.weighted_control_points" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="compas_nurbs.RationalSurface">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_nurbs.</span></span><span class="sig-name descname"><span class="pre">RationalSurface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">control_points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">knot_vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rational</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_nurbs/surface.html#RationalSurface"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#compas_nurbs.Surface" title="compas_nurbs.surface.Surface"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_nurbs.surface.Surface</span></code></a></p>
+<dl class="py property">
+<dt class="sig sig-object py" id="compas_nurbs.RationalSurface.weighted_control_points">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">weighted_control_points</span></span></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
-</div>
-</div>
+</section>
+</section>
 
         
       </main>
