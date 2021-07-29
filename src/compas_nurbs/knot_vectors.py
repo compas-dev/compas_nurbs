@@ -1,7 +1,7 @@
 import math
 from compas.geometry import Bezier
 from compas.geometry import distance_point_point
-from helpers import EPSILON
+from .helpers import EPSILON
 
 
 class CurveKnotStyle(object):
