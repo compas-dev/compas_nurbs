@@ -7,6 +7,8 @@ Unreleased
 
 **Added**
 
+* Added ``Surface.isocurve``
+
 **Changed**
 
 **Fixed**
