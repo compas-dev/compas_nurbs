@@ -204,8 +204,20 @@ class Surface(BSpline, Shape):
 
         Examples
         --------
-
-
+        >>> curve = surface.isocurve(0, 0.5)
+        >>> allclose(curve.knot_vector, [0.0, 0.0, 0.0, 1.0, 1.0, 1.0])
+        True
+        >>> allclose(curve.control_points, [[3.0, 0.0, 2.25], [3.0, 4.0, -0.375], [3.0, 8.0, 0.75]])
+        True
+        >>> curve.degree == 2
+        True
+        >>> curve = surface.isocurve(1, 0.5)
+        >>> allclose(curve.knot_vector, [0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0])
+        True
+        >>> allclose(curve.control_points, [[0.0, 4.0, -0.75], [2.0, 4.0, 1.5], [4.0, 4.0, 0.75], [6.0, 4.0, -1.5]])
+        True
+        >>> curve.degree == 3
+        True
         """
         return surface_isocurve(self._surface, direction, param)
 
@@ -236,32 +248,5 @@ if __name__ == "__main__":
     degree = (3, 2)
     surface = Surface(control_points, degree)
     params = [(u, v) for u in [0, 0.5, 1] for v in [0, 0.5, 1]]
-
-    curve = surface.isocurve(0, 0.5)
-    assert(curve.knot_vector == [0.0, 0.0, 0.0, 1.0, 1.0, 1.0])
-    assert(allclose(curve.control_points, [[3.0, 0.0, 2.25], [3.0, 4.0, -0.375], [3.0, 8.0, 0.75]]))
-    assert(curve.degree == 2)
-
-    curve = surface.isocurve(1, 0.5)
-    assert(curve.knot_vector == [0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0])
-    assert(allclose(curve.control_points, [[0.0, 4.0, -0.75], [2.0, 4.0, 1.5], [4.0, 4.0, 0.75], [6.0, 4.0, -1.5]]))
-    assert(curve.degree == 3)
-
-    """
-    >>> curve = surface.isocurve(0, 0.5)
-    >>> allclose(curve.knot_vector, [0.0, 0.0, 0.0, 1.0, 1.0, 1.0])
-    True
-    >>> allclose(curve.control_points, [[3.0, 0.0, 2.25], [3.0, 4.0, -0.375], [3.0, 8.0, 0.75]])
-    True
-    >>> curve.degree == 2
-    True
-    >>> curve = surface.isocurve(1, 0.5)
-    >>> allclose(curve.knot_vector, [0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0])
-    True
-    >>> allclose(curve.control_points, [[0.0, 4.0, -0.75], [2.0, 4.0, 1.5], [4.0, 4.0, 0.75], [6.0, 4.0, -1.5]])
-    True
-    >>> curve.degree == 3
-    True
-    """
 
     doctest.testmod(globs=globals())
