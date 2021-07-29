@@ -1,6 +1,7 @@
 import math
 from compas.geometry import Bezier
 from compas.geometry import distance_point_point
+from helpers import EPSILON
 
 
 class CurveKnotStyle(object):
@@ -277,3 +278,23 @@ def check_knot_vector(knot_vector, num_points, degree):
             return False
         prev_knot = knot
     return True
+
+
+def knot_vector_multiplicities(knot_vector):
+    """Determines the multiplicities of the values in a knot vector.
+
+    Parameters
+    ----------
+    knot_vector : list of float
+        The knot vector.
+
+    Returns
+    -------
+    list of (knot, mult)
+    """
+    mults = [[knot_vector[0], 0]]
+    for knot in knot_vector:
+        if abs(knot - mults[-1][0]) > EPSILON:
+            mults.append([knot, 0])
+        mults[-1][1] = mults[-1][1] + 1
+    return mults
