@@ -30,7 +30,7 @@ Please refer to the Documentation_ for details.
 
 
 Getting Started
---------------
+---------------
 
 The recommended way to install **COMPAS NURBS** is to use a `Anaconda/conda <https://conda.io/docs/>`_ environment:
 
