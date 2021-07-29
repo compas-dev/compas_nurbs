@@ -1,3 +1,8 @@
+import math
+
+EPSILON = 1e-10
+
+
 def find_span(knot_vector, number_of_control_points, t):
     """Finds the span of a single knot over the knot vector using linear search.
 
@@ -140,6 +145,63 @@ def basis_functions_derivatives(degree, knot_vector, spans, params, order):
     TODO: check if np.vectorize makes it faster.
     """
     return list(map(lambda span, t: basis_function_derivatives(degree, knot_vector, span, t, order), spans, params))
+
+
+def knotspan(degree, u, knots):
+    """Finds the span on the knot_vector without supplying n
+
+    Parameters
+    ----------
+    degree : int
+        The degree
+    u : float
+        The parameter.
+    knot_vector : list of float
+        The knot vector.
+
+    Returns
+    -------
+    span : int
+        The index of the knot span.
+    """
+    return knotspan_given_num(len(knots) - degree - 2, degree, u, knots)
+
+
+def knotspan_given_num(n, degree, u, knots):
+    """Find the span on the knot_vector of the given parameter.
+
+    (corresponds to algorithm 2.1 from The NURBS book, Piegl & Tiller 2nd edition)
+
+    Parameters
+    ----------
+    n : int
+        number of basis functions - 1 = knot_vector.length - degree - 2
+    degree : int
+        The degree
+    u : float
+        The parameter.
+    knot_vector : list of float
+        The knot vector.
+
+    Returns
+    -------
+    span : int
+        The index of the knot span.
+    """
+    if u > (knots[n + 1] - EPSILON):
+        return n
+    if u < (knots[degree] + EPSILON):
+        return degree
+    low = degree
+    high = (n + 1)
+    mid = math.floor((low + high) / 2)
+    while u < knots[mid] or u >= knots[mid + 1]:
+        if u < knots[mid]:
+            high = mid
+        else:
+            low = mid
+        mid = math.floor((low + high) / 2)
+    return mid
 
 
 """
