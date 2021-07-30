@@ -78,10 +78,10 @@ def curve_knot_refine(curve, knots2insert):
     :class:`Curve`
         A new curve with the knots inserted.
     """
-    from compas_nurbs import Curve
-    degree = curve.degree
-    control_points = np.array(curve.control_points)
-    knots = curve.knot_vector
+    control_points, degree, knots = curve
+    #degree = curve.degree
+    control_points = np.array(control_points)
+    #knots = curve.knot_vector
     n = len(control_points) - 1
     m = n + degree + 1
     r = len(knots2insert) - 1
@@ -122,7 +122,7 @@ def curve_knot_refine(curve, knots2insert):
         k = (k - 1)
         j = (j - 1)
 
-    return Curve(control_points_post, degree, knots_post)
+    return control_points_post, degree, knots_post
 
 
 def surface_knot_refine(surface, knots2insert, direction):
@@ -142,8 +142,6 @@ def surface_knot_refine(surface, knots2insert, direction):
     :class:`Surface`
         A new surface with the knots inserted.
     """
-    from compas_nurbs import Curve
-    from compas_nurbs import Surface
     degree = surface.degree[direction]
     knots = surface.knot_vector[direction]
     if direction == 0:
@@ -153,17 +151,17 @@ def surface_knot_refine(surface, knots2insert, direction):
 
     new_points = []
     for cptrow in control_points:
-        c = curve_knot_refine(Curve(cptrow, degree, knots), knots2insert)
-        new_points.append(c.control_points)
+        control_points, _, knot_vector = curve_knot_refine((cptrow, degree, knots), knots2insert)
+        new_points.append(control_points)
 
-    new_knots = c.knot_vector
+    new_knots = knot_vector
     if direction == 0:
         new_points = np.array(new_points).transpose(1, 0, 2)
         knot_vector = [new_knots, surface.knot_vector[1]]
     else:
         knot_vector = [surface.knot_vector[0], new_knots]
 
-    return Surface(new_points, surface.degree, knot_vector)
+    return new_points, surface.degree, knot_vector
 
 
 def surface_isocurve(surface, direction, param):
@@ -183,7 +181,6 @@ def surface_isocurve(surface, direction, param):
     :class:`Curve`
         A curve in the provided direction.
     """
-    from compas_nurbs import Curve
     knot_vector = surface.knot_vector[direction]
     degree = surface.degree[direction]
 
@@ -201,9 +198,9 @@ def surface_isocurve(surface, direction, param):
 
     if num_knots2insert > 0:
         knots2insert = [param for _ in range(num_knots2insert)]
-        newSrf = surface_knot_refine(surface, knots2insert, direction)
+        newsrf_control_points, newsrf_degree, newsrf_knot_vector = surface_knot_refine(surface, knots2insert, direction)
     else:
-        newSrf = surface
+        newsrf_control_points, newsrf_degree, newsrf_knot_vector = surface.control_points, surface.degree, surface.knot_vector
 
     span = knotspan(degree, param, knot_vector)
 
@@ -212,12 +209,12 @@ def surface_isocurve(surface, direction, param):
     else:
         if abs(param - knot_vector[-1]) < EPSILON:
             if direction == 1:
-                span = len(newSrf.controlPoints[0]) - 1
+                span = len(newsrf_control_points[0]) - 1
             else:
-                span = len(newSrf.controlPoints) - 1
+                span = len(newsrf_control_points) - 1
 
     if direction == 1:
-        control_points = [row[span] for row in newSrf.control_points]
-        return Curve(control_points, newSrf.degree[0], newSrf.knot_vector[0])
+        control_points = [row[span] for row in newsrf_control_points]
+        return control_points, newsrf_degree[0], newsrf_knot_vector[0]
     else:
-        return Curve(newSrf.control_points[span], newSrf.degree[1], newSrf.knot_vector[1])
+        return newsrf_control_points[span], newsrf_degree[1], newsrf_knot_vector[1]

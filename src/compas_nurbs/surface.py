@@ -1,4 +1,3 @@
-
 import compas
 from compas.geometry import Shape, Vector, Point
 
@@ -219,7 +218,8 @@ class Surface(BSpline, Shape):
         >>> curve.degree == 3
         True
         """
-        return surface_isocurve(self._surface, direction, param)
+        control_points, degree, knot_vector = surface_isocurve(self._surface, direction, param)
+        return Curve(control_points, degree, knot_vector)
 
     # ==========================================================================
     # serialisation
