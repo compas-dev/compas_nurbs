@@ -79,8 +79,7 @@
         
         
         <h1>Source code for compas_nurbs.surface</h1><div class="highlight"><pre><code>
-<span></span>
-<span class="kn">import</span> <span class="nn">compas</span>
+<span></span><span class="kn">import</span> <span class="nn">compas</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Shape</span><span class="p">,</span> <span class="n">Vector</span><span class="p">,</span> <span class="n">Point</span>
 
 <span class="kn">from</span> <span class="nn">compas_nurbs.bspline</span> <span class="kn">import</span> <span class="n">BSpline</span>
@@ -300,7 +299,8 @@
 <span class="sd">        &gt;&gt;&gt; curve.degree == 3</span>
 <span class="sd">        True</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">surface_isocurve</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_surface</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span></div></div>
+        <span class="n">control_points</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">knot_vector</span> <span class="o">=</span> <span class="n">surface_isocurve</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_surface</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Curve</span><span class="p">(</span><span class="n">control_points</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">knot_vector</span><span class="p">)</span></div></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># serialisation</span>
