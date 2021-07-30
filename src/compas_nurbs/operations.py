@@ -79,15 +79,12 @@ def curve_knot_refine(curve, knots2insert):
         A new curve with the knots inserted.
     """
     control_points, degree, knots = curve
-    #degree = curve.degree
     control_points = np.array(control_points)
-    #knots = curve.knot_vector
     n = len(control_points) - 1
     m = n + degree + 1
     r = len(knots2insert) - 1
     a = knotspan(degree, knots2insert[0], knots)
     b = knotspan(degree, knots2insert[r], knots)
-    knots_post = list()
 
     control_points_post = [None for _ in range(len(control_points) + len(knots2insert))]
     knots_post = [None for _ in range(len(knots) + len(knots2insert))]

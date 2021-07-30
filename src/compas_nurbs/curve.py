@@ -181,7 +181,7 @@ class Curve(BSpline):
         """
         derivatives = self.derivatives_at(params, order=2)
         points, tangents, normals = curve_frames(derivatives)
-        return [Frame(pt, xaxis, yaxis) for pt, xaxis, yaxis in zip(points, tangents, normals)] # this takes a lot of time!
+        return [Frame(pt, xaxis, yaxis) for pt, xaxis, yaxis in zip(points, tangents, normals)]  # this takes a lot of time!
 
     def derivatives_at(self, params, order=1):
         """Evaluates the n-th order curve derivatives at the given parametric positions.
