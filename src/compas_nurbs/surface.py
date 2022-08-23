@@ -227,7 +227,6 @@ class Surface(BSpline, Shape):
 
 
 class RationalSurface(Surface):
-
     def __init__(self, control_points, degree, knot_vector=None, rational=True, weights=None):
         super(RationalSurface, self).__init__(control_points, degree, knot_vector, True, weights)
 
@@ -241,10 +240,13 @@ if __name__ == "__main__":
     import doctest
     from compas.geometry import allclose  # noqa: F401
     from compas.geometry import close  # noqa: F401
-    control_points = [[[0, 0, 0], [0., 4, 0.], [0, 8, -3]],
-                      [[2, 0, 6], [2., 4, 0.], [2, 8, 0.]],
-                      [[4, 0, 0], [4., 4, 0.], [4, 8, 3.]],
-                      [[6, 0, 0], [6., 4, -3], [6, 8, 0.]]]
+
+    control_points = [
+        [[0, 0, 0], [0.0, 4, 0.0], [0, 8, -3]],
+        [[2, 0, 6], [2.0, 4, 0.0], [2, 8, 0.0]],
+        [[4, 0, 0], [4.0, 4, 0.0], [4, 8, 3.0]],
+        [[6, 0, 0], [6.0, 4, -3], [6, 8, 0.0]],
+    ]
     degree = (3, 2)
     surface = Surface(control_points, degree)
     params = [(u, v) for u in [0, 0.5, 1] for v in [0, 0.5, 1]]
