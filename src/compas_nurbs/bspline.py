@@ -148,6 +148,10 @@ class BSpline(Primitive):
         """dict: The data dictionary that represents the bspline geometry."""
         return {"control_points": self.control_points, "degree": self.degree, "knot_vector": self.knot_vector, "rational": self.rational, "weights": self.weights}
 
+    @classmethod
+    def from_data(cls, data):
+        return cls(data.get("control_points"), data.get("degree"), data.get("knot_vector"), data.get("rational"), data.get("weights"))
+
     @data.setter
     def data(self, data):
         self.control_points = data.get("control_points")
