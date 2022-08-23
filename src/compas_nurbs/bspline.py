@@ -23,12 +23,13 @@ class BSpline(Primitive):
     """
 
     def __init__(self, control_points, degree, knot_vector, rational, weights=None):
-        self.degree = degree                                              # (degree_u, degree_v) for surfaces
+        super(BSpline, self).__init__()
+        self.degree = degree  # (degree_u, degree_v) for surfaces
         self.__rational = rational
         self.__pdim = len(degree) if isinstance(degree, Iterable) else 1
-        self.control_points = control_points                              # 2d for surfaces
-        self.knot_vector = knot_vector                                    # (knotvector_u, knotvector_v) for surfaces
-        self.weights = weights                                            # 2d for surfaces
+        self.control_points = control_points  # 2d for surfaces
+        self.knot_vector = knot_vector  # (knotvector_u, knotvector_v) for surfaces
+        self.weights = weights  # 2d for surfaces
         self._build_backend()
 
     def _build_backend(self):  # needs to be overwritten by derivative classes
@@ -41,9 +42,9 @@ class BSpline(Primitive):
     @property
     def domain(self):
         if self.__pdim == 1:
-            return [0., 1.]
+            return [0.0, 1.0]
         else:
-            return [[0., 1.] for _ in range(self.__pdim)]
+            return [[0.0, 1.0] for _ in range(self.__pdim)]
 
     @property
     def control_points(self):
@@ -109,10 +110,10 @@ class BSpline(Primitive):
                 else:
                     self._weights = weights
             else:
-                self._weights = [1. for _ in range(self.count)]
+                self._weights = [1.0 for _ in range(self.count)]
         else:
             if not weights:
-                self._weights = reshape([1. for _ in range(prod(self.count))], self.count)
+                self._weights = reshape([1.0 for _ in range(prod(self.count))], self.count)
             else:
                 self._weights = weights  # TODO check
 
@@ -145,12 +146,12 @@ class BSpline(Primitive):
     @property
     def data(self):
         """dict: The data dictionary that represents the bspline geometry."""
-        return {'control_points': self.control_points,
-                'degree': self.degree,
-                'knot_vector': self.knot_vector,
-                'rational': self.rational,
-                'weights': self.weights}
+        return {"control_points": self.control_points, "degree": self.degree, "knot_vector": self.knot_vector, "rational": self.rational, "weights": self.weights}
 
-    @classmethod
-    def from_data(cls, data):
-        return cls(data['control_points'], data['degree'], data['knot_vector'], data['rational'], data['weights'])
+    @data.setter
+    def data(self, data):
+        self.control_points = data.get("control_points")
+        self.degree = data.get("degree")
+        self.knot_vector = data.get("knot_vector")
+        self.rational = data.get("rational")
+        self.weights = data.get("weights")
