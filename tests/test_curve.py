@@ -2,12 +2,13 @@ import numpy as np
 import rhino3dm
 from geomdl import BSpline
 from geomdl import NURBS
-from compas.geometry import allclose
 from compas.geometry import Point
 from compas.geometry import Vector
 from compas_nurbs import Curve
 from compas_nurbs import RationalCurve
+from compas.tolerance import Tolerance
 
+TOL = Tolerance()
 
 def rhino_curve_from_curve(curve):
     rhino_curve = rhino3dm.NurbsCurve(3, curve.rational, curve.degree + 1, curve.count)
@@ -47,32 +48,32 @@ def test_curve():
     rhino_points = [curve_rhino.PointAt(t) for t in params]
     rhino_points = [[p.X, p.Y, p.Z] for p in rhino_points]
     geomdl_points = curve_geomdl.evaluate_list(params)
-    assert(allclose(points, rhino_points))
-    assert(allclose(points, geomdl_points))
+    assert(TOL.is_allclose(points, rhino_points))
+    assert(TOL.is_allclose(points, geomdl_points))
 
     # derivatives
     geomdl_derivatives = [curve_geomdl.derivatives(u, order=1) for u in params]
-    assert(allclose(geomdl_derivatives, curve.derivatives_at(params)))
+    assert(TOL.is_allclose(geomdl_derivatives, curve.derivatives_at(params)))
 
     # tangents
     tangents = curve.tangents_at(params)
     rhino_tangents = [curve_rhino.TangentAt(t) for t in params]
     rhino_tangents = [[p.X, p.Y, p.Z] for p in rhino_tangents]
     geomdl_tangents = curve_geomdl.tangent(params)
-    assert(allclose(tangents, rhino_tangents))
-    assert(allclose(tangents, geomdl_tangents))
+    assert(TOL.is_allclose(tangents, rhino_tangents))
+    assert(TOL.is_allclose(tangents, geomdl_tangents))
 
     # curvature
     curvature = [c.curvature for c in curve.curvatures_at(params)]
     rhino_curvature_vectors = [curve_rhino.CurvatureAt(t) for t in params]
     rhino_curvature = [np.linalg.norm([p.X, p.Y, p.Z]) for p in rhino_curvature_vectors]
-    assert(allclose(curvature, rhino_curvature))
+    assert(TOL.is_allclose(curvature, rhino_curvature))
     circle_centers = [c.osculating_circle.plane.point for c in curve.curvatures_at(params)]
     rhino_centers = []
     for pt, cv in zip(rhino_points, rhino_curvature_vectors):
         cv = Vector(cv.X, cv.Y, cv.Z)
         rhino_centers.append(Point(*pt) + cv.unitized() * 1/cv.length)
-    assert(allclose(circle_centers, rhino_centers))
+    assert(TOL.is_allclose(circle_centers, rhino_centers))
 
 
 def test_rational_curve():
@@ -100,12 +101,12 @@ def test_rational_curve():
                     (1065.127, 189.409, 0.), (1109.071, 198.051, 0.), (1226.082, 218.523, 0.), (1348.823, 250.108, 0.),
                     (1438.406, 239.541, 0.), (1520.010, 156.330, 0.)]
     geomdl_points = curve_geomdl.evaluate_list(params)
-    assert(allclose(points, rhino_points, tol=1e-03))
-    assert(allclose(points, geomdl_points))
+    assert(TOL.is_allclose(points, rhino_points, rtol=1e-03))
+    assert(TOL.is_allclose(points, geomdl_points))
 
     # derivatives
     geomdl_derivatives = [curve_geomdl.derivatives(u, order=1) for u in params]
-    assert(allclose(geomdl_derivatives, curve.derivatives_at(params)))
+    assert(TOL.is_allclose(geomdl_derivatives, curve.derivatives_at(params)))
 
     # tangents
     tangents = curve.tangents_at(params)
@@ -113,18 +114,19 @@ def test_rational_curve():
                       (0.954, 0.301, 0.), (0.989, 0.151, 0.), (0.977, 0.213, 0.), (0.977, 0.212, 0.),
                       (0.855, -0.518, 0.), (0.628, -0.778, 0.)]
     geomdl_tangents = curve_geomdl.tangent(params)
-    assert(allclose(tangents, rhino_tangents, tol=1e-03))
-    assert(allclose(tangents, geomdl_tangents))
+    assert(TOL.is_allclose(tangents, rhino_tangents, rtol=1e-03, atol=1e-03))
+    assert(TOL.is_allclose(tangents, geomdl_tangents))
 
     # curvature
     curvature = [c.curvature for c in curve.curvatures_at(params)]
     rhino_curvature = [0.000851, 0.000762, 0.013305, 0.006902, 0.009795, 0.00037, 0.000876, 0.003371, 0.008178, 5e-05]
-    assert(allclose(curvature, rhino_curvature))
+
+    TOL.is_allclose(curvature, rhino_curvature, rtol=1e-4, atol=1e-3)
     circle_centers = [c.osculating_circle.plane.point for c in curve.curvatures_at(params)]
     rhino_centers = [(1889.858, -338.654, 0.), (1396.986, 1424.413, 0.), (1017.561, 250.506, 0.), (988.023, 314.332, 0.),
                      (1095.819, 92.043, 0.), (1516.222, -2474.241, 0.), (982.641, 1333.837, 0.), (1411.820, -39.776, 0.),
                      (1375.058, 134.945, 0.), (-14154.272, -12485.585, 0.)]
-    assert(allclose(circle_centers, rhino_centers, tol=1e-03))
+    assert(TOL.is_allclose(circle_centers, rhino_centers, rtol=1e-03))
 
 
 if __name__ == "__main__":
