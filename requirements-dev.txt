@@ -9,7 +9,7 @@ isort
 pydocstyle
 pylint
 pytest
-rhino3dm                                 # Used only for testing
+rhino3dm>=8.17                                 # Used only for testing
 sphinx >=1.6
 sphinx_compas_theme >=0.13
 -e .

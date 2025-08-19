@@ -1,6 +1,6 @@
 import scipy
 import numpy as np
-from compas.geometry.curves.bezier import binomial_coefficient
+from geomdl.linalg import binomial_coefficient
 
 from .helpers import find_spans
 from .helpers import basis_functions

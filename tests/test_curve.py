@@ -6,9 +6,7 @@ from compas.geometry import Point
 from compas.geometry import Vector
 from compas_nurbs import Curve
 from compas_nurbs import RationalCurve
-from compas.tolerance import Tolerance
-
-TOL = Tolerance()
+from compas.tolerance import TOL
 
 def rhino_curve_from_curve(curve):
     rhino_curve = rhino3dm.NurbsCurve(3, curve.rational, curve.degree + 1, curve.count)
