@@ -2,7 +2,7 @@
 
 from sphinx.ext.napoleon.docstring import NumpyDocstring
 
-import sphinx_compas_theme
+import sphinx_compas2_theme
 
 # -- General configuration ------------------------------------------------
 
@@ -34,7 +34,6 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.napoleon',
     'sphinx.ext.viewcode',
-    'matplotlib.sphinxext.plot_directive',
 ]
 
 # autodoc options
@@ -103,20 +102,6 @@ def patched_parse(self):
 NumpyDocstring._unpatched_parse = NumpyDocstring._parse
 NumpyDocstring._parse = patched_parse
 
-# plot options
-
-# plot_include_source
-# plot_pre_code
-# plot_basedir
-# plot_formats
-# plot_rcparams
-# plot_apply_rcparams
-# plot_working_directory
-# plot_template
-
-plot_html_show_source_link = False
-plot_html_show_formats = False
-
 # intersphinx options
 
 intersphinx_mapping = {
@@ -127,23 +112,40 @@ intersphinx_mapping = {
 
 # -- Options for HTML output ----------------------------------------------
 
-html_theme = 'compaspkg'
-html_theme_path = sphinx_compas_theme.get_html_theme_path()
+html_theme = 'sidebaronly'
+html_title = project
+
 html_theme_options = {
-    "package_name": "compas_nurbs",
-    "package_title": project,
-    "package_version": release,
-    "package_author": "Romana Rust",
-    "package_description": "COMPAS package for working with NURBS",
-    "package_repo": "https://github.com/gramaziokohler/compas_nurbs",
-    "package_docs": "https://gramaziokohler.github.io/compas_nurbs"
+    "icon_links": [
+        {
+            "name": "GitHub",
+            "url": "https://github.com/compas-dev/compas_nurbs",
+            "icon": "fa-brands fa-github",
+            "type": "fontawesome",
+        },
+        {
+            "name": "Discourse",
+            "url": "http://forum.compas-framework.org/",
+            "icon": "fa-brands fa-discourse",
+            "type": "fontawesome",
+        },
+    ],
+    "navigation_depth": 3,
+    "check_switcher": False,
 }
-html_context = {}
-html_static_path = []
+
+html_context = {
+    "github_url": "https://github.com",
+    "github_user": "compas-dev",
+    "github_repo": "compas_nurbs",
+    "github_version": "main",
+    "doc_path": "docs",
+}
+
+html_static_path = sphinx_compas2_theme.get_html_static_path()
 html_extra_path = ['.nojekyll']
 html_last_updated_fmt = ''
 html_copy_source = False
-html_show_sourcelink = False
-html_add_permalinks = ''
-html_experimental_html5_writer = True
+html_show_sourcelink = True
+html_permalinks = False
 html_compact_lists = True
