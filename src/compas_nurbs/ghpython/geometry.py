@@ -1,8 +1,9 @@
 import compas
+
 from compas_nurbs import Curve
 from compas_nurbs import RationalCurve
-from compas_nurbs import Surface
 from compas_nurbs import RationalSurface
+from compas_nurbs import Surface
 from compas_nurbs.utilities import reshape
 
 if compas.RHINO:

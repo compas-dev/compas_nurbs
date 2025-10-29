@@ -1,7 +1,7 @@
 
-from compas.geometry import Vector
 from compas.geometry import Circle
 from compas.geometry import Plane
+from compas.geometry import Vector
 
 
 class CurveCurvature(object):

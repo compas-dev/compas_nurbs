@@ -32,8 +32,8 @@ def rhino_surface_from_surface(surface):
     count_u, count_v = surface.count
     knot_vector_u, knot_vector_v = surface.knot_vector
     srf_rhino = rhino3dm.NurbsSurface.Create(3, surface.rational, degree_u + 1, degree_v + 1, count_u, count_v)
-    for u, l in enumerate(surface.control_points):
-        for v, (x, y, z) in enumerate(l):
+    for u, row in enumerate(surface.control_points):
+        for v, (x, y, z) in enumerate(row):
             if surface.rational:
                 srf_rhino.Points[(u, v)] = rhino3dm.Point4d(x, y, z, surface.weights[u][v])
             else:

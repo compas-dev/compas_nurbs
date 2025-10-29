@@ -1,4 +1,5 @@
 import numpy as np
+
 from .helpers import EPSILON
 from .helpers import knotspan
 from .knot_vectors import knot_vector_multiplicities
