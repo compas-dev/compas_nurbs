@@ -5,11 +5,11 @@ NURBS for COMPAS
 .. start-badges
 
 .. image:: https://img.shields.io/badge/License-MIT-blue.svg
-    :target: https://github.com/gramaziokohler/compas_nurbs/blob/main/LICENSE
+    :target: https://github.com/compas-dev/compas_nurbs/blob/main/LICENSE
     :alt: License MIT
 
-.. image:: https://github.com/gramaziokohler/compas_nurbs/workflows/build/badge.svg
-    :target: https://github.com/gramaziokohler/compas_nurbs/actions
+.. image:: https://github.com/compas-dev/compas_nurbs/workflows/build/badge.svg
+    :target: https://github.com/compas-dev/compas_nurbs/actions
     :alt: Github Actions
 
 .. end-badges
@@ -24,7 +24,7 @@ Please refer to the Documentation_ for details.
 
 .. _NURBS-Python: https://github.com/orbingol/NURBS-Python
 .. _NumPy: https://numpy.org/
-.. _Documentation: https://gramaziokohler.github.io/compas_nurbs/latest/
+.. _Documentation: https://compas.dev/compas_nurbs/latest/
 
 **COMPAS NURBS** runs on Python x.x and x.x.
 
@@ -56,7 +56,7 @@ Contributing
 
 Make sure you setup your local development environment correctly:
 
-* Clone the `compas_nurbs <https://github.com/gramaziokohler/compas_nurbs>`_ repository.
+* Clone the `compas_nurbs <https://github.com/compas-dev/compas_nurbs>`_ repository.
 * Install development dependencies and make the project accessible from Rhino:
 
 ::
