@@ -1,6 +1,5 @@
 import Rhino.Geometry as rg
 import rhinoscriptsyntax as rs
-
 from compas.utilities import flatten
 from compas_rhino.artists import BaseArtist
 

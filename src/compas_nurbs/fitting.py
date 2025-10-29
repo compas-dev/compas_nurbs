@@ -1,13 +1,12 @@
 import numpy as np
-from scipy.linalg import lu_factor, lu_solve
-
 from compas.geometry import allclose  # noqa: F401
+from scipy.linalg import lu_factor
+from scipy.linalg import lu_solve
 
-from compas_nurbs.helpers import find_spans
 from compas_nurbs.helpers import basis_functions
-from compas_nurbs.knot_vectors import knot_vector_and_params
+from compas_nurbs.helpers import find_spans
 from compas_nurbs.knot_vectors import CurveKnotStyle
-
+from compas_nurbs.knot_vectors import knot_vector_and_params
 
 # TODO: estimate derivatives for degree==3
 # https://link.springer.com/content/pdf/10.1007/s003660050038.pdf

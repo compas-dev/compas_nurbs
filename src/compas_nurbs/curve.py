@@ -1,8 +1,7 @@
 import compas
-
+from compas.geometry import Frame
 from compas.geometry import Point
 from compas.geometry import Vector
-from compas.geometry import Frame
 
 from compas_nurbs.bspline import BSpline
 from compas_nurbs.curvature import CurveCurvature
@@ -11,10 +10,10 @@ if not compas.IPY:
     from compas_nurbs.evaluators import create_curve
     from compas_nurbs.evaluators import evaluate_curve
     from compas_nurbs.evaluators import evaluate_curve_derivatives
-    from compas_nurbs.operations import curve_tangents
-    from compas_nurbs.operations import curve_frames
-    from compas_nurbs.operations import curve_curvatures
     from compas_nurbs.fitting import interpolate_curve
+    from compas_nurbs.operations import curve_curvatures
+    from compas_nurbs.operations import curve_frames
+    from compas_nurbs.operations import curve_tangents
 
 
 class Curve(BSpline):
@@ -263,6 +262,7 @@ class RationalCurve(Curve):
 
 if __name__ == '__main__':
     import doctest
+
     from compas.geometry import allclose  # noqa: F401
     from compas.geometry import close  # noqa: F401
     control_points = [(0, 0, 0), (3, 4, 0), (-1, 4, 0), (-4, 0, 0), (-4, -3, 0)]

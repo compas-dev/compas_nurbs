@@ -1,17 +1,19 @@
 import compas
-from compas.geometry import Shape, Vector, Point
+from compas.geometry import Point
+from compas.geometry import Shape
+from compas.geometry import Vector
 
 from compas_nurbs.bspline import BSpline
-from compas_nurbs.curve import Curve
 from compas_nurbs.curvature import SurfaceCurvature
+from compas_nurbs.curve import Curve
 
 if not compas.IPY:
+    from compas_nurbs.evaluators import calculate_surface_curvature
     from compas_nurbs.evaluators import evaluate_surface
     from compas_nurbs.evaluators import evaluate_surface_derivatives
-    from compas_nurbs.evaluators import calculate_surface_curvature
+    from compas_nurbs.operations import surface_isocurve
     from compas_nurbs.operations import surface_normals
     from compas_nurbs.operations import unify_curves
-    from compas_nurbs.operations import surface_isocurve
 
 
 class Surface(BSpline, Shape):
@@ -238,6 +240,7 @@ class RationalSurface(Surface):
 if __name__ == "__main__":
 
     import doctest
+
     from compas.geometry import allclose  # noqa: F401
     from compas.geometry import close  # noqa: F401
 

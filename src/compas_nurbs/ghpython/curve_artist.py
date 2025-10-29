@@ -1,5 +1,4 @@
 import Rhino.Geometry as rg
-
 from compas_rhino.artists import BaseArtist
 
 

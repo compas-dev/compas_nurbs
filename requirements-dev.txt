@@ -1,15 +1,13 @@
-autopep8
-bump2version >=0.5.11
-check-manifest >=0.36
-doc8
-flake8
-geomdl                                   # Used only for testing
+attrs >=17.4
+build
+bump-my-version
+compas_invocations2
+geomdl
 invoke >=0.14
-isort
-pydocstyle
-pylint
 pytest
-rhino3dm>=8.17                                 # Used only for testing
+rhino3dm>=8.17
+ruff
 sphinx >=1.6
-sphinx_compas_theme >=0.13
--e .
+sphinx_compas2_theme
+twine
+wheel

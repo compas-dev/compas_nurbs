@@ -1,8 +1,9 @@
 import pytest
-from compas.geometry import close
 from compas.geometry import allclose
-from compas_nurbs import Surface
+from compas.geometry import close
+
 from compas_nurbs import Curve
+from compas_nurbs import Surface
 
 
 @pytest.fixture(autouse=True)

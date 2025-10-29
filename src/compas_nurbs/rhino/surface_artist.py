@@ -3,7 +3,6 @@ import time
 import Rhino.Geometry as rg
 import rhinoscriptsyntax as rs
 import scriptcontext as sc
-
 from compas.utilities import flatten
 from compas_rhino.artists import BaseArtist
 

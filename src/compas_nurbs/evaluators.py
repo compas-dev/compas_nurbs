@@ -1,10 +1,10 @@
-import scipy
 import numpy as np
+import scipy
 from geomdl.linalg import binomial_coefficient
 
-from .helpers import find_spans
 from .helpers import basis_functions
 from .helpers import basis_functions_derivatives
+from .helpers import find_spans
 
 # ==============================================================================
 # curve
