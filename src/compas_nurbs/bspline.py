@@ -1,5 +1,5 @@
 import compas
-from compas.geometry import Primitive
+from compas.geometry import Geometry
 
 from compas_nurbs.knot_vectors import check_knot_vector
 from compas_nurbs.knot_vectors import knot_vector_uniform
@@ -16,7 +16,7 @@ else:
     from collections import Iterable
 
 
-class BSpline(Primitive):
+class BSpline(Geometry):
     """A base class for rational and non-rational B-Spline geometry.
 
     Contains all setters and checkers.

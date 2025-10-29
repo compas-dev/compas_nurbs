@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 from __future__ import absolute_import, print_function
-
 import io
 import re
 from glob import glob
@@ -9,9 +8,25 @@ from os.path import abspath, basename, dirname, join, splitext
 
 from setuptools import find_packages, setup
 
-requirements = [
-    'compas>=1.0,<2.0',
-]
+from pathlib import Path
+
+here = Path(__file__).parent
+
+def read_requirements(filename: str) -> list[str]:
+    req_path = here / filename
+    if not req_path.exists():
+        return []
+    lines = req_path.read_text(encoding="utf-8").splitlines()
+    reqs = []
+    for line in lines:
+        s = line.strip()
+        # skip comments/empties and nested includes
+        if not s or s.startswith("#") or s.startswith(("-r ", "--requirement ")):
+            continue
+        reqs.append(s)
+    return reqs
+
+
 keywords_list = ['compas', 'nurbs', 'rhino', 'bspline']
 
 here = abspath(dirname(__file__))
@@ -64,7 +79,7 @@ setup(
         'Topic :: Scientific/Engineering',
     ],
     keywords=keywords_list,
-    install_requires=requirements,
+    install_requires=read_requirements("requirements.txt"),
     extras_require={},
     entry_points={},
 )

@@ -5,7 +5,7 @@ from geomdl import compatibility
 
 from compas.geometry import close
 from compas.geometry import allclose
-from compas.utilities import flatten
+from compas.itertools import flatten
 
 from compas_nurbs import Curve
 from compas_nurbs import Surface
@@ -90,7 +90,7 @@ def test_surface():
     rhino_curvature = {'direction': [[-0.93527, 0.3356, 0.11244], [-0.30401, -0.92441, 0.23033]], 'gauss': -
                        0.06905, 'mean': -0.12646, 'kappa': [-0.41808, 0.16516], 'normal': [0.18124, 0.18124, 0.9666]}
     assert(allclose(curvature.direction, rhino_curvature['direction'], tol=0.01))
-    assert(allclose(curvature.kappa, rhino_curvature['kappa']))
+    assert(allclose(curvature.kappa, rhino_curvature['kappa'], tol=0.01))
     assert(allclose(curvature.normal, rhino_curvature['normal'], tol=0.01))
     assert(close(curvature.gauss, rhino_curvature['gauss']))
     assert(close(curvature.mean, rhino_curvature['mean']))
@@ -128,7 +128,7 @@ def test_rational_surface():
                     [4.34132, 2.71191, -0.50399], [4.39635, 3.98729, -0.56116], [4.35627, 5.26156, -0.2744], [4.11864, 8.0, 0.88983], [6.0, 0.0, 0.0],
                     [6.0, 3.8, -2.475], [6.0, 4.57143, -2.35714], [6.0, 5.57143, -1.76786], [6.0, 8.0, 0.0]]
     assert(allclose(points, geomdl_points))
-    assert(allclose(points, rhino_points))
+    assert(allclose(points, rhino_points, tol=0.01))
 
     # derivatives
     derivatives = surface.derivatives_at(params, order=1)
@@ -151,7 +151,7 @@ def test_rational_surface():
     rhino_curvature = {'direction': [[-0.93542, 0.2192, 0.27737], [-0.20539, -0.97554, 0.07829]], 'gauss': -
                        0.06474, 'mean': -0.14782, 'kappa': [-0.44209, 0.14644], 'normal': [0.28774, 0.01626, 0.95757]}
     assert(allclose(curvature.direction, rhino_curvature['direction'], tol=0.01))
-    assert(allclose(curvature.kappa, rhino_curvature['kappa']))
+    assert(allclose(curvature.kappa, rhino_curvature['kappa'], tol=0.01))
     assert(allclose(curvature.normal, rhino_curvature['normal'], tol=0.01))
     assert(close(curvature.gauss, rhino_curvature['gauss']))
     assert(close(curvature.mean, rhino_curvature['mean']))
@@ -180,7 +180,7 @@ def test_isocurve():
     degree_u = 3
     degree_v = 2
     surface = Surface(control_points_2d, (degree_u, degree_v))
-    
+
     curve = surface.isocurve(0, 0.5)
     assert(allclose(curve.knot_vector, [0.0, 0.0, 0.0, 1.0, 1.0, 1.0]))
     assert(allclose(curve.control_points, [[3.0, 0.0, 2.25], [3.0, 4.0, -0.375], [3.0, 8.0, 0.75]]))

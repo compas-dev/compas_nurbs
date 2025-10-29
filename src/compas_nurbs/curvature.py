@@ -31,7 +31,9 @@ class CurveCurvature(object):
     @property
     def osculating_circle(self):
         center = self.frame.point + self.radius * self.normal
-        return Circle(Plane(center, self.frame.zaxis), self.radius)
+        plane = Plane(center, self.frame.zaxis)
+        circle = Circle.from_plane_and_radius(plane, radius=self.radius)
+        return circle
 
 
 class SurfaceCurvature(object):

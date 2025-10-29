@@ -1,11 +1,10 @@
 import scipy
 import numpy as np
+from geomdl.linalg import binomial_coefficient
 
 from .helpers import find_spans
 from .helpers import basis_functions
 from .helpers import basis_functions_derivatives
-
-from compas.geometry.primitives.curve import binomial_coefficient  # TODO compas: move this upwards
 
 # ==============================================================================
 # curve

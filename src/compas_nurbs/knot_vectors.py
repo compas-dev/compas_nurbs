@@ -55,7 +55,7 @@ def bezier_spaced_parameters(num_points):
     If degree >= 5 this provides a more stable knotvector for 'uniform' knot style.
     """
     curve = Bezier([[0.0, 0.0, 0.0], [0.5, 0.0, 0.0], [0.5, 1.0, 0.0], [1., 1., 0]])
-    return [curve.point(t).y for t in equally_spaced_parameters(num_points)]
+    return [curve.point_at(t).y for t in equally_spaced_parameters(num_points)]
 
 
 def chord_lengths(points):
